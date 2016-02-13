@@ -9,8 +9,8 @@ public class Ramp extends Shape{
 	}
 	
 	public void draw(Graphics g){
-		int [] x = {(int) position.x,(int) width,(int) width};
-		int [] y = {(int) position.y, (int) height, (int) position.y};
+		int [] x = {drawX(),drawX()+drawWidth(),drawX()+drawWidth()};
+		int [] y = {drawY()-drawHeight(), drawY()-drawHeight(), drawY()};
 		g.fillPolygon(x,y,3);
 	}
 	
@@ -22,8 +22,8 @@ public class Ramp extends Shape{
 
 	@Override
 	public Area getArea() {
-		int[] xpoint = {(int) position.x,(int) width,(int) width};
-		int[] ypoint = {(int) position.y, (int) height, (int) position.y};
+		int[] xpoint = {drawX(),drawX()+drawWidth(),drawX()+drawWidth()};
+		int[] ypoint = {drawX(),drawX()+drawWidth(),drawX()+drawWidth()};
 		Polygon p = new Polygon(xpoint, ypoint, 3);
 		return new Area(p);
 	}
