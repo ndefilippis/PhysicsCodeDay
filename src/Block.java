@@ -1,4 +1,6 @@
 import java.awt.Graphics;
+import java.awt.geom.Area;
+
 
 public class Block extends Shape{
 
@@ -20,6 +22,12 @@ public class Block extends Shape{
 			return 0.0;
 		}
 		return 0.0;
+	}
+
+	@Override
+	public Area getArea() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
