@@ -29,11 +29,5 @@ public class Wall extends Shape{
 		Rectangle r = new Rectangle(drawX(), drawY(), drawWidth(), drawHeight()); 
 		return new Area(r);
 	}
-
-	@Override
-	public void collide(Shape s) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 }

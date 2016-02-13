@@ -27,12 +27,6 @@ public class Ramp extends Shape{
 		Polygon p = new Polygon(xpoint, ypoint, 3);
 		return new Area(p);
 	}
-
-	@Override
-	public void collide(Shape s) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 
 }
