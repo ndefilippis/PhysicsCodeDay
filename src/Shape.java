@@ -7,7 +7,7 @@ public abstract class Shape{
 	Vector acceleration;
 	double height;
 	double width;
-	//Shape shape;
+	double mass;
 	
 	public Shape(double x, double y, double width, double height){
 		velocity = new Vector();
