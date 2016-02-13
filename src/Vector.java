@@ -42,4 +42,8 @@ public class Vector {
 	public Vector normalize(){
 		return this.divide(length());
 	}
+	
+	public String toString(){
+		return "<"+x+", "+y+">";
+	}
 }

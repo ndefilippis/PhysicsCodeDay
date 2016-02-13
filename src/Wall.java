@@ -3,24 +3,27 @@ import java.awt.Rectangle;
 import java.awt.geom.Area;
 
 
-public class Block extends Shape{
+public class Wall extends Shape{
 
-	public Block(double x, double y, double width, double height) {
-		super(x, y, height, width);
+	public Wall(double x, double y, double width, double height) {
+		super(x, y, width, height);
+		anchored = true;
 	}
-
+	
+	public void update(){
+		
+	}
+	
 	public void draw(Graphics g){
 		g.fillRect(drawX(), drawY(), drawWidth(), drawHeight());
 	}
 
 	@Override
 	public double friction(Shape s) {
-		if(s instanceof Block){
-			return 0.0;
-		}
-		return 0.0;
+		// TODO Auto-generated method stub
+		return 0;
 	}
-	
+
 	@Override
 	public Area getArea() {
 		Rectangle r = new Rectangle(drawX(), drawY(), drawWidth(), drawHeight()); 
@@ -29,8 +32,8 @@ public class Block extends Shape{
 
 	@Override
 	public void collide(Shape s) {
-		velocity = velocity.multiply(-1);
-		position = prevPosition;
+		// TODO Auto-generated method stub
+		
 	}
-
+	
 }

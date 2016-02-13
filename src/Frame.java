@@ -8,6 +8,7 @@ public class Frame extends JFrame{
 	public Frame(Panel panel){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Physics");
+		createMenu();
 		getContentPane().add(panel);
 	}
 	
@@ -17,5 +18,9 @@ public class Frame extends JFrame{
 				setVisible(true);
 			}
 		});
+	}
+	
+	public void createMenu(){
+		
 	}
 }
