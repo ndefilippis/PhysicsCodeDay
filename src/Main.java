@@ -11,5 +11,9 @@ public class Main {
 		frame.getContentPane().add(panel);
 		frame.display();
 	}
-
+	public static void loop() {
+		while(true) {
+			panel.repaint();
+		}
+	}
 }

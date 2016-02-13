@@ -1,8 +1,7 @@
 import java.awt.Dimension;
-
+import java.awt.Graphics;
 import javax.swing.JPanel;
 
-import com.sun.prism.Graphics;
 
 public class Panel extends JPanel{
 	public Panel(){
