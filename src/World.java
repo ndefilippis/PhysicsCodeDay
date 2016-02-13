@@ -6,4 +6,5 @@ public class World {
 	public static void add(Shape s){
 		objects.add(s);
 	}
+	
 }
