@@ -12,5 +12,9 @@ public class Main {
 		frame.display();
 		panel.repaint();
 	}
-
+	public static void loop() {
+		while(true) {
+			panel.repaint();
+		}
+	}
 }
