@@ -9,13 +9,17 @@ public class World {
 	}
 	
 	public static void update(double dt){
-		for(Shape s : objects){
+		for(Shape s : World.objects){
 			s.update(dt);
 		}
 		for(Shape s1 : objects){
 			for(Shape s2 : objects){
 				if(s1.equals(s2)) continue;
-				Area a = s1.getArea();
+				Area a1 = s1.getArea();
+				a1.intersect(s2.getArea());
+				if (!a1.isEmpty()){
+					
+				}
 			}
 		}
 	}

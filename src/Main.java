@@ -20,9 +20,6 @@ public class Main {
 		time = System.nanoTime()/1000000000.0;
 		while(true) {
 			double currTime = System.nanoTime();
-			for(Shape s : World.objects){
-				s.update((currTime - time)/1000000000.0);
-			}
 			panel.repaint();
 		}
 	}

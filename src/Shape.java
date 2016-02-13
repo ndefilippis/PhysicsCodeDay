@@ -27,4 +27,6 @@ public abstract class Shape{
 	public abstract double friction(Shape s);
 	
 	public abstract Area getArea();
+	
+	public abstract void collide(Shape s);
 }
