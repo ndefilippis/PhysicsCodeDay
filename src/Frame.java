@@ -5,9 +5,10 @@ import javax.swing.JFrame;
 
 public class Frame extends JFrame{
 	
-	public Frame(){
+	public Frame(Panel panel){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Physics");
+		getContentPane().add(panel);
 	}
 	
 	public void display() {
