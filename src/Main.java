@@ -12,6 +12,7 @@ public class Main {
 		frame.pack();
 		frame.display();
 		panel.repaint();
+		loop();
 	}
 	public static void loop() {
 		time = System.nanoTime()/1000000000.0;

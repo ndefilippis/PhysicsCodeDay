@@ -13,6 +13,8 @@ public class Panel extends JPanel{
 	@Override
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
-		g.fillRect(0, 0, 50, 50);
+		for(Shape s : World.objects){
+			s.draw();
+		}
 	}
 }

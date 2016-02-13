@@ -1,3 +1,4 @@
+import java.awt.Graphics;
 
 public abstract class Shape {
 	Vector velocity;
@@ -13,6 +14,8 @@ public abstract class Shape {
 		this.height = height;
 		this.width = width;
 	}
+	
+	public abstract void draw(Graphics g);
 	
 	public void update(double dt){
 		velocity.add(acceleration.multiply(dt));
