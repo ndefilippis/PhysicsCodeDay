@@ -3,9 +3,15 @@ public abstract class Shape {
 	Vector velocity;
 	Vector position;
 	Vector acceleration;
+	double height;
+	double width;
 	
-	public Shape(double x, double y){
+	public Shape(double x, double y, double width, double height){
+		velocity = new Vector();
+		acceleration = new Vector();
 		position = new Vector(x, y);
+		this.height = height;
+		this.width = width;
 	}
 	
 	public void update(double dt){
@@ -14,4 +20,5 @@ public abstract class Shape {
 	}
 	
 	public abstract double friction(Shape s);
+
 }
