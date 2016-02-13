@@ -9,10 +9,7 @@ public class Wall extends Shape{
 		super(x, y, width, height);
 		anchored = true;
 	}
-	
-	public void update(){
-		
-	}
+
 	
 	public void draw(Graphics g){
 		g.fillRect(drawX(), drawY(), drawWidth(), drawHeight());
