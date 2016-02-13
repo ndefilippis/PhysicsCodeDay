@@ -12,6 +12,7 @@ public class Main {
 		frame.pack();
 		frame.display();
 		panel.repaint();
+		World.add(new Block(0, 0, 300, 300));
 		loop();
 	}
 	public static void loop() {
