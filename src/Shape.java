@@ -1,11 +1,13 @@
 import java.awt.Graphics;
+import java.awt.geom.Area;
 
-public abstract class Shape {
+public abstract class Shape{
 	Vector velocity;
 	Vector position;
 	Vector acceleration;
 	double height;
 	double width;
+	//Shape shape;
 	
 	public Shape(double x, double y, double width, double height){
 		velocity = new Vector();
@@ -23,5 +25,6 @@ public abstract class Shape {
 	}
 	
 	public abstract double friction(Shape s);
-
+	
+	public abstract Area getArea();
 }
