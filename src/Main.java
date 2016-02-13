@@ -19,7 +19,7 @@ public class Main {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.display();
-		b.velocity = new Vector(1, -1);
+		b.velocity = new Vector(10, -1);
 		World.add(b);
 		World.add(w);
 		World.add(w1);

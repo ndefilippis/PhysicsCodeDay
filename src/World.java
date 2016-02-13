@@ -6,6 +6,7 @@ public class World {
 	public static double xScale = 25;
 	public static double yScale = 25;
 	public static Vector gravity = new Vector(0, 9.81);
+	public static double energyConserved = .5;
 	
 	public static void add(Shape s){
 		objects.add(s);

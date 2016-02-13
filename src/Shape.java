@@ -52,5 +52,7 @@ public abstract class Shape{
 	public static void collide(Shape s1, Shape s2) {
 		s1.position = s1.prevPosition;
 		s2.position = s2.prevPosition;
+		s1.velocity.y *= -Math.pow(World.energyConserved,1.0/2);
+		s2.velocity.y *= -Math.pow(World.energyConserved,1.0/2);
 	}
 }
