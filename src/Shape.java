@@ -5,6 +5,10 @@ public class Shape {
 	Vector acceleration;
 	
 	public Shape(double x, double y){
-		velocity = new Vector(x, y);
+		position = new Vector(x, y);
+	}
+	
+	public void update(double dt){
+		velocity.add(acceleration.multiply(dt));
 	}
 }
