@@ -26,6 +26,12 @@ public abstract class Shape{
 		prevPosition = position;
 		if(anchored) return;
 		velocity = velocity.add(acceleration.multiply(dt));	
+		if(Math.abs(velocity.x) <= 0.01){
+			velocity.x = 0;
+		}
+		if(Math.abs(velocity.y) <= 0.01){
+			velocity.y = 0;
+		}
 		position = position.add(velocity.multiply(dt));
 	}
 	
@@ -54,5 +60,7 @@ public abstract class Shape{
 		s2.position = s2.prevPosition;
 		s1.velocity.y *= -Math.pow(World.energyConserved,1.0/2);
 		s2.velocity.y *= -Math.pow(World.energyConserved,1.0/2);
+		s1.velocity.x *= Math.pow(World.energyConserved,1.0/2);
+		s2.velocity.x *= Math.pow(World.energyConserved,1.0/2);
 	}
 }
