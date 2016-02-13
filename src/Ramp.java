@@ -1,3 +1,4 @@
+import java.awt.Graphics;
 
 public class Ramp {
 
@@ -5,5 +6,7 @@ public class Ramp {
 		// TODO Auto-generated method stub
 
 	}
-
+	public void draw(Graphics g){
+		
+	}
 }
