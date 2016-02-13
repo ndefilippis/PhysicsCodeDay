@@ -8,12 +8,9 @@ public class Block extends Shape{
 		super(x, y, height, width);
 	}
 
-	public static void main(String[] args) {
-
-	}
 	
 	public void draw(Graphics g){
-		g.fillRect((int)position.x, (int)position.y, (int)(position.x+width), (int)(position.y+height));
+		g.fillRect((int)position.x*World.xScale, (int)position.y, (int)(width), (int)(height));
 	}
 
 	@Override

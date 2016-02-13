@@ -20,8 +20,8 @@ public abstract class Shape{
 	public abstract void draw(Graphics g);
 	
 	public void update(double dt){
-		velocity.add(acceleration.multiply(dt));
-		position.add(velocity.multiply(dt));
+		velocity = velocity.add(acceleration.multiply(dt));
+		position = position.add(velocity.multiply(dt));
 	}
 	
 	public abstract double friction(Shape s);

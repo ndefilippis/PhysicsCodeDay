@@ -3,6 +3,8 @@ import java.util.ArrayList;
 
 public class World {
 	public static ArrayList<Shape> objects = new ArrayList<Shape>();
+	public static int xScale = 10;
+	public static int yScale = -10;
 	
 	public static void add(Shape s){
 		objects.add(s);

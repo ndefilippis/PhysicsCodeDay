@@ -5,6 +5,8 @@ import javax.swing.JPanel;
 
 
 public class Panel extends JPanel{
+	
+	
 	public Panel(){
 		setPreferredSize(new Dimension(1200, 1600));
 		setLayout(null);
