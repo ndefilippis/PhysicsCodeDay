@@ -15,6 +15,7 @@ public abstract class Shape{
 		velocity = new Vector();
 		acceleration = World.gravity;
 		position = new Vector(x, y);
+		mass = 1;
 		this.height = height;
 		this.width = width;
 	}
@@ -31,8 +32,6 @@ public abstract class Shape{
 	public abstract double friction(Shape s);
 	
 	public abstract Area getArea();
-	
-	public abstract void collide(Shape s);
 	
 	public int drawX(){
 		return (int)(position.x*World.xScale);

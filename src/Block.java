@@ -27,10 +27,4 @@ public class Block extends Shape{
 		return new Area(r);
 	}
 
-	@Override
-	public void collide(Shape s) {
-		velocity = velocity.multiply(-1);
-		position = prevPosition;
-	}
-
 }
