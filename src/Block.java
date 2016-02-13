@@ -11,7 +11,7 @@ public class Block extends Shape{
 	}
 	
 	public void draw(Graphics g){
-		
+		g.fillRect((int)position.x, (int)position.y, (int)position.x+width, (int)position.y+height);
 	}
 
 	@Override
