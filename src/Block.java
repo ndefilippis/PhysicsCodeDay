@@ -14,4 +14,12 @@ public class Block extends Shape{
 		
 	}
 
+	@Override
+	public double friction(Shape s) {
+		if(s instanceof Block){
+			return 0.0;
+		}
+		return 0.0;
+	}
+
 }
