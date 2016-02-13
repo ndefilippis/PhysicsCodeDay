@@ -23,9 +23,9 @@ public abstract class Shape{
 	public abstract void draw(Graphics g);
 	
 	public void update(double dt){
-		if(anchored) return;
-		velocity = velocity.add(acceleration.multiply(dt));
 		prevPosition = position;
+		if(anchored) return;
+		velocity = velocity.add(acceleration.multiply(dt));	
 		position = position.add(velocity.multiply(dt));
 	}
 	
