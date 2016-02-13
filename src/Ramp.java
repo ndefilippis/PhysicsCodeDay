@@ -11,7 +11,7 @@ public class Ramp extends Shape{
 	public void draw(Graphics g){
 		int [] x = {(int) position.x,(int) width,(int) width};
 		int [] y = {(int) position.y, (int) height, (int) position.y};
-		g.drawPolygon(x,y,3);
+		g.fillPolygon(x,y,3);
 	}
 	
 	@Override
@@ -26,6 +26,12 @@ public class Ramp extends Shape{
 		int[] ypoint = {(int) position.y, (int) height, (int) position.y};
 		Polygon p = new Polygon(xpoint, ypoint, 3);
 		return new Area(p);
+	}
+
+	@Override
+	public void collide(Shape s) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 
