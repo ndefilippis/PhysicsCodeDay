@@ -28,11 +28,15 @@ public class Vector {
 		return x*v.x + y*v.y;
 	}
 	
-	public double lengthSquare(){
-		return 
-	}s
+	public double lengthSquared(){
+		return this.dot(this);
+	}
+	
+	public double length(){
+		return Math.sqrt(lengthSquared());
+	}
 	
 	public Vector normalize(){
-		
+		return this.divide(length());
 	}
 }
