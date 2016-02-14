@@ -11,8 +11,8 @@ public class Main {
 	static double startTime;
 	public static Block b = new Block(0, 0, 1, 1);
 	public static Wall w = new Wall(20.62, 0, 10, 400);
-	public static Wall w1 = new Wall(0, 10, 400, 400);
-	public static double dt = 1/320.0;
+	public static Wall w1 = new Wall(0, 20.62, 400, 400);
+	public static double dt = 1/1000.0;
 	
 	public static void main(String[] args) {
 		panel = new Panel();
@@ -23,7 +23,7 @@ public class Main {
 		panel.add(label);
 		label.setBounds(1, 0, 12*8, 24);
 		label.setOpaque(true);
-		b.velocity = new Vector(10, 0);
+		b.velocity = new Vector(0, 0);
 		World.add(b);
 		World.add(w);
 		World.add(w1);
