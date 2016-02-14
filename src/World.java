@@ -16,7 +16,7 @@ public class World {
 	public static double xScale = 25;
 	public static double yScale = 25;
 	public static Vector gravity = new Vector(0, 9.81);
-	public static double energyConserved = .05;
+	public static double energyConserved = .5;
 	
 	public static void add(Shape s){
 		objects.add(s);
@@ -69,13 +69,13 @@ public class World {
 		  out.println(objects.size());
 		  for(Shape s : objects){
 			  if(s instanceof Wall){
-				  System.out.println("w:"+s.position.x+":"+s.position.y+":"+s.width+":"+s.height);
+				  out.println("w:"+s.position.x+":"+s.position.y+":"+s.width+":"+s.height);
 			  }
 			  if(s instanceof Block){
-				  System.out.println("b:"+s.position.x+":"+s.position.y+":"+s.width+":"+s.height+":"+s.velocity.x+":"+s.velocity.y);
+				  out.println("b:"+s.position.x+":"+s.position.y+":"+s.width+":"+s.height+":"+s.velocity.x+":"+s.velocity.y);
 			  }
 			  if(s instanceof Ramp){
-				  System.out.println("r:"+s.position.x+":"+s.position.y+":"+s.width+":"+s.height+":"+((Ramp)s).positive);
+				  out.println("r:"+s.position.x+":"+s.position.y+":"+s.width+":"+s.height+":"+((Ramp)s).positive);
 			  }
 		  }
 		  out.close();
