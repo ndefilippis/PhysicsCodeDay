@@ -59,9 +59,22 @@ public abstract class Shape{
 	public static void collide(Shape s1, Shape s2) {
 		s1.position = s1.prevPosition;
 		s2.position = s2.prevPosition;
-		s1.velocity.y *= -Math.pow(World.energyConserved,1.0/2);
-		s2.velocity.y *= -Math.pow(World.energyConserved,1.0/2);
-		s1.velocity.x *= Math.pow(World.energyConserved,1.0/2);
-		s2.velocity.x *= Math.pow(World.energyConserved,1.0/2);
+		if	(s1 instanceof Wall){
+			if (s2.drawY() + s2.drawHeight() - s1.drawY() == 0){
+				s2.velocity.y *= -Math.pow(World.energyConserved,1.0/2);
+			}
+			else{
+				s2.velocity.x *= -Math.pow(World.energyConserved,1.0/2);
+			}
+		}
+		if	(s2 instanceof Wall){
+			if (s1.drawY() + s1.drawHeight() - s2.drawY() == 0){
+				s1.velocity.y *= -Math.pow(World.energyConserved,1.0/2);
+			}
+			else{
+				s1.velocity.x *= -Math.pow(World.energyConserved,1.0/2);
+			}
+		}
+		
 	}
 }
