@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 
 
 public class Panel extends JPanel{
-	MouseHandler mouseHandler;
+	public static MouseHandler mouseHandler;
 	public Panel(){
 		setPreferredSize(new Dimension(1600, 1200));
 		setSize(1600, 1200);
@@ -33,7 +33,7 @@ public class Panel extends JPanel{
 		if(mouseHandler.canAdd){
 			int mouseX = MouseInfo.getPointerInfo().getLocation().x;
 			int mouseY = MouseInfo.getPointerInfo().getLocation().y;
-			mouseHandler.toAdd.position = new Vector(mouseX, mouseY);
+			mouseHandler.toAdd.position = new Vector(mouseX/World.xScale, mouseY/World.yScale-2);
 			g.setColor(new Color(255, 255, 255, 128));
 			mouseHandler.toAdd.draw(g);
 			

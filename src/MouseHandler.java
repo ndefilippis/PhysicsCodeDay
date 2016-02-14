@@ -6,8 +6,10 @@ public class MouseHandler implements MouseListener{
 	public Shape toAdd;
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		if(Panel.mouseHandler.canAdd){
+			World.objects.add(Panel.mouseHandler.toAdd);
+			Panel.mouseHandler.canAdd = false;
+		}
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {

@@ -26,11 +26,11 @@ public abstract class Shape{
 		prevPosition = position;
 		if(anchored) return;
 		velocity = velocity.add(acceleration.multiply(dt));	
-		if(Math.abs(velocity.x) <= 0.01){
-			//velocity.x = 0;
+		if(Math.abs(velocity.x) <= 0.001){
+			velocity.x = 0;
 		}
-		if(Math.abs(velocity.y) <= 0.01){
-			//velocity.y = 0;
+		if(Math.abs(velocity.y) <= 0.001){
+			velocity.y = 0;
 		}
 		position = position.add(velocity.multiply(dt));
 	}

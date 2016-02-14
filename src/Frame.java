@@ -1,5 +1,6 @@
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.ButtonGroup;
@@ -14,7 +15,6 @@ import javax.swing.KeyStroke;
 
 
 public class Frame extends JFrame{
-	
 	JMenuBar menuBar;
 	JMenu menu, submenu;
 	JMenuItem menuItem;
@@ -55,9 +55,29 @@ public class Frame extends JFrame{
 			menuItem = new JMenuItem("Block");
 			menuItem.setAccelerator(KeyStroke.getKeyStroke(
 			        KeyEvent.VK_B, ActionEvent.ALT_MASK));
+			menuItem.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Panel.mouseHandler.canAdd = true;
+					Panel.mouseHandler.toAdd = new Block(0, 0, 1, 1);
+				}});
 			submenu.add(menuItem);
 
 			menuItem = new JMenuItem("Wall");
+			menuItem.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Panel.mouseHandler.canAdd = true;
+					Panel.mouseHandler.toAdd = new Wall(0, 0, 3, 1);
+				}});
+			submenu.add(menuItem);
+			menuItem = new JMenuItem("Ramp");
+			menuItem.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Panel.mouseHandler.canAdd = true;
+					Panel.mouseHandler.toAdd = new Ramp(0, 0, 5, 5, true);
+				}});
 			submenu.add(menuItem);
 			menu.add(submenu);
 			menuBar.add(menu);
