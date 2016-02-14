@@ -14,17 +14,10 @@ public class Ramp extends Shape{
 	}
 	
 	public void draw(Graphics g){
-		int [] x;
-		int[] y = new int[]{drawY()+drawHeight(), drawY()+drawHeight(), drawY()};
-		if(positive)
-			x = new int[]{drawX(),drawX()+drawWidth(),drawX()+drawWidth()};
-		else{
-			x = new int[]{drawX(),drawX()+drawWidth(),drawX()};
-		}
 		g.setColor(new Color(255, 255, 0));
-		g.fillPolygon(x,y,3);
+		g.fillPolygon(getOutline());
 		g.setColor(Color.BLACK);
-		g.drawPolygon(x, y, 3);
+		g.drawPolygon(getOutline());
 	}
 	
 	@Override
@@ -35,6 +28,11 @@ public class Ramp extends Shape{
 	
 	@Override
 	public Area getArea() {
+		return new Area(getOutline());
+	}
+
+	@Override
+	public Polygon getOutline() {
 		int [] x;
 		int[] y = new int[]{drawY()+drawHeight(), drawY()+drawHeight(), drawY()};
 		if(positive)
@@ -42,8 +40,7 @@ public class Ramp extends Shape{
 		else{
 			x = new int[]{drawX(),drawX()+drawWidth(),drawX()};
 		}
-		Polygon p = new Polygon(x, y, 3);
-		return new Area(p);
+		return new Polygon(x, y, 3);
 	}
 	
 
