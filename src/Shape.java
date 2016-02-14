@@ -24,6 +24,7 @@ public abstract class Shape{
 	public abstract void draw(Graphics g);
 	
 	public void update(double dt){
+		acceleration = World.gravity;
 		prevPosition = position;
 		if(anchored) return;
 		Vector prevVelocity = velocity;
@@ -95,6 +96,7 @@ public abstract class Shape{
 			else {
 				Vector perpendicular;
 				Vector projection;
+				@SuppressWarnings("unused")
 				Vector parallel;
 				if (((Ramp)s1).positive) {
 					perpendicular = new Vector(-s1.drawHeight(),s1.drawWidth()).normalize().multiply(s2.velocity.length());
@@ -113,6 +115,7 @@ public abstract class Shape{
 			else {
 				Vector perpendicular;
 				Vector projection;
+				@SuppressWarnings("unused")
 				Vector parallel;
 				if (((Ramp)s2).positive) {
 					perpendicular = new Vector(-s2.drawHeight(),s2.drawWidth()).normalize().multiply(s2.velocity.length());

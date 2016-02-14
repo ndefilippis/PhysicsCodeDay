@@ -5,7 +5,6 @@ import java.awt.GridLayout;
 import java.awt.MouseInfo;
 
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -13,6 +12,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 
+@SuppressWarnings("serial")
 public class Panel extends JPanel{
 	
 	public static JLabel itemInfo;
@@ -71,19 +71,31 @@ public class Panel extends JPanel{
 		}
 	}
 
-	public static void popupDialogMenu() {
+	public static void popupDialogMenu(Shape s) {
 		JRadioButton delete = new JRadioButton();
+		JRadioButton switchSlope = new JRadioButton();
 		JTextField xField = new JTextField(5);
 		JTextField yField = new JTextField(5);
 		JTextField wField = new JTextField(5);
 		JTextField hField = new JTextField(5);
 		JPanel pan = new JPanel();
-		pan.setLayout(new GridLayout(3,5));
+		if(s instanceof Ramp)
+			pan.setLayout(new GridLayout(4,5));
+		else{
+			pan.setLayout(new GridLayout(3, 5));
+		}
 		pan.add(Box.createHorizontalStrut(5));
 		pan.add(new JLabel("Delete"));
 		pan.add(Box.createHorizontalStrut(5));
 		pan.add(delete);
 		pan.add(Box.createHorizontalStrut(5));
+		if(s instanceof Ramp){
+			pan.add(Box.createHorizontalStrut(5));
+			pan.add(new JLabel("Switch Facing"));
+			pan.add(Box.createHorizontalStrut(5));
+			pan.add(switchSlope);
+			pan.add(Box.createHorizontalStrut(5));
+		}
 		pan.add(new JLabel("X Velocity:"));
 		pan.add(xField);
 		pan.add(Box.createHorizontalStrut(5));
@@ -106,6 +118,9 @@ public class Panel extends JPanel{
 				selectedItem.velocity = new Vector(Integer.parseInt(xField.getText()), Integer.parseInt(yField.getText()));
 				selectedItem.width = Integer.parseInt(wField.getText());
 				selectedItem.height = Integer.parseInt(hField.getText());
+				if(s instanceof Ramp && switchSlope.isSelected()){
+					((Ramp)s).positive = !((Ramp)s).positive;
+				}
 			}
 			catch(NumberFormatException e){
 				

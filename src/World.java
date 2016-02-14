@@ -110,11 +110,11 @@ public class World {
 					  
 				  }
 			  }
+			  in.close();
 		  }
 		  else{
 			  JOptionPane.showMessageDialog(Main.frame, "Unable to open: not a .phy file");
 		  }
-		  
 		}
 
 	public static void loadWorld() throws IOException {

@@ -22,7 +22,6 @@ public class Ramp extends Shape{
 	
 	@Override
 	public double friction(Shape s) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 	

@@ -1,4 +1,3 @@
-import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -15,7 +14,7 @@ public class MouseHandler implements MouseListener{
 			Shape s;
 			if((s = World.getShapeAt(e.getX(), e.getY()-45)) != null){
 				if(s.equals(Panel.selectedItem)){
-					Panel.popupDialogMenu();
+					Panel.popupDialogMenu(s);
 				}
 				Panel.selectedItem = s;
 				return;
@@ -39,7 +38,7 @@ public class MouseHandler implements MouseListener{
 		if((s = World.getShapeAt(e.getX(), e.getY()-45)) != null){
 			draggedItem = s;
 		}
-		boolean down = true;
+		down = true;
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
@@ -48,13 +47,9 @@ public class MouseHandler implements MouseListener{
 		resizeItem = null;
 	}
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+	public void mouseEntered(MouseEvent e) {	
 	}
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 }
