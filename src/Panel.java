@@ -1,9 +1,11 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.MouseInfo;
 
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -62,22 +64,52 @@ public class Panel extends JPanel{
 			g.setColor(Color.RED);
 			g.drawPolygon(selectedItem.getOutline());
 		}
+		else{
+			Panel.itemInfo.setOpaque(false);
+			Panel.itemInfo.setBackground(Color.WHITE);
+			Panel.itemInfo.setText("");
+		}
 	}
 
 	public static void popupDialogMenu() {
 		JRadioButton delete = new JRadioButton();
 		JTextField xField = new JTextField(5);
 		JTextField yField = new JTextField(5);
+		JTextField wField = new JTextField(5);
+		JTextField hField = new JTextField(5);
 		JPanel pan = new JPanel();
-		pan.add(new JLabel("Delte"));
+		pan.setLayout(new GridLayout(3,5));
+		pan.add(Box.createHorizontalStrut(5));
+		pan.add(new JLabel("Delete"));
+		pan.add(Box.createHorizontalStrut(5));
+		pan.add(delete);
+		pan.add(Box.createHorizontalStrut(5));
 		pan.add(new JLabel("X Velocity:"));
 		pan.add(xField);
-		pan.add(Box.createHorizontalStrut(15));
+		pan.add(Box.createHorizontalStrut(5));
 		pan.add(new JLabel("Y Velocity:"));
 		pan.add(yField);
+		pan.add(new JLabel("Width:"));
+		pan.add(wField);
+		pan.add(Box.createHorizontalStrut(5));
+		pan.add(new JLabel("Height:"));
+		pan.add(hField);
 		int result = JOptionPane.showConfirmDialog(null, pan, "Enter X and Y values", JOptionPane.OK_CANCEL_OPTION);
 		if(result == JOptionPane.OK_OPTION){
-			selectedItem.velocity = new Vector(Integer.parseInt(xField.getText()), Integer.parseInt(yField.getText()));
+			if(delete.isSelected()){
+				World.objects.remove(selectedItem);
+				selectedItem = null;
+				Main.panel.repaint();
+				return;
+			}
+			try{
+				selectedItem.velocity = new Vector(Integer.parseInt(xField.getText()), Integer.parseInt(yField.getText()));
+				selectedItem.width = Integer.parseInt(wField.getText());
+				selectedItem.height = Integer.parseInt(hField.getText());
+			}
+			catch(NumberFormatException e){
+				
+			}
 		}
 	}
 }

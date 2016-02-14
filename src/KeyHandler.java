@@ -19,6 +19,13 @@ public class KeyHandler implements KeyListener{
 				Main.resumeLoop();
 			}
 		}
+		if(e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+			if(Panel.selectedItem != null){
+				World.objects.remove(Panel.selectedItem);
+				Panel.selectedItem = null;
+				Main.panel.repaint();
+			}
+		}
 	}
 
 	@Override

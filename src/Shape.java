@@ -28,7 +28,7 @@ public abstract class Shape{
 		if(anchored) return;
 		Vector prevVelocity = velocity;
 		int count = 5;
-		while(World.isColliding(this) && count < 5){
+		while(World.isColliding(this) && count < 10){
 			position = position.subtract(prevVelocity);
 			count++;
 		}
