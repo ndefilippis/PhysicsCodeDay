@@ -6,10 +6,19 @@ public class World {
 	public static double xScale = 25;
 	public static double yScale = 25;
 	public static Vector gravity = new Vector(0, 9.81);
-	public static double energyConserved = .05;
+	public static double energyConserved = .5;
 	
 	public static void add(Shape s){
 		objects.add(s);
+	}
+	
+	public static Shape getShapeAt(int x, int y){
+		for(int i = objects.size()-1; i >= 0; i--){
+			if(objects.get(i).getArea().contains(x, y)){
+				return objects.get(i);
+			}
+		}
+		return null;
 	}
 	
 	public static void update(double dt){

@@ -71,6 +71,14 @@ public class Frame extends JFrame{
 					Panel.mouseHandler.toAdd = new Wall(0, 0, 3, 1);
 				}});
 			submenu.add(menuItem);
+			menuItem = new JMenuItem("Ramp");
+			menuItem.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Panel.mouseHandler.canAdd = true;
+					Panel.mouseHandler.toAdd = new Ramp(0, 0, 5, 5, true);
+				}});
+			submenu.add(menuItem);
 			menu.add(submenu);
 			menuBar.add(menu);
 	}
