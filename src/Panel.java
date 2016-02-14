@@ -33,6 +33,7 @@ public class Panel extends JPanel{
 
 	@Override
 	public void paintComponent(Graphics g){
+		itemInfo.setBounds(0, getHeight()-30, getWidth(), 30);
 		super.paintComponent(g);
 		if(gridlines){
 			g.setColor(Color.GRAY);

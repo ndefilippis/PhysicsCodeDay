@@ -26,7 +26,7 @@ public class Loop extends Thread {
 			while (isRunning) {
 				currTime = System.nanoTime() / 1000000000.0;
 				String s = time - startTime + "";
-				Main.label.setText(" time: " + s.substring(0, Math.min(6, s.length())));
+				Main.label.setText(" time: " + s.substring(0, Math.min(6, s.length()))+" s");
 				accumulator += currTime - time;
 				int count = 0;
 				while (accumulator >= dt && count <= 10) {
