@@ -11,6 +11,7 @@ public class Ramp extends Shape{
 		super(x, y, width, height);
 		anchored = true;
 		this.positive = positive;
+		mass = Integer.MAX_VALUE;
 	}
 	
 	public void draw(Graphics g){

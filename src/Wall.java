@@ -9,6 +9,7 @@ public class Wall extends Shape{
 	public Wall(double x, double y, double width, double height) {
 		super(x, y, width, height);
 		anchored = true;
+		mass = Integer.MAX_VALUE;
 	}
 
 	
@@ -26,6 +27,7 @@ public class Wall extends Shape{
 	public Area getArea() {
 		Rectangle r = new Rectangle(drawX(), drawY(), drawWidth(), drawHeight()); 
 		return new Area(r);
+		
 	}
 
 

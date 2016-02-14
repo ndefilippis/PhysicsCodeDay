@@ -95,13 +95,13 @@ public class Frame extends JFrame {
 	public void createWorldMenu() {
 		// Build second menu in the menu bar.
 		menu = new JMenu("World");
-		menu.setMnemonic(KeyEvent.VK_N);
+		menu.setMnemonic(KeyEvent.VK_W);
 		menu.getAccessibleContext().setAccessibleDescription("Sets world properties");
 		submenu = new JMenu("Add");
 		submenu.setMnemonic(KeyEvent.VK_S);
 
 		menuItem = new JMenuItem("Block");
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.ALT_MASK));
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.SHIFT_MASK));
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -112,6 +112,7 @@ public class Frame extends JFrame {
 		submenu.add(menuItem);
 
 		menuItem = new JMenuItem("Wall");
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.SHIFT_MASK));
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -121,6 +122,7 @@ public class Frame extends JFrame {
 		});
 		submenu.add(menuItem);
 		menuItem = new JMenuItem("Ramp");
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.SHIFT_MASK));
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

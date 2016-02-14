@@ -147,7 +147,7 @@ public abstract class Shape{
 	}
 	
 	public String toString(){
-		return ""+this.getClass().toString().substring(6)+": "+"position: "+position+"velocity: "+velocity;
+		return ""+this.getClass().toString().substring(6)+":    mass: "+mass+"    "+"position: "+position+"   velocity: "+velocity;
 	}
 
 	public abstract Shape copy();
