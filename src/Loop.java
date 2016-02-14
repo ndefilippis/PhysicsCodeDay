@@ -6,7 +6,7 @@ public class Loop extends Thread {
 	static double pauseTime;
 	static double currTime;
 	static double lastTime;
-	public static boolean isRunning = true;
+	public static boolean isRunning;
 	
 	
 	public void run() {
@@ -14,18 +14,20 @@ public class Loop extends Thread {
 		startTime = time - lastTime;
 		pauseTime = 0;
 		double accumulator = 0.0;
-		while (isRunning) {
-			currTime = System.nanoTime() / 1000000000.0;
-			String s = time - startTime + "";
-			Main.label.setText(" time: " + s.substring(0, Math.min(6, s.length())));
-			accumulator += currTime - time;
-			while (accumulator >= dt) {
-				World.update(dt);
-				accumulator -= dt;
+		while(true){
+			while (isRunning) {
+				currTime = System.nanoTime() / 1000000000.0;
+				String s = time - startTime + "";
+				Main.label.setText(" time: " + s.substring(0, Math.min(6, s.length())));
+				accumulator += currTime - time;
+				while (accumulator >= dt) {
+					World.update(dt);
+					accumulator -= dt;
+				}
+				time = currTime;
+				Main.panel.repaint();
 			}
-			time = currTime;
 			Main.panel.repaint();
-			
 		}
 		
 	}

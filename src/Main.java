@@ -24,7 +24,7 @@ public class Main {
 		panel.add(label);
 		label.setBounds(1, 0, 12*8, 24);
 		label.setOpaque(true);
-		b.velocity = new Vector(15, 0);
+		b.velocity = new Vector(1, 0);
 		World.add(b);
 		//World.add(w);
 		World.add(w1);
