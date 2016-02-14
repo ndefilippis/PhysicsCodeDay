@@ -12,6 +12,7 @@ public class Main {
 	public static Block b = new Block(0, 0, 1, 1);
 	public static Wall w = new Wall(20.62, 0, 10, 400);
 	public static Wall w1 = new Wall(0, 20.62, 400, 400);
+	public static Ramp r = new Ramp(0, 20, 1, 1);
 	public static double dt = 1/1000.0;
 	
 	public static void main(String[] args) {
@@ -27,6 +28,7 @@ public class Main {
 		World.add(b);
 		World.add(w);
 		World.add(w1);
+		World.add(r);
 		loop();
 	}
 	public static void loop() {
