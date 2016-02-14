@@ -135,8 +135,13 @@ public class Panel extends JPanel{
 						
 					}
 				}
-				selectedItem.velocity = new Vector(Integer.parseInt(xField.getText()), Integer.parseInt(yField.getText()));
-				selectedItem.width = Integer.parseInt(wField.getText());
+				double x;
+				if(!xField.getText().isEmpty() && !yField.getText().isEmpty()){
+					selectedItem.velocity = new Vector(Integer.parseInt(xField.getText()), Integer.parseInt(yField.getText()));
+				}
+				if(!wField.getText().isEmpty()){
+					selectedItem.width = Integer.parseInt(wField.getText());
+				}
 				selectedItem.height = Integer.parseInt(hField.getText());
 				
 			}
