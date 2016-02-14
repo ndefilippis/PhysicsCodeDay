@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 public class World {
 	public static ArrayList<Shape> objects = new ArrayList<Shape>();
@@ -85,6 +86,7 @@ public class World {
 	public static void loadWorld(File file) throws NumberFormatException, IOException{
 		BufferedReader in = new BufferedReader(new FileReader(file));
 		  if(in.readLine().startsWith(".PHY")){
+			  objects = new ArrayList<Shape>();
 			  int n = Integer.parseInt(in.readLine());
 			  for(int i = 0; i < n; i++){
 				  String[] s = in.readLine().split(":");
@@ -109,11 +111,13 @@ public class World {
 				  }
 			  }
 		  }
+		  else{
+			  JOptionPane.showMessageDialog(Main.frame, "Unable to open: not a .phy file");
+		  }
 		  
 		}
 
 	public static void loadWorld() throws IOException {
-		objects = new ArrayList<Shape>();
 		JFileChooser fileChooser = new JFileChooser();
 		if (fileChooser.showOpenDialog(Main.frame) == JFileChooser.APPROVE_OPTION) {
 		  File file = fileChooser.getSelectedFile();

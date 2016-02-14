@@ -10,6 +10,12 @@ public class MouseMotionHandler implements MouseMotionListener{
 				MouseHandler.draggedItem.position = MouseHandler.draggedItem.position.add(myPosition.subtract(Frame.mouseHandler.startPosition));
 				Frame.mouseHandler.startPosition = myPosition;
 			}
+			if(MouseHandler.resizeItem != null){
+				Vector myPosition = new Vector(e.getX()/World.xScale, e.getY()/World.yScale);
+				MouseHandler.resizeItem.width = MouseHandler.resizeItem.width+ myPosition.subtract(Frame.mouseHandler.startPosition).x;
+				MouseHandler.resizeItem.height = MouseHandler.resizeItem.height+ myPosition.subtract(Frame.mouseHandler.startPosition).y;
+				Frame.mouseHandler.startPosition = myPosition;
+			}
 	}
 
 	@Override

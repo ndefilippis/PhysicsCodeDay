@@ -8,15 +8,10 @@ public class MouseHandler implements MouseListener{
 	public boolean down;
 	public Vector startPosition;
 	public static Shape draggedItem;
+	public static Shape resizeItem;
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(Frame.mouseHandler.canAdd){
-			World.objects.add(Frame.mouseHandler.toAdd);
-			Frame.mouseHandler.canAdd = false;
-			return;
-		}
-		else{
 			Shape s;
 			if((s = World.getShapeAt(e.getX(), e.getY()-45)) != null){
 				if(s.equals(Panel.selectedItem)){
@@ -25,8 +20,7 @@ public class MouseHandler implements MouseListener{
 				Panel.selectedItem = s;
 				return;
 			}
-			
-		}
+
 		Panel.selectedItem = null;
 		Panel.itemInfo.setOpaque(false);
 		Panel.itemInfo.setText("");
@@ -34,17 +28,24 @@ public class MouseHandler implements MouseListener{
 	@Override
 	public void mousePressed(MouseEvent e) {
 		startPosition = new Vector(e.getX()/World.xScale,e.getY()/World.yScale);
+		if(Frame.mouseHandler.canAdd){
+			World.objects.add(Frame.mouseHandler.toAdd);
+			Panel.selectedItem = Frame.mouseHandler.toAdd;
+			Frame.mouseHandler.canAdd = false;
+			resizeItem = Frame.mouseHandler.toAdd;
+			return;
+		}
 		Shape s;
 		if((s = World.getShapeAt(e.getX(), e.getY()-45)) != null){
 			draggedItem = s;
-			boolean down = true;
 		}
-		
+		boolean down = true;
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		down = false;
 		draggedItem = null;
+		resizeItem = null;
 	}
 	@Override
 	public void mouseEntered(MouseEvent e) {
