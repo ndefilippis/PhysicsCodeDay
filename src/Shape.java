@@ -34,6 +34,7 @@ public abstract class Shape{
 		}
 		position = position.add(velocity.multiply(dt));
 	}
+
 	
 	public abstract double friction(Shape s);
 	
