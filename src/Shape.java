@@ -1,4 +1,5 @@
 import java.awt.Graphics;
+import java.awt.Polygon;
 import java.awt.geom.Area;
 
 public abstract class Shape{
@@ -25,16 +26,18 @@ public abstract class Shape{
 	public void update(double dt){
 		prevPosition = position;
 		if(anchored) return;
+		Vector prevVelocity = velocity;
 		velocity = velocity.add(acceleration.multiply(dt));	
-		if(Math.abs(velocity.x) <= 0.001){
+		if(prevVelocity.lengthSquared() > velocity.lengthSquared() && Math.abs(velocity.x) <= 0.05){
 			velocity.x = 0;
 		}
-		if(Math.abs(velocity.y) <= 0.001){
+		if(prevVelocity.lengthSquared() > velocity.lengthSquared() && Math.abs(velocity.y) <= 0.05){
 			velocity.y = 0;
 		}
 		position = position.add(velocity.multiply(dt));
 	}
 
+	public abstract Polygon getOutline();
 	
 	public abstract double friction(Shape s);
 	
@@ -111,5 +114,9 @@ public abstract class Shape{
 				s1.velocity = s1.velocity.add(perpendicular.multiply(projection.length())).add(projection);
 			}
 		}
+	}
+	
+	public String toString(){
+		return ""+this.getClass().toString().substring(6)+": "+"position: "+position+"velocity: "+velocity;
 	}
 }
