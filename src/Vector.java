@@ -47,6 +47,18 @@ public class Vector {
 		return v.multiply(dot(v)/(v.length()*length()));
 	}
 	
+	public Vector rotate(double theta){
+		double c = Math.cos(theta);
+		double s = Math.sin(theta);
+		double px = x*c - y*s;
+		double py = x*s + y*c;
+		return new Vector(px, py);
+	}
+	
+	public double theta(){
+		return Math.atan2(y, x);
+	}
+	
 	public String toString(){
 		return "<"+x+", "+y+">";
 	}

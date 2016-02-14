@@ -35,5 +35,11 @@ public class Wall extends Shape{
 		int[] y = {drawY(), drawY(), drawY()+drawHeight(), drawY()+drawHeight()};
 		return new Polygon(x, y, 4);
 	}
+
+
+	@Override
+	public Shape copy() {
+		return new Wall(position.x, position.y, width, height);
+	}
 	
 }

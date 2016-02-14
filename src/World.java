@@ -123,10 +123,27 @@ public class World {
 		  File file = fileChooser.getSelectedFile();
 		  loadWorld(file);
 		}
-		  
+		saveState();
 	}
 
 	public static void loadWorld(String string) throws NumberFormatException, IOException {
 		loadWorld(new File(string));
+		saveState();
+	}
+	
+	public static void resetState(){
+		objects = new ArrayList<Shape>();
+		for(Shape s : initState){
+			objects.add(s.copy());
+		}
+		Main.resetLoop();
+	}
+	
+	public static ArrayList<Shape> initState;
+	public static void saveState() {
+		initState = new ArrayList<Shape>();
+		for(Shape s : objects){
+			initState.add(s.copy());
+		}
 	}
 }

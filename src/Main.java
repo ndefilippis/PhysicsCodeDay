@@ -21,6 +21,7 @@ public class Main {
 		label.setOpaque(true);
 		World.loadWorld("default.phy");
 		loop = new Loop();
+		World.saveState();
 		loop.start();
 	}
 	public static void resumeLoop(){
@@ -32,6 +33,12 @@ public class Main {
 	public static void pauseLoop(){
 		Loop.lastTime = Loop.currTime - Loop.startTime;
 		Loop.isRunning = false;
-		Thread.yield();
+		Loop.yield();
+	}
+	public static void resetLoop() {
+		loop = new Loop();
+		Loop.reset = true;
+		Loop.isRunning = false;
+		Loop.yield();
 	}
 }

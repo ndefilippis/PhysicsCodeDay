@@ -126,7 +126,7 @@ public class Frame extends JFrame {
 	protected void popupRestitution() {
 		JTextField restitution = new JTextField(5);
 		JPanel pan = new JPanel();
-		pan.add(new JLabel("Gravity"));
+		pan.add(new JLabel("Restiution"));
 		pan.add(Box.createHorizontalStrut(5));
 		pan.add(restitution);
 		int result = JOptionPane.showConfirmDialog(null, pan, "Enter restiution coefficient", JOptionPane.OK_CANCEL_OPTION);
@@ -228,6 +228,16 @@ public class Frame extends JFrame {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
+			}
+		});
+		menu.add(menuItem);
+		menuItem = new JMenuItem("Reset", KeyEvent.VK_R);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
+		menuItem.getAccessibleContext().setAccessibleDescription("Resets the world");
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+					World.resetState();
 			}
 		});
 		menu.add(menuItem);

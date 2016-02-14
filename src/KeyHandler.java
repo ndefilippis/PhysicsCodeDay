@@ -24,6 +24,9 @@ public class KeyHandler implements KeyListener{
 				Main.panel.repaint();
 			}
 		}
+		if(e.getKeyCode() == KeyEvent.VK_R){
+			World.resetState();
+		}
 	}
 
 	@Override

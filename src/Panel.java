@@ -78,8 +78,9 @@ public class Panel extends JPanel{
 		JTextField yField = new JTextField(5);
 		JTextField wField = new JTextField(5);
 		JTextField hField = new JTextField(5);
+		JTextField mass = new JTextField(5);
 		JPanel pan = new JPanel();
-		if(s instanceof Ramp)
+		if(s instanceof Ramp || s instanceof Block)
 			pan.setLayout(new GridLayout(4,5));
 		else{
 			pan.setLayout(new GridLayout(3, 5));
@@ -94,6 +95,13 @@ public class Panel extends JPanel{
 			pan.add(new JLabel("Switch Facing"));
 			pan.add(Box.createHorizontalStrut(5));
 			pan.add(switchSlope);
+			pan.add(Box.createHorizontalStrut(5));
+		}
+		if(s instanceof Block){
+			pan.add(Box.createHorizontalStrut(5));
+			pan.add(new JLabel("Mass"));
+			pan.add(Box.createHorizontalStrut(5));
+			pan.add(mass);
 			pan.add(Box.createHorizontalStrut(5));
 		}
 		pan.add(new JLabel("X Velocity:"));
@@ -115,12 +123,21 @@ public class Panel extends JPanel{
 				return;
 			}
 			try{
-				selectedItem.velocity = new Vector(Integer.parseInt(xField.getText()), Integer.parseInt(yField.getText()));
-				selectedItem.width = Integer.parseInt(wField.getText());
-				selectedItem.height = Integer.parseInt(hField.getText());
 				if(s instanceof Ramp && switchSlope.isSelected()){
 					((Ramp)s).positive = !((Ramp)s).positive;
 				}
+				if(s instanceof Block && !mass.getText().isEmpty()){
+					try{
+						selectedItem.mass = Double.parseDouble(mass.getText());
+					}
+					catch(NumberFormatException e){
+						
+					}
+				}
+				selectedItem.velocity = new Vector(Integer.parseInt(xField.getText()), Integer.parseInt(yField.getText()));
+				selectedItem.width = Integer.parseInt(wField.getText());
+				selectedItem.height = Integer.parseInt(hField.getText());
+				
 			}
 			catch(NumberFormatException e){
 				

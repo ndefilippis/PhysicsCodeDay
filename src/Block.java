@@ -12,7 +12,7 @@ public class Block extends Shape{
 	}
 
 	public void draw(Graphics g){
-		g.setColor(new Color(128, 200, 128));
+		g.setColor(new Color(Math.min((int)(128/mass), 255), Math.min((int)(200/mass), 255), Math.min((int)(128/mass), 255)));
 		g.fillRect(drawX(), drawY(), drawWidth(), drawHeight());
 		g.setColor(Color.BLACK);
 		g.drawRect(drawX(), drawY(), drawWidth(), drawHeight());
@@ -39,6 +39,13 @@ public class Block extends Shape{
 		int[] x = {drawX(), drawX()+drawWidth(), drawX()+drawWidth(), drawX()};
 		int[] y = {drawY(), drawY(), drawY()+drawHeight(), drawY()+drawHeight()};
 		return new Polygon(x, y, 4);
+	}
+
+	@Override
+	public Shape copy() {
+		Block b = new Block(position.x, position.y, width, height);
+		b.velocity = new Vector(velocity.x, velocity.y);
+		return b;
 	}
 
 }

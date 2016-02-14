@@ -7,14 +7,22 @@ public class Loop extends Thread {
 	static double currTime;
 	static double lastTime;
 	public static boolean isRunning;
+	public static boolean reset;
 	
 	
 	public void run() {
 		time = System.nanoTime()/1000000000.0;
-		startTime = time - lastTime;
+		if(reset){
+			startTime = time;
+			reset = false;
+		}
+		else{
+			startTime = time - lastTime;
+		}
 		pauseTime = 0;
 		double accumulator = 0.0;
 		while(true){
+			time = System.nanoTime()/1000000000.0;
 			while (isRunning) {
 				currTime = System.nanoTime() / 1000000000.0;
 				String s = time - startTime + "";

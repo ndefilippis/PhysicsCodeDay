@@ -41,6 +41,13 @@ public class Ramp extends Shape{
 		}
 		return new Polygon(x, y, 3);
 	}
+
+	@Override
+	public Shape copy() {
+		Ramp r = new Ramp(position.x, position.y, width, height, this.positive);
+		return r;
+		
+	}
 	
 
 }
