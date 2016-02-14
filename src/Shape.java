@@ -75,8 +75,8 @@ public abstract class Shape{
 			else{
 				s2.velocity.x *= -Math.pow(World.energyConserved,1.0/2);
 			}
-			if(Math.abs(s2.velocity.x) <= 0.05) s2.velocity.x = 0;
-			if(Math.abs(s2.velocity.y) <= 0.05) s2.velocity.y = 0;
+			if(Math.abs(s2.velocity.x) <= 0.005) s2.velocity.x = 0;
+			if(Math.abs(s2.velocity.y) <= 0.005) s2.velocity.y = 0;
 		}
 		if	(s2 instanceof Wall){
 			if (s1.drawY() + s1.drawHeight() - s2.drawY() == 0){
@@ -85,8 +85,8 @@ public abstract class Shape{
 			else{
 				s1.velocity.x *= -Math.pow(World.energyConserved,1.0/2);
 			}
-			if(Math.abs(s1.velocity.x) <= 0.05) s1.velocity.x = 0;
-			if(Math.abs(s1.velocity.y) <= 0.05) s1.velocity.y = 0;
+			if(Math.abs(s1.velocity.x) <= 0.005) s1.velocity.x = 0;
+			if(Math.abs(s1.velocity.y) <= 0.005) s1.velocity.y = 0;
 		}
 		if	(s1 instanceof Ramp){
 			if (s1.drawX() + s1.drawWidth() - s2.drawX() == 0 || s1.drawX() - s2.drawX() - s2.drawWidth() == 0){
