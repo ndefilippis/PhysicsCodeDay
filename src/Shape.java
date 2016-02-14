@@ -86,4 +86,8 @@ public abstract class Shape{
 			}
 		}
 	}
+	
+	public String toString(){
+		return ""+this.getClass().toString().substring(6)+": "+"position: "+position+"velocity: "+velocity;
+	}
 }
