@@ -110,8 +110,8 @@ public abstract class Shape{
 				else {
 					perpendicular = new Vector(s2.drawHeight(),s2.drawWidth()).normalize();
 				}
-				projection = s1.velocity.project(perpendicular).normalize();
-				s1.velocity = s1.velocity.add(perpendicular.multiply(projection.length())).add(projection);
+				projection = s1.velocity.project(perpendicular);
+				s1.velocity = s1.velocity.subtract(projection).subtract(projection);
 			}
 		}
 	}
