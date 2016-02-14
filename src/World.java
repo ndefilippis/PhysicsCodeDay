@@ -22,6 +22,16 @@ public class World {
 		return null;
 	}
 	
+	public static boolean isColliding(Shape s){
+		for(int i = 0; i < objects.size(); i++){
+			if(objects.get(i).equals(s)) continue;
+			Area a1 = objects.get(i).getArea();
+			a1.intersect(s.getArea());
+			if(!a1.isEmpty()) return true;
+		}
+		return false;
+	}
+	
 	public static void update(double dt){
 		for(int i = objects.size()-1; i >= 0; i--){
 			objects.get(i).update(dt);
