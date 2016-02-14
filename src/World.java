@@ -1,6 +1,15 @@
 import java.awt.Point;
 import java.awt.geom.Area;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+
+import javax.swing.JFileChooser;
 
 public class World {
 	public static ArrayList<Shape> objects = new ArrayList<Shape>();
@@ -48,6 +57,63 @@ public class World {
 					Shape.collide(s1, s2);
 				}
 			}
+		}
+	}
+
+	public static void saveWorld() throws FileNotFoundException {
+		JFileChooser fileChooser = new JFileChooser();
+		if (fileChooser.showSaveDialog(Main.frame) == JFileChooser.APPROVE_OPTION) {
+		  File file = fileChooser.getSelectedFile();
+		  PrintWriter out = new PrintWriter(new FileOutputStream(file));
+		  out.println(".PHY");
+		  out.println(objects.size());
+		  for(Shape s : objects){
+			  if(s instanceof Wall){
+				  System.out.println("w:"+s.position.x+":"+s.position.y+":"+s.width+":"+s.height);
+			  }
+			  if(s instanceof Block){
+				  System.out.println("b:"+s.position.x+":"+s.position.y+":"+s.width+":"+s.height+":"+s.velocity.x+":"+s.velocity.y);
+			  }
+			  if(s instanceof Ramp){
+				  System.out.println("r:"+s.position.x+":"+s.position.y+":"+s.width+":"+s.height+":"+((Ramp)s).positive);
+			  }
+		  }
+		  out.close();
+		}
+	}
+
+	public static void loadWorld() throws IOException {
+		objects = new ArrayList<Shape>();
+		JFileChooser fileChooser = new JFileChooser();
+		if (fileChooser.showOpenDialog(Main.frame) == JFileChooser.APPROVE_OPTION) {
+		  File file = fileChooser.getSelectedFile();
+		  BufferedReader in = new BufferedReader(new FileReader(file));
+		  if(in.readLine().startsWith(".PHY")){
+			  int n = Integer.parseInt(in.readLine());
+			  for(int i = 0; i < n; i++){
+				  String[] s = in.readLine().split(":");
+				  int x = Integer.parseInt(s[1]);
+				  int y = Integer.parseInt(s[2]);
+				  int width = Integer.parseInt(s[3]);
+				  int height = Integer.parseInt(s[4]);
+				  if(s[0].equals("w")){
+					  objects.add(new Wall(x, y, width, height));
+				  }
+				  if(s[0].equals("r")){
+					  boolean positive = Boolean.parseBoolean(s[5]);
+					  objects.add(new Ramp(x, y, width, height, positive));
+				  }
+				  if(s[0].equals("b")){
+					  double velocityx = Double.parseDouble(s[5]);
+					  double velocityy = Double.parseDouble(s[6]);
+					  Block b = new Block(x, y, width, height);
+					  b.velocity = new Vector(velocityx, velocityy);
+					  objects.add(b);
+					  
+				  }
+			  }
+		  }
+		  
 		}
 	}
 }

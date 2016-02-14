@@ -21,6 +21,7 @@ public class Frame extends JFrame {
 	JCheckBoxMenuItem cbMenuItem;
 	public static MouseHandler mouseHandler;
 	public static KeyHandler keyHandler;
+	public static MouseMotionHandler motionHandler;
 
 	public Frame(Panel panel) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -29,8 +30,10 @@ public class Frame extends JFrame {
 		getContentPane().add(panel);
 		mouseHandler = new MouseHandler();
 		keyHandler = new KeyHandler();
+		motionHandler = new MouseMotionHandler();
 		this.addMouseListener(mouseHandler);
 		this.addKeyListener(keyHandler);
+		this.addMouseMotionListener(motionHandler);
 	}
 
 	public void display() {
@@ -124,6 +127,25 @@ public class Frame extends JFrame {
 			}
 		});
 		menu.add(menuItem);
-
+		menuItem = new JMenuItem("Save", KeyEvent.VK_S);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+		menuItem.getAccessibleContext().setAccessibleDescription("Saves the world");
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				World.saveWorld();
+			}
+		});
+		menu.add(menuItem);
+		menuItem = new JMenuItem("Load", KeyEvent.VK_S);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+		menuItem.getAccessibleContext().setAccessibleDescription("Loads a world");
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				World.loadWorld();
+			}
+		});
+		menu.add(menuItem);
 	}
 }
