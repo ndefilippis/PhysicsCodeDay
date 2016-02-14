@@ -3,8 +3,11 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.MouseInfo;
 
+import javax.swing.Box;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 
 public class Panel extends JPanel{
@@ -61,7 +64,17 @@ public class Panel extends JPanel{
 	}
 
 	public static void popupDialogMenu() {
-		// TODO Auto-generated method stub
-		
+		JTextField xField = new JTextField(5);
+		JTextField yField = new JTextField(5);
+		JPanel pan = new JPanel();
+		pan.add(new JLabel("X Velocity:"));
+		pan.add(xField);
+		pan.add(Box.createHorizontalStrut(15));
+		pan.add(new JLabel("Y Velocity:"));
+		pan.add(yField);
+		int result = JOptionPane.showConfirmDialog(null, pan, "Enter X and Y values", JOptionPane.OK_CANCEL_OPTION);
+		if(result == JOptionPane.OK_OPTION){
+			selectedItem.velocity = new Vector(Integer.parseInt(xField.getText()), Integer.parseInt(yField.getText()));
+		}
 	}
 }

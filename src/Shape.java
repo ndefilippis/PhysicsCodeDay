@@ -27,11 +27,17 @@ public abstract class Shape{
 		prevPosition = position;
 		if(anchored) return;
 		Vector prevVelocity = velocity;
-		velocity = velocity.add(acceleration.multiply(dt));	
-		if(prevVelocity.lengthSquared() > velocity.lengthSquared() && Math.abs(velocity.x) <= 0.05){
+		int count = 5;
+		while(World.isColliding(this) && count < 5){
+			position = position.subtract(prevVelocity);
+			count++;
+		}
+		if(!World.isColliding(this))
+			velocity = velocity.add(acceleration.multiply(dt));	
+		if(Math.abs(velocity.x) <= 0.001){
 			velocity.x = 0;
 		}
-		if(prevVelocity.lengthSquared() > velocity.lengthSquared() && Math.abs(velocity.y) <= 0.05){
+		if(Math.abs(velocity.y) <= 0.001){
 			velocity.y = 0;
 		}
 		position = position.add(velocity.multiply(dt));
@@ -69,6 +75,8 @@ public abstract class Shape{
 			else{
 				s2.velocity.x *= -Math.pow(World.energyConserved,1.0/2);
 			}
+			if(Math.abs(s2.velocity.x) <= 0.05) s2.velocity.x = 0;
+			if(Math.abs(s2.velocity.y) <= 0.05) s2.velocity.y = 0;
 		}
 		if	(s2 instanceof Wall){
 			if (s1.drawY() + s1.drawHeight() - s2.drawY() == 0){
@@ -77,6 +85,8 @@ public abstract class Shape{
 			else{
 				s1.velocity.x *= -Math.pow(World.energyConserved,1.0/2);
 			}
+			if(Math.abs(s1.velocity.x) <= 0.05) s1.velocity.x = 0;
+			if(Math.abs(s1.velocity.y) <= 0.05) s1.velocity.y = 0;
 		}
 		if	(s1 instanceof Ramp){
 			if (s1.drawX() + s1.drawWidth() - s2.drawX() == 0 || s1.drawX() - s2.drawX() - s2.drawWidth() == 0){
@@ -102,7 +112,8 @@ public abstract class Shape{
 			}
 			else {
 				Vector perpendicular;
-				Vector projection;
+				Vector projectionPerp;
+				Vector projectionPar;
 				Vector parallel;
 				if (((Ramp)s2).positive) {
 					perpendicular = new Vector(-s2.drawHeight(),s2.drawWidth()).normalize();
@@ -110,8 +121,8 @@ public abstract class Shape{
 				else {
 					perpendicular = new Vector(s2.drawHeight(),s2.drawWidth()).normalize();
 				}
-				projection = s1.velocity.project(perpendicular).normalize();
-				s1.velocity = s1.velocity.add(perpendicular.multiply(projection.length())).add(projection);
+				//projection = s1.velocity.project(perpendicular).normalize();
+				//s1.velocity = s1.velocity.add(perpendicular.multiply(projection.length())).add(projection);
 			}
 		}
 	}
