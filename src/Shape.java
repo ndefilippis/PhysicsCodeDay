@@ -50,8 +50,8 @@ public abstract class Shape{
 			velocity.y = 0;
 		}
 		prevPosition = position;
-		if(velocity.x == Double.NaN) velocity.x = 0;
-		if(velocity.y == Double.NaN) velocity.y = 0;
+		if(velocity.x == Double.NaN) velocity.x = prevVelocity.x;
+		if(velocity.y == Double.NaN) velocity.y = prevVelocity.y;
 		position = position.add(velocity.multiply(dt));
 	}
 
@@ -140,6 +140,10 @@ public abstract class Shape{
 			s1.velocity = s1.velocity.multiply(-s2.mass/s1.mass).multiply(Math.pow(World.energyConserved,1.0/2));
 			s2.velocity = s2.velocity.multiply(-s1.mass/s2.mass).multiply(Math.pow(World.energyConserved,1.0/2));
 		}
+		if(s1.velocity.x == Double.NaN) s1.velocity.x = 0;
+		if(s1.velocity.y == Double.NaN) s1.velocity.y = 0;
+		if(s2.velocity.x == Double.NaN) s2.velocity.x = 0;
+		if(s2.velocity.y == Double.NaN) s2.velocity.y = 0;
 	}
 	
 	public String toString(){
