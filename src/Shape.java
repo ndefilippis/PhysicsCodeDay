@@ -95,16 +95,16 @@ public abstract class Shape{
 			else {
 				Vector perpendicular;
 				Vector projection;
+				Vector parallel;
 				if (((Ramp)s1).positive) {
-					perpendicular = new Vector(-s1.drawHeight(),s1.drawWidth()).normalize();
+					perpendicular = new Vector(-s1.drawHeight(),s1.drawWidth()).normalize().multiply(s2.velocity.length());
 				}
 				else {
-					perpendicular = new Vector(s1.drawHeight(),s1.drawWidth()).normalize();
+					perpendicular = new Vector(s1.drawHeight(),s1.drawWidth()).normalize().multiply(s2.velocity.length());
 				}
-				projection = s2.velocity.project(perpendicular).multiply(Math.pow(World.energyConserved,1.0/2));
-				s2.velocity = s2.velocity.add(perpendicular).add(projection);
-			}
-			
+				projection = s2.velocity.project(perpendicular);
+				s2.velocity = s2.velocity.add(projection);
+			} 
 		}
 		if	(s2 instanceof Ramp){
 			if (s2.drawX() + s2.drawWidth() - s1.drawX() == 0 || s2.drawX() - s1.drawX() - s1.drawWidth() == 0){
@@ -115,13 +115,14 @@ public abstract class Shape{
 				Vector projection;
 				Vector parallel;
 				if (((Ramp)s2).positive) {
-					perpendicular = new Vector(-s2.drawHeight(),s2.drawWidth()).normalize().multiply(s1.velocity.length());
+					perpendicular = new Vector(-s2.drawHeight(),s2.drawWidth()).normalize().multiply(s2.velocity.length());
 				}
 				else {
-					perpendicular = new Vector(s2.drawHeight(),s2.drawWidth()).normalize();
+					perpendicular = new Vector(s2.drawHeight(),s2.drawWidth()).normalize().multiply(s2.velocity.length());
 				}
-				projection = s1.velocity.project(perpendicular);
-				s1.velocity = s1.velocity.subtract(projection).subtract(projection);
+				projection = s1.velocity.project(perpendicular).multiply(-Math.pow(World.energyConserved,1.0/2));
+				s1.velocity = s1.velocity.add(perpendicular).subtract(projection);
+				System.out.println(projection);
 			}
 		}
 	}
