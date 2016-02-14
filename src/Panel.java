@@ -1,16 +1,19 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.MouseInfo;
 
 import javax.swing.JPanel;
 
 
 public class Panel extends JPanel{
-	
+	MouseHandler mouseHandler;
 	public Panel(){
 		setPreferredSize(new Dimension(1600, 1200));
 		setSize(1600, 1200);
 		setLayout(null);
+		mouseHandler = new MouseHandler();
+		this.addMouseListener(mouseHandler);
 	}
 
 	@Override
@@ -27,7 +30,14 @@ public class Panel extends JPanel{
 		for(Shape s : World.objects){
 			s.draw(g);
 		}
-		
+		if(mouseHandler.canAdd){
+			int mouseX = MouseInfo.getPointerInfo().getLocation().x;
+			int mouseY = MouseInfo.getPointerInfo().getLocation().y;
+			mouseHandler.toAdd.position = new Vector(mouseX, mouseY);
+			g.setColor(new Color(255, 255, 255, 128));
+			mouseHandler.toAdd.draw(g);
+			
+		}
 		
 	}
 }

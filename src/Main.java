@@ -6,12 +6,13 @@ import javax.swing.JLabel;
 public class Main {
 	public static Frame frame;
 	public static Panel panel;
+	public static JLabel label = new JLabel();
 	static double time;
 	static double startTime;
 	public static Block b = new Block(0, 0, 1, 1);
-	public static Wall w = new Wall(30, 0, 10, 400);
-	public static Wall w1 = new Wall(0, 20, 400, 400);
-	public double dt = 60.0/1000000000.0;
+	public static Wall w = new Wall(20.62, 0, 10, 400);
+	public static Wall w1 = new Wall(0, 10, 400, 400);
+	public static double dt = 1/320.0;
 	
 	public static void main(String[] args) {
 		panel = new Panel();
@@ -19,7 +20,10 @@ public class Main {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.display();
-		b.velocity = new Vector(10, -1);
+		panel.add(label);
+		label.setBounds(1, 0, 12*8, 24);
+		label.setOpaque(true);
+		b.velocity = new Vector(10, 0);
 		World.add(b);
 		World.add(w);
 		World.add(w1);
@@ -27,17 +31,19 @@ public class Main {
 	}
 	public static void loop() {
 		time = System.nanoTime()/1000000000.0;
+		startTime = time;
 		double accumulator = 0.0;
 		while(true) {
 			double currTime = System.nanoTime()/1000000000.0;
-			double dt = currTime - time;
-			accumulator+=dt;
+			String s = time - startTime+"";
+			label.setText(" time: " + s.substring(0, Math.min(6, s.length())));
+			accumulator += currTime - time;
 			while(accumulator >= dt){
 				World.update(dt);
 				accumulator -= dt;
 			}
-			panel.repaint();
 			time = currTime;
+			panel.repaint();
 		}
 	}
 }

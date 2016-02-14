@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
@@ -10,7 +11,10 @@ public class Block extends Shape{
 	}
 
 	public void draw(Graphics g){
+		g.setColor(new Color(128, 200, 128));
 		g.fillRect(drawX(), drawY(), drawWidth(), drawHeight());
+		g.setColor(Color.BLACK);
+		g.drawRect(drawX(), drawY(), drawWidth(), drawHeight());
 	}
 
 	@Override

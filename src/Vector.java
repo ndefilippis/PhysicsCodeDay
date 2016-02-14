@@ -43,6 +43,10 @@ public class Vector {
 		return this.divide(length());
 	}
 	
+	public Vector project(Vector v){
+		return v.multiply(dot(v)/(v.length()*length()));
+	}
+	
 	public String toString(){
 		return "<"+x+", "+y+">";
 	}
