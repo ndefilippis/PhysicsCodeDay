@@ -55,8 +55,41 @@ public class Frame extends JFrame {
 		menuBar = new JMenuBar();
 		createFileMenu();
 		createWorldMenu();
+		createSimMenu();
 
 		setJMenuBar(menuBar);
+	}
+	
+	public void createSimMenu(){
+		menu = new JMenu("Simulation");
+		menu.setMnemonic(KeyEvent.VK_N);
+		menu.getAccessibleContext().setAccessibleDescription("Sets world properties");
+		menuItem = new JMenuItem("Reset", KeyEvent.VK_R);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
+		menuItem.getAccessibleContext().setAccessibleDescription("Resets the world");
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+					World.resetState();
+			}
+		});
+		menu.add(menuItem);
+		menuItem = new JMenuItem("Resume/Pause", KeyEvent.VK_SPACE);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, ActionEvent.CTRL_MASK));
+		menuItem.getAccessibleContext().setAccessibleDescription("Stops and starts the simulation");
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(Loop.isRunning){
+					Main.pauseLoop();
+				}
+				else{
+					Main.resumeLoop();
+				}
+			}
+		});
+		menu.add(menuItem);
+		menuBar.add(menu);
 	}
 
 	public void createWorldMenu() {
@@ -188,20 +221,7 @@ public class Frame extends JFrame {
 		});
 		menu.add(menuItem);
 		
-		menuItem = new JMenuItem("Resume/Pause", KeyEvent.VK_SPACE);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, ActionEvent.CTRL_MASK));
-		menuItem.getAccessibleContext().setAccessibleDescription("Stops and starts the simulation");
-		menuItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(Loop.isRunning){
-					Main.pauseLoop();
-				}
-				else{
-					Main.resumeLoop();
-				}
-			}
-		});
+		
 		menu.add(menuItem);
 		menuItem = new JMenuItem("Save", KeyEvent.VK_S);
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
@@ -230,16 +250,7 @@ public class Frame extends JFrame {
 				}
 			}
 		});
-		menu.add(menuItem);
-		menuItem = new JMenuItem("Reset", KeyEvent.VK_R);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
-		menuItem.getAccessibleContext().setAccessibleDescription("Resets the world");
-		menuItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-					World.resetState();
-			}
-		});
+		
 		menu.add(menuItem);
 	}
 	

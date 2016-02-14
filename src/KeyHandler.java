@@ -27,6 +27,10 @@ public class KeyHandler implements KeyListener{
 		if(e.getKeyCode() == KeyEvent.VK_R){
 			World.resetState();
 		}
+		if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
+			Frame.mouseHandler.canAdd = false;
+			Frame.mouseHandler.toAdd = null;
+		}
 	}
 
 	@Override
