@@ -1,6 +1,6 @@
 
 public class Loop extends Thread {
-	public static double dt = 1 / 1000.0;
+	public static double dt = 1 / 320.0;
 	static double time;
 	static double startTime;
 	static double pauseTime;

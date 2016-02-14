@@ -7,14 +7,14 @@ public class MouseHandler implements MouseListener{
 	public Shape toAdd;
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(Panel.mouseHandler.canAdd){
-			World.objects.add(Panel.mouseHandler.toAdd);
-			Panel.mouseHandler.canAdd = false;
+		if(Frame.mouseHandler.canAdd){
+			World.objects.add(Frame.mouseHandler.toAdd);
+			Frame.mouseHandler.canAdd = false;
 			return;
 		}
 		else{
 			Shape s;
-			if((s = World.getShapeAt(e.getX(), e.getY())) != null){
+			if((s = World.getShapeAt(e.getX(), e.getY()-45)) != null){
 				if(s.equals(Panel.selectedItem)){
 					Panel.popupDialogMenu();
 				}

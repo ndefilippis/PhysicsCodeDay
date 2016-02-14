@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
 
@@ -25,10 +26,19 @@ public class Block extends Shape{
 		return 0.0;
 	}
 	
+	
+	
 	@Override
 	public Area getArea() {
 		Rectangle r = new Rectangle(drawX(), drawY(), drawWidth(), drawHeight()); 
 		return new Area(r);
+	}
+
+	@Override
+	public Polygon getOutline() {
+		int[] x = {drawX(), drawX()+drawWidth(), drawX()+drawWidth(), drawX()};
+		int[] y = {drawY(), drawY(), drawY()+drawHeight(), drawY()+drawHeight()};
+		return new Polygon(x, y, 4);
 	}
 
 }

@@ -19,12 +19,18 @@ public class Frame extends JFrame {
 	JMenuItem menuItem;
 	JRadioButtonMenuItem rbMenuItem;
 	JCheckBoxMenuItem cbMenuItem;
+	public static MouseHandler mouseHandler;
+	public static KeyHandler keyHandler;
 
 	public Frame(Panel panel) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Physics");
 		createMenu();
 		getContentPane().add(panel);
+		mouseHandler = new MouseHandler();
+		keyHandler = new KeyHandler();
+		this.addMouseListener(mouseHandler);
+		this.addKeyListener(keyHandler);
 	}
 
 	public void display() {
@@ -56,8 +62,8 @@ public class Frame extends JFrame {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Panel.mouseHandler.canAdd = true;
-				Panel.mouseHandler.toAdd = new Block(0, 0, 1, 1);
+				mouseHandler.canAdd = true;
+				mouseHandler.toAdd = new Block(0, 0, 1, 1);
 			}
 		});
 		submenu.add(menuItem);
@@ -66,8 +72,8 @@ public class Frame extends JFrame {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Panel.mouseHandler.canAdd = true;
-				Panel.mouseHandler.toAdd = new Wall(0, 0, 3, 1);
+				mouseHandler.canAdd = true;
+				mouseHandler.toAdd = new Wall(0, 0, 3, 1);
 			}
 		});
 		submenu.add(menuItem);
@@ -75,8 +81,8 @@ public class Frame extends JFrame {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Panel.mouseHandler.canAdd = true;
-				Panel.mouseHandler.toAdd = new Ramp(0, 0, 5, 5, true);
+				mouseHandler.canAdd = true;
+				mouseHandler.toAdd = new Ramp(0, 0, 5, 5, true);
 			}
 		});
 		submenu.add(menuItem);

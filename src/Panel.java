@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 
 
 public class Panel extends JPanel{
-	public static MouseHandler mouseHandler;
+	
 	public static JLabel itemInfo;
 	public static final int width = 1200;
 	public static final int height = 650;
@@ -18,11 +18,11 @@ public class Panel extends JPanel{
 		setPreferredSize(new Dimension(width, height));
 		setSize(1600, 1200);
 		setLayout(null);
-		mouseHandler = new MouseHandler();
+		
 		itemInfo = new JLabel();
 		itemInfo.setBounds(0, height-30, width, 30);
 		add(itemInfo);
-		this.addMouseListener(mouseHandler);
+		
 	}
 
 	@Override
@@ -41,18 +41,22 @@ public class Panel extends JPanel{
 		for(Shape s : World.objects){
 			s.draw(g);
 		}
-		if(mouseHandler.canAdd){
+		if(Frame.mouseHandler.canAdd){
 			int mouseX = MouseInfo.getPointerInfo().getLocation().x;
 			int mouseY = MouseInfo.getPointerInfo().getLocation().y;
-			mouseHandler.toAdd.position = new Vector(mouseX/World.xScale, mouseY/World.yScale-2);
+			Frame.mouseHandler.toAdd.position = new Vector((mouseX)/World.xScale-Frame.mouseHandler.toAdd.width/2, (mouseY-65)/World.yScale-Frame.mouseHandler.toAdd.height/2);
 			g.setColor(new Color(0, 0, 0, 128));
-			mouseHandler.toAdd.draw(g);
+			Frame.mouseHandler.toAdd.draw(g);
 			
 		}
 		if(selectedItem != null){
 			Panel.itemInfo.setOpaque(true);
 			Panel.itemInfo.setBackground(Color.WHITE);
 			Panel.itemInfo.setText(selectedItem.toString());
+			g.setColor(new Color(255, 255, 255, 100));
+			g.fillPolygon(selectedItem.getOutline());
+			g.setColor(Color.RED);
+			g.drawPolygon(selectedItem.getOutline());
 		}
 	}
 

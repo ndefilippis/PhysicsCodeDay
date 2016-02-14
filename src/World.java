@@ -1,3 +1,4 @@
+import java.awt.Point;
 import java.awt.geom.Area;
 import java.util.ArrayList;
 
@@ -14,7 +15,7 @@ public class World {
 	
 	public static Shape getShapeAt(int x, int y){
 		for(int i = objects.size()-1; i >= 0; i--){
-			if(objects.get(i).getArea().contains(x, y)){
+			if(objects.get(i).getOutline().contains(x, y) || objects.get(i).getOutline().contains(new Point(x, y))){
 				return objects.get(i);
 			}
 		}
