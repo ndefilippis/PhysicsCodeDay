@@ -7,6 +7,7 @@ import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 
@@ -64,9 +65,11 @@ public class Panel extends JPanel{
 	}
 
 	public static void popupDialogMenu() {
+		JRadioButton delete = new JRadioButton();
 		JTextField xField = new JTextField(5);
 		JTextField yField = new JTextField(5);
 		JPanel pan = new JPanel();
+		pan.add(new JLabel("Delte"));
 		pan.add(new JLabel("X Velocity:"));
 		pan.add(xField);
 		pan.add(Box.createHorizontalStrut(15));
