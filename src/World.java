@@ -81,21 +81,17 @@ public class World {
 		  out.close();
 		}
 	}
-
-	public static void loadWorld() throws IOException {
-		objects = new ArrayList<Shape>();
-		JFileChooser fileChooser = new JFileChooser();
-		if (fileChooser.showOpenDialog(Main.frame) == JFileChooser.APPROVE_OPTION) {
-		  File file = fileChooser.getSelectedFile();
-		  BufferedReader in = new BufferedReader(new FileReader(file));
+	
+	public static void loadWorld(File file) throws NumberFormatException, IOException{
+		BufferedReader in = new BufferedReader(new FileReader(file));
 		  if(in.readLine().startsWith(".PHY")){
 			  int n = Integer.parseInt(in.readLine());
 			  for(int i = 0; i < n; i++){
 				  String[] s = in.readLine().split(":");
-				  int x = Integer.parseInt(s[1]);
-				  int y = Integer.parseInt(s[2]);
-				  int width = Integer.parseInt(s[3]);
-				  int height = Integer.parseInt(s[4]);
+				  double x = Double.parseDouble(s[1]);
+				  double y = Double.parseDouble(s[2]);
+				  double width = Double.parseDouble(s[3]);
+				  double height = Double.parseDouble(s[4]);
 				  if(s[0].equals("w")){
 					  objects.add(new Wall(x, y, width, height));
 				  }
@@ -115,5 +111,18 @@ public class World {
 		  }
 		  
 		}
+
+	public static void loadWorld() throws IOException {
+		objects = new ArrayList<Shape>();
+		JFileChooser fileChooser = new JFileChooser();
+		if (fileChooser.showOpenDialog(Main.frame) == JFileChooser.APPROVE_OPTION) {
+		  File file = fileChooser.getSelectedFile();
+		  loadWorld(file);
+		}
+		  
+	}
+
+	public static void loadWorld(String string) throws NumberFormatException, IOException {
+		loadWorld(new File(string));
 	}
 }

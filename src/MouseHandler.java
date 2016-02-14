@@ -7,6 +7,7 @@ public class MouseHandler implements MouseListener{
 	public Shape toAdd;
 	public boolean down;
 	public Vector startPosition;
+	public static Shape draggedItem;
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -35,7 +36,7 @@ public class MouseHandler implements MouseListener{
 		startPosition = new Vector(e.getX()/World.xScale,e.getY()/World.yScale);
 		Shape s;
 		if((s = World.getShapeAt(e.getX(), e.getY()-45)) != null){
-			Panel.selectedItem = s;
+			draggedItem = s;
 			boolean down = true;
 		}
 		
@@ -43,6 +44,7 @@ public class MouseHandler implements MouseListener{
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		down = false;
+		draggedItem = null;
 	}
 	@Override
 	public void mouseEntered(MouseEvent e) {

@@ -122,7 +122,6 @@ public abstract class Shape{
 				}
 				projection = s1.velocity.project(perpendicular).multiply(-Math.pow(World.energyConserved,1.0/2));
 				s1.velocity = s1.velocity.add(perpendicular).subtract(projection);
-				System.out.println(projection);
 			}
 		}
 	}

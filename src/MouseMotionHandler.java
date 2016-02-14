@@ -5,9 +5,9 @@ public class MouseMotionHandler implements MouseMotionListener{
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-			if(Panel.selectedItem != null){
+			if(MouseHandler.draggedItem != null){
 				Vector myPosition = new Vector(e.getX()/World.xScale, e.getY()/World.yScale);
-				Panel.selectedItem.position = Panel.selectedItem.position.add(myPosition.subtract(Frame.mouseHandler.startPosition));
+				MouseHandler.draggedItem.position = MouseHandler.draggedItem.position.add(myPosition.subtract(Frame.mouseHandler.startPosition));
 				Frame.mouseHandler.startPosition = myPosition;
 			}
 	}
