@@ -75,7 +75,15 @@ public abstract class Shape{
 				s1.velocity.x *= -Math.pow(World.energyConserved,1.0/2);
 			}
 		}
-		
-		
+		if	(s1 instanceof Ramp){
+			if (s1.drawX() + s1.drawWidth() - s2.drawX() == 0 || s1.drawX() - s2.drawX() - s2.drawWidth() == 0){
+				s2.velocity.x *= -Math.pow(World.energyConserved,1.0/2);
+			}
+		}
+		if	(s2 instanceof Ramp){
+			if (s2.drawX() + s2.drawWidth() - s1.drawX() == 0 || s2.drawX() - s1.drawX() - s1.drawWidth() == 0){
+				s1.velocity.x *= -Math.pow(World.energyConserved,1.0/2);
+			}
+		}
 	}
 }
