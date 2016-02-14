@@ -39,7 +39,7 @@ public class Frame extends JFrame{
 	public void createMenu(){
 		menuBar = new JMenuBar();
 		//Build the first menu.
-		menu = new JMenu("A Menu");
+		menu = new JMenu("File");
 		menu.setMnemonic(KeyEvent.VK_A);
 		menu.getAccessibleContext().setAccessibleDescription(
 		        "The only menu in this program that has menu items");
@@ -63,8 +63,8 @@ public class Frame extends JFrame{
 		group.add(rbMenuItem);
 		menu.add(rbMenuItem);
 
-		rbMenuItem = new JRadioButtonMenuItem("Another one");
-		rbMenuItem.setMnemonic(KeyEvent.VK_O);
+		rbMenuItem = new JRadioButtonMenuItem("World");
+		rbMenuItem.setMnemonic(KeyEvent.VK_W);
 		group.add(rbMenuItem);
 		menu.add(rbMenuItem);
 

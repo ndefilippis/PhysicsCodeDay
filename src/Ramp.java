@@ -5,7 +5,7 @@ import java.awt.geom.Area;
 public class Ramp extends Shape{
 	public Ramp(double x, double y, double width, double height) {
 		super(x, y, width, height);
-		// TODO Auto-generated constructor stub
+		
 	}
 	
 	public void draw(Graphics g){
