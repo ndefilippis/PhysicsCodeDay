@@ -29,6 +29,7 @@ public class Frame extends JFrame {
 	public static MouseHandler mouseHandler;
 	public static KeyHandler keyHandler;
 	public static MouseMotionHandler motionHandler;
+	public static ScrollHandler scrollHandler;
 
 	public Frame(Panel panel) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,9 +39,11 @@ public class Frame extends JFrame {
 		mouseHandler = new MouseHandler();
 		keyHandler = new KeyHandler();
 		motionHandler = new MouseMotionHandler();
+		scrollHandler = new ScrollHandler();
 		this.addMouseListener(mouseHandler);
 		this.addKeyListener(keyHandler);
 		this.addMouseMotionListener(motionHandler);
+		this.addMouseWheelListener(scrollHandler);
 	}
 
 	public void display() {

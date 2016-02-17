@@ -62,11 +62,11 @@ public abstract class Shape{
 	public abstract Area getArea();
 	
 	public int drawX(){
-		return (int)(position.x*World.xScale);
+		return (int)(position.x*World.xScale+World.xOffset);
 	}
 	
 	public int drawY(){
-		return (int)(position.y*World.yScale);
+		return (int)(position.y*World.yScale+World.yOffset);
 	}
 	
 	public int drawWidth(){

@@ -16,6 +16,8 @@ public class World {
 	public static ArrayList<Shape> objects = new ArrayList<Shape>();
 	public static double xScale = 25;
 	public static double yScale = 25;
+	public static double yOffset = 0;
+	public static double xOffset = 0;
 	public static Vector gravity = new Vector(0, 9.81);
 	public static double energyConserved = .5;
 	
@@ -140,10 +142,22 @@ public class World {
 	}
 	
 	public static ArrayList<Shape> initState;
+	
 	public static void saveState() {
 		initState = new ArrayList<Shape>();
 		for(Shape s : objects){
 			initState.add(s.copy());
 		}
+	}
+
+	public static boolean canAddAtLocation(Shape toAdd) {
+		for(Shape s : objects){
+			Area a1 = s.getArea();
+			a1.intersect(toAdd.getArea());
+			if(!a1.isEmpty()){
+				return false;
+			}
+		}
+		return true;
 	}
 }

@@ -12,7 +12,7 @@ public class MouseHandler implements MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 			Shape s;
-			if((s = World.getShapeAt(e.getX(), e.getY()-45)) != null){
+			if((s = World.getShapeAt(e.getX()-Main.panel.getLocationOnScreen().x, e.getY()-Main.panel.getLocationOnScreen().y)) != null){
 				if(s.equals(Panel.selectedItem)){
 					Panel.popupDialogMenu(s);
 				}
@@ -27,21 +27,22 @@ public class MouseHandler implements MouseListener{
 	@Override
 	public void mousePressed(MouseEvent e) {
 		startPosition = new Vector(e.getX()/World.xScale,e.getY()/World.yScale);
-		if(Frame.mouseHandler.canAdd){
-			World.objects.add(Frame.mouseHandler.toAdd);
-			Panel.selectedItem = Frame.mouseHandler.toAdd;
-			Frame.mouseHandler.canAdd = false;
-			resizeItem = Frame.mouseHandler.toAdd;
-			return;
-		}
+		resizeItem = Frame.mouseHandler.toAdd;
+		MouseMotionHandler.prevPosition = new Vector(e.getX()/World.xScale,e.getY()/World.yScale);
 		Shape s;
-		if((s = World.getShapeAt(e.getX(), e.getY()-45)) != null){
+		if((s = World.getShapeAt(e.getX()-Main.panel.getLocationOnScreen().x, e.getY()-Main.panel.getLocationOnScreen().y)) != null){
 			draggedItem = s;
 		}
 		down = true;
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		if(Frame.mouseHandler.canAdd && World.canAddAtLocation(Frame.mouseHandler.toAdd)){
+			World.objects.add(Frame.mouseHandler.toAdd);
+			Panel.selectedItem = Frame.mouseHandler.toAdd;
+			Frame.mouseHandler.canAdd = false;
+			return;
+		}
 		down = false;
 		draggedItem = null;
 		resizeItem = null;

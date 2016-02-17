@@ -1,7 +1,11 @@
+import java.awt.Color;
 import java.io.IOException;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
+import javafx.scene.layout.Border;
 
 public class Main {
 	public static Frame frame;
@@ -18,6 +22,7 @@ public class Main {
 		frame.display();
 		panel.add(label);
 		label.setBounds(1, 0, 12*8, 24);
+		label.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		label.setOpaque(true);
 		World.loadWorld("default.phy");
 		loop = new Loop();

@@ -28,7 +28,53 @@ public class Panel extends JPanel{
 		itemInfo = new JLabel();
 		itemInfo.setBounds(0, height-30, width, 30);
 		add(itemInfo);
+	}
+
+	public int drawGridlines(Graphics g){
+		double xEvery = World.xScale;
+		int count = 0;
 		
+		while(xEvery <= 5){
+			xEvery *= 5;
+			count++;
+		}
+		double yEvery = World.yScale;
+		count = 0;
+		while(yEvery <= 5){
+			yEvery *= 5;
+			count++;
+		}
+		xEvery += count*Math.pow(2, count/15.0);
+		yEvery += count*Math.pow(2, count/15.0);
+		int result = count;
+		count = 0;
+		while(xEvery >= 50){
+			xEvery /= 5;
+			count--;
+		}
+		count = 0;
+		while(yEvery >= 50){
+			yEvery /= 5;
+			count--;
+		}
+		if(count != 0) result = count;
+		g.setColor(Color.GRAY);
+		for(int i = 0; i <= getWidth()/xEvery; i++){
+			
+			g.drawLine((int)(i*xEvery+World.xOffset%(xEvery*5)), 0, (int)(i*xEvery+World.xOffset%(xEvery*5)), getHeight());
+			if(i % 5 == 0){
+				g.fillRect((int)((i-1)*xEvery+World.xOffset%(xEvery*5)), 0, 3, getHeight());
+				g.setColor(Color.GRAY);
+			}
+		}
+		for(int i = 0; i <= getHeight()/yEvery; i++){
+			g.drawLine(0, (int)(i*yEvery+World.yOffset%(yEvery*5)), getWidth(), (int)(i*yEvery+World.yOffset%(yEvery*5)));
+			if(i % 5 == 0){
+				g.fillRect(0, (int)((i-1)*yEvery+World.yOffset%(yEvery*5)), getWidth(), 3);
+				g.setColor(Color.GRAY);
+			}
+		}
+		return result;
 	}
 
 	@Override
@@ -36,13 +82,7 @@ public class Panel extends JPanel{
 		itemInfo.setBounds(0, getHeight()-30, getWidth(), 30);
 		super.paintComponent(g);
 		if(gridlines){
-			g.setColor(Color.GRAY);
-			for(int i = 0; i < getWidth(); i+=World.xScale){
-				g.drawLine(i, 0, i, getHeight());
-			}
-			for(int i = 0; i < getHeight(); i+=World.yScale){
-				g.drawLine(0, i, getWidth(), i);
-			}	
+			drawGridlines(g);
 		}
 		g.setColor(Color.BLACK);
 		for(Shape s : World.objects){
@@ -51,10 +91,14 @@ public class Panel extends JPanel{
 		if(Frame.mouseHandler.canAdd){
 			int mouseX = MouseInfo.getPointerInfo().getLocation().x;
 			int mouseY = MouseInfo.getPointerInfo().getLocation().y;
-			Frame.mouseHandler.toAdd.position = new Vector((mouseX)/World.xScale-Frame.mouseHandler.toAdd.width/2, (mouseY-65)/World.yScale-Frame.mouseHandler.toAdd.height/2);
-			g.setColor(new Color(0, 0, 0, 128));
+			Frame.mouseHandler.toAdd.position = new Vector((mouseX-this.getLocationOnScreen().x)/World.xScale-Frame.mouseHandler.toAdd.width/2, (mouseY-this.getLocationOnScreen().y)/World.yScale-Frame.mouseHandler.toAdd.height/2);
+			Color veil = new Color(255, 255, 255, 200);
+			if(!World.canAddAtLocation(Frame.mouseHandler.toAdd)){
+				veil = new Color(255, 0, 0, 200);
+			}
 			Frame.mouseHandler.toAdd.draw(g);
-			
+			g.setColor(veil);
+			g.fillPolygon(Frame.mouseHandler.toAdd.getOutline());
 		}
 		if(selectedItem != null){
 			Panel.itemInfo.setOpaque(true);
