@@ -27,7 +27,9 @@ public class MouseHandler implements MouseListener{
 	@Override
 	public void mousePressed(MouseEvent e) {
 		startPosition = new Vector(e.getX()/World.xScale,e.getY()/World.yScale);
-		resizeItem = Frame.mouseHandler.toAdd;
+		if(Frame.mouseHandler.canAdd){
+			resizeItem = Frame.mouseHandler.toAdd;
+		}
 		MouseMotionHandler.prevPosition = new Vector(e.getX()/World.xScale,e.getY()/World.yScale);
 		Shape s;
 		if((s = World.getShapeAt(e.getX()-Main.panel.getLocationOnScreen().x, e.getY()-Main.panel.getLocationOnScreen().y)) != null){

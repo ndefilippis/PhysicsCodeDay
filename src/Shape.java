@@ -1,22 +1,42 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.geom.Area;
 
 public abstract class Shape{
-	Vector velocity;
-	Vector position;
-	Vector acceleration;
-	Vector prevPosition;
-	double height;
-	double width;
-	double mass;
-	boolean anchored;
+	protected Vector velocity;
+	protected Vector position;
+	protected Vector acceleration;
+	protected Vector prevPosition;
+	protected double height;
+	protected double width;
+	protected double mass;
+	protected double inv_mass;
+	protected boolean anchored;
+	protected Color background;
+	protected Color outline;
+	
+	protected class State{
+		public Vector momentum;
+		public Vector force;
+		public Vector velocity;
+		public Vector position;
+		
+		public State(){
+			momentum = new Vector();
+			velocity = new Vector();
+			acceleration = World.gravity;
+			position = new Vector();
+			force = new Vector();
+		}
+	}
 	
 	public Shape(double x, double y, double width, double height){
 		velocity = new Vector();
 		acceleration = World.gravity;
 		position = new Vector(x, y);
 		mass = 1;
+		inv_mass = 1;
 		this.height = height;
 		this.width = width;
 	}
@@ -30,19 +50,7 @@ public abstract class Shape{
 			return;
 		}
 		Vector prevVelocity = velocity;
-		int count = 5;
-		while(World.isColliding(this) && count < 5){
-			position = prevPosition;
-			position = position.subtract(new Vector(0, prevVelocity.y));
-			count++;
-		}
-		count = 0;
-		while(World.isColliding(this) && count < 5){
-			position = position.subtract(new Vector(prevVelocity.x, 0));
-			count++;
-		}
-		if(!World.isColliding(this))
-			velocity = velocity.add(acceleration.multiply(dt));	
+		velocity = velocity.add(acceleration.multiply(dt));	
 		if(Math.abs(velocity.x) <= 0.001){
 			velocity.x = 0;
 		}
@@ -78,28 +86,6 @@ public abstract class Shape{
 	}
 
 	public static void collide(Shape s1, Shape s2) {
-		s1.position = s1.prevPosition;
-		s2.position = s2.prevPosition;
-		if	(s1 instanceof Wall){
-			if (s2.drawY() + s2.drawHeight() - s1.drawY() == 0){
-				s2.velocity.y *= -Math.pow(World.energyConserved,1.0/2);
-			}
-			else{
-				s2.velocity.x *= -Math.pow(World.energyConserved,1.0/2);
-			}
-			if(Math.abs(s2.velocity.x) <= 0.005) s2.velocity.x = 0;
-			if(Math.abs(s2.velocity.y) <= 0.005) s2.velocity.y = 0;
-		}
-		if	(s2 instanceof Wall){
-			if (s1.drawY() + s1.drawHeight() - s2.drawY() == 0){
-				s1.velocity.y *= -Math.pow(World.energyConserved,1.0/2);
-			}
-			else{
-				s1.velocity.x *= -Math.pow(World.energyConserved,1.0/2);
-			}
-			if(Math.abs(s1.velocity.x) <= 0.005) s1.velocity.x = 0;
-			if(Math.abs(s1.velocity.y) <= 0.005) s1.velocity.y = 0;
-		}
 		if	(s1 instanceof Ramp){
 			if (s1.drawX() + s1.drawWidth() - s2.drawX() == 0 || s1.drawX() - s2.drawX() - s2.drawWidth() == 0){
 				s2.velocity.x *= -Math.pow(World.energyConserved,1.0/2);
@@ -136,14 +122,21 @@ public abstract class Shape{
 				s1.velocity = s1.velocity.rotate(perpendicular.theta()).multiply(Math.pow(World.energyConserved,1.0/2));
 			}
 		}
-		if(s1 instanceof Block && s2 instanceof Block){
-			s1.velocity = s1.velocity.multiply(-s2.mass/s1.mass).multiply(Math.pow(World.energyConserved,1.0/2));
-			s2.velocity = s2.velocity.multiply(-s1.mass/s2.mass).multiply(Math.pow(World.energyConserved,1.0/2));
+	}
+	
+	public static void collide(Collision c){
+		Vector relativeVelocity = c.b.velocity.subtract(c.a.velocity);
+		double velocityAlongNormal = relativeVelocity.dot(c.normal);
+		if(velocityAlongNormal > 0){
+			return;
 		}
-		if(s1.velocity.x == Double.NaN) s1.velocity.x = 0;
-		if(s1.velocity.y == Double.NaN) s1.velocity.y = 0;
-		if(s2.velocity.x == Double.NaN) s2.velocity.x = 0;
-		if(s2.velocity.y == Double.NaN) s2.velocity.y = 0;
+		double e = Math.sqrt(World.energyConserved);
+		double j = -(1+e)*velocityAlongNormal;
+		j /= c.a.inv_mass + c.b.inv_mass;
+		
+		Vector impulse = c.normal.multiply(j);
+		c.a.velocity = c.a.velocity.subtract(impulse.multiply(c.a.inv_mass));
+		c.b.velocity = c.b.velocity.add(impulse.multiply(c.b.inv_mass));
 	}
 	
 	public String toString(){

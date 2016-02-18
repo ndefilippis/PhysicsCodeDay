@@ -24,7 +24,7 @@ public class Main {
 		label.setBounds(1, 0, 12*8, 24);
 		label.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		label.setOpaque(true);
-		World.loadWorld("default.phy");
+		World.loadWorld("magic_test.phy");
 		loop = new Loop();
 		World.saveState();
 		loop.start();

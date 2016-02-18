@@ -35,17 +35,15 @@ public class Panel extends JPanel{
 		int count = 0;
 		
 		while(xEvery <= 5){
-			xEvery *= 5;
+			xEvery *= (5+Math.pow(2, count/15.0));
 			count++;
 		}
 		double yEvery = World.yScale;
 		count = 0;
 		while(yEvery <= 5){
-			yEvery *= 5;
+			yEvery *= (5+Math.pow(2, count/15.0));
 			count++;
 		}
-		xEvery += count*Math.pow(2, count/15.0);
-		yEvery += count*Math.pow(2, count/15.0);
 		int result = count;
 		count = 0;
 		while(xEvery >= 50){
@@ -91,7 +89,7 @@ public class Panel extends JPanel{
 		if(Frame.mouseHandler.canAdd){
 			int mouseX = MouseInfo.getPointerInfo().getLocation().x;
 			int mouseY = MouseInfo.getPointerInfo().getLocation().y;
-			Frame.mouseHandler.toAdd.position = new Vector((mouseX-this.getLocationOnScreen().x)/World.xScale-Frame.mouseHandler.toAdd.width/2, (mouseY-this.getLocationOnScreen().y)/World.yScale-Frame.mouseHandler.toAdd.height/2);
+			Frame.mouseHandler.toAdd.position = new Vector((mouseX-this.getLocationOnScreen().x-World.xOffset)/World.xScale-Frame.mouseHandler.toAdd.width/2, (mouseY-this.getLocationOnScreen().y-World.yOffset)/World.yScale-Frame.mouseHandler.toAdd.height/2);
 			Color veil = new Color(255, 255, 255, 200);
 			if(!World.canAddAtLocation(Frame.mouseHandler.toAdd)){
 				veil = new Color(255, 0, 0, 200);
@@ -174,6 +172,7 @@ public class Panel extends JPanel{
 				if(s instanceof Block && !mass.getText().isEmpty()){
 					try{
 						selectedItem.mass = Double.parseDouble(mass.getText());
+						selectedItem.inv_mass = 1/selectedItem.mass;
 					}
 					catch(NumberFormatException e){
 						

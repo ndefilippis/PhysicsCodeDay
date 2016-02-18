@@ -48,19 +48,21 @@ public class World {
 		for(int i = objects.size()-1; i >= 0; i--){
 			objects.get(i).update(dt);
 		}
-		for(int i = objects.size()-1; i >= 0; i--){
-			for(int j = objects.size()-1; j >= 0; j--){
+		for(int i = 0; i < objects.size(); i++){
+			for(int j = i+1; j < objects.size(); j++){
 				Shape s1 = objects.get(i);
 				Shape s2 = objects.get(j);
-				if(s1.equals(s2)) continue;
 				Area a1 = s1.getArea();
 				a1.intersect(s2.getArea());
-				
 				if (!a1.isEmpty()){
-					Shape.collide(s1, s2);
+					if(s1 instanceof AABB && s2 instanceof AABB){
+						Shape.collide(Collision.AABBtoAABB((AABB)s1, (AABB)s2));
+						continue;
+					}
 				}
 			}
 		}
+		
 	}
 
 	public static void saveWorld() throws FileNotFoundException {
