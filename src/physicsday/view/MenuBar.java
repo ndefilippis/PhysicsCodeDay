@@ -1,3 +1,4 @@
+package physicsday.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -12,15 +13,22 @@ import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
+import physicsday.PhysicsDay;
+import physicsday.model.Block;
+import physicsday.model.Ramp;
+import physicsday.model.Shape;
+import physicsday.model.Wall;
+import physicsday.model.World;
+
 public class MenuBar {
 	private static JMenuBar menuBar;
 	private static JMenu menu, submenu;
 	private static JMenuItem menuItem;
 	private static JRadioButtonMenuItem rbMenuItem;
 	private static JCheckBoxMenuItem cbMenuItem;
-	private static Frame frame;
+	private static PhysicsFrame frame;
 	
-	public static void createMenuBar(Frame frame){
+	public static void createMenuBar(PhysicsFrame frame){
 		menuBar = new JMenuBar();
 		createFileMenu();
 		createWorldMenu();
@@ -52,7 +60,7 @@ public class MenuBar {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Panel.gridlines = !Panel.gridlines;
+				PhysicsPanel.gridlines = !PhysicsPanel.gridlines;
 			}
 		});
 		menu.add(menuItem);
@@ -109,12 +117,7 @@ public class MenuBar {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(Loop.isRunning){
-					Main.pauseLoop();
-				}
-				else{
-					Main.resumeLoop();
-				}
+				PhysicsDay.toggleRunning();
 			}
 		});
 		menu.add(menuItem);
@@ -134,8 +137,8 @@ public class MenuBar {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Frame.mouseHandler.canAdd = true;
-				Frame.mouseHandler.toAdd = new Block(0, 0, 1, 1);
+				PhysicsFrame.mouseHandler.canAdd = true;
+				PhysicsFrame.mouseHandler.toAdd = new Block(0, 0, 1, 1);
 			}
 		});
 		submenu.add(menuItem);
@@ -145,8 +148,8 @@ public class MenuBar {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Frame.mouseHandler.canAdd = true;
-				Frame.mouseHandler.toAdd = new Wall(0, 0, 3, 1);
+				PhysicsFrame.mouseHandler.canAdd = true;
+				PhysicsFrame.mouseHandler.toAdd = new Wall(0, 0, 3, 1);
 			}
 		});
 		submenu.add(menuItem);
@@ -155,8 +158,8 @@ public class MenuBar {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Frame.mouseHandler.canAdd = true;
-				Frame.mouseHandler.toAdd = new Ramp(0, 0, 5, 5, true);
+				PhysicsFrame.mouseHandler.canAdd = true;
+				PhysicsFrame.mouseHandler.toAdd = new Ramp(0, 0, 5, 5, true);
 			}
 		});
 		submenu.add(menuItem);

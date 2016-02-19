@@ -1,8 +1,11 @@
+package physicsday.model;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
+
+import physicsday.util.Vector;
 
 
 public class Block extends AABB{
@@ -20,8 +23,8 @@ public class Block extends AABB{
 
 	@Override
 	public Shape copy() {
-		Block b = new Block(position.x, position.y, width, height);
-		b.velocity = new Vector(velocity.x, velocity.y);
+		Block b = new Block(currState.position.x, currState.position.y, getWidth(), getHeight());
+		b.currState.velocity = new Vector(currState.velocity.x, currState.velocity.y);
 		return b;
 	}
 

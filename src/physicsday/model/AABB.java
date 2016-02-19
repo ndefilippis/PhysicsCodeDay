@@ -1,8 +1,11 @@
+package physicsday.model;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
+
+import physicsday.util.Vector;
 
 public class AABB extends Shape{
 
@@ -33,8 +36,8 @@ public class AABB extends Shape{
 
 	@Override
 	public Shape copy() {
-		AABB aabb = new AABB(position.x, position.y, width, height);
-		aabb.velocity = new Vector(velocity.x, velocity.y);
+		AABB aabb = new AABB(currState.position.x, currState.position.y, getWidth(), getHeight());
+		aabb.currState.velocity = new Vector(currState.velocity.x, currState.velocity.y);
 		return aabb;
 	}
 

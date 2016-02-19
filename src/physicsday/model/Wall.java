@@ -1,3 +1,4 @@
+package physicsday.model;
 import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.Rectangle;
@@ -8,8 +9,8 @@ public class Wall extends AABB{
 
 	public Wall(double x, double y, double width, double height) {
 		super(x, y, width, height);
+		setMass(Double.POSITIVE_INFINITY);
 		anchored = true;
-		mass = Double.POSITIVE_INFINITY;
 		inv_mass = 0;
 	}
 
@@ -21,7 +22,7 @@ public class Wall extends AABB{
 	
 	@Override
 	public Shape copy() {
-		return new Wall(position.x, position.y, width, height);
+		return new Wall(currState.position.x, currState.position.y, getWidth(), getHeight());
 	}
 	
 }

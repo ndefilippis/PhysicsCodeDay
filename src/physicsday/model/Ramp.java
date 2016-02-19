@@ -1,3 +1,4 @@
+package physicsday.model;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
@@ -9,9 +10,9 @@ public class Ramp extends Shape{
 
 	public Ramp(double x, double y, double width, double height, boolean positive) {
 		super(x, y, width, height);
-		anchored = true;
 		this.positive = positive;
-		mass = Integer.MAX_VALUE;
+		setMass(Integer.MAX_VALUE);
+		anchored = true;
 	}
 	
 	public void draw(Graphics g){
@@ -45,9 +46,13 @@ public class Ramp extends Shape{
 
 	@Override
 	public Shape copy() {
-		Ramp r = new Ramp(position.x, position.y, width, height, this.positive);
+		Ramp r = new Ramp(currState.position.x, currState.position.y, getWidth(), getHeight(), this.positive);
 		return r;
 		
+	}
+
+	public void switchFacing() {
+		positive = !positive;
 	}
 	
 

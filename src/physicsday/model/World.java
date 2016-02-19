@@ -1,5 +1,7 @@
+package physicsday.model;
 import java.awt.Point;
 import java.awt.geom.Area;
+import java.awt.geom.Rectangle2D;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,12 +14,12 @@ import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import physicsday.PhysicsDay;
+import physicsday.util.QuadTree;
+import physicsday.util.Vector;
+
 public class World {
 	public static ArrayList<Shape> objects = new ArrayList<Shape>();
-	public static double xScale = 25;
-	public static double yScale = 25;
-	public static double yOffset = 0;
-	public static double xOffset = 0;
 	public static Vector gravity = new Vector(0, 9.81);
 	public static double energyConserved = .5;
 	
@@ -48,6 +50,7 @@ public class World {
 		for(int i = objects.size()-1; i >= 0; i--){
 			objects.get(i).update(dt);
 		}
+		ArrayList<Shape> nearMe = new ArrayList<Shape>();
 		for(int i = 0; i < objects.size(); i++){
 			for(int j = i+1; j < objects.size(); j++){
 				Shape s1 = objects.get(i);
@@ -56,7 +59,9 @@ public class World {
 				a1.intersect(s2.getArea());
 				if (!a1.isEmpty()){
 					if(s1 instanceof AABB && s2 instanceof AABB){
-						Shape.collide(Collision.AABBtoAABB((AABB)s1, (AABB)s2));
+						Collision c = Collision.AABBtoAABB((AABB)s1, (AABB)s2);
+						if(c != null)
+							Shape.collide(c);
 						continue;
 					}
 				}
@@ -67,20 +72,20 @@ public class World {
 
 	public static void saveWorld() throws FileNotFoundException {
 		JFileChooser fileChooser = new JFileChooser();
-		if (fileChooser.showSaveDialog(Main.frame) == JFileChooser.APPROVE_OPTION) {
+		if (fileChooser.showSaveDialog(PhysicsDay.getFrame()) == JFileChooser.APPROVE_OPTION) {
 		  File file = fileChooser.getSelectedFile();
 		  PrintWriter out = new PrintWriter(new FileOutputStream(file));
 		  out.println(".PHY");
 		  out.println(objects.size());
 		  for(Shape s : objects){
 			  if(s instanceof Wall){
-				  out.println("w:"+s.position.x+":"+s.position.y+":"+s.width+":"+s.height);
+				  out.println("w:"+s.currState.position.x+":"+s.currState.position.y+":"+s.getWidth()+":"+s.getHeight());
 			  }
 			  if(s instanceof Block){
-				  out.println("b:"+s.position.x+":"+s.position.y+":"+s.width+":"+s.height+":"+s.velocity.x+":"+s.velocity.y);
+				  out.println("b:"+s.currState.position.x+":"+s.currState.position.y+":"+s.getWidth()+":"+s.getHeight()+":"+s.currState.velocity.x+":"+s.currState.velocity.y);
 			  }
 			  if(s instanceof Ramp){
-				  out.println("r:"+s.position.x+":"+s.position.y+":"+s.width+":"+s.height+":"+((Ramp)s).positive);
+				  out.println("r:"+s.currState.position.x+":"+s.currState.position.y+":"+s.getWidth()+":"+s.getHeight()+":"+((Ramp)s).positive);
 			  }
 		  }
 		  out.close();
@@ -109,7 +114,7 @@ public class World {
 					  double velocityx = Double.parseDouble(s[5]);
 					  double velocityy = Double.parseDouble(s[6]);
 					  Block b = new Block(x, y, width, height);
-					  b.velocity = new Vector(velocityx, velocityy);
+					  b.currState.velocity = new Vector(velocityx, velocityy);
 					  objects.add(b);
 					  
 				  }
@@ -117,13 +122,13 @@ public class World {
 			  in.close();
 		  }
 		  else{
-			  JOptionPane.showMessageDialog(Main.frame, "Unable to open: not a .phy file");
+			  JOptionPane.showMessageDialog(PhysicsDay.getFrame(), "Unable to open: not a .phy file");
 		  }
 		}
 
 	public static void loadWorld() throws IOException {
 		JFileChooser fileChooser = new JFileChooser();
-		if (fileChooser.showOpenDialog(Main.frame) == JFileChooser.APPROVE_OPTION) {
+		if (fileChooser.showOpenDialog(PhysicsDay.getFrame()) == JFileChooser.APPROVE_OPTION) {
 		  File file = fileChooser.getSelectedFile();
 		  loadWorld(file);
 		}
@@ -140,7 +145,7 @@ public class World {
 		for(Shape s : initState){
 			objects.add(s.copy());
 		}
-		Main.resetLoop();
+		PhysicsDay.resetLoop();
 	}
 	
 	public static ArrayList<Shape> initState;
@@ -161,5 +166,9 @@ public class World {
 			}
 		}
 		return true;
+	}
+
+	public static ArrayList<Shape> getObjectsInView(double xOffset, double yOffset, double width, double height) {
+		return objects;
 	}
 }

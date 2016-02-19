@@ -1,3 +1,4 @@
+package physicsday.util;
 public class Vector {
 	public double x, y;
 	
@@ -9,7 +10,11 @@ public class Vector {
 	}
 	
 	public Vector(){
-		
+	}
+	
+	public Vector(Vector other){
+		this.x = other.x;
+		this.y = other.y;
 	}
 	
 	public Vector add(Vector v){
@@ -40,6 +45,9 @@ public class Vector {
 	}
 	
 	public Vector normalize(){
+		if(this.lengthSquared() == 0.0){
+			return new Vector(0, 0);
+		}
 		return this.divide(length());
 	}
 	
@@ -61,5 +69,9 @@ public class Vector {
 	
 	public String toString(){
 		return "<"+x+", "+y+">";
+	}
+
+	public static boolean isValid(Vector vec) {
+		return !Double.isNaN(vec.x) && !Double.isNaN(vec.y);
 	}
 }

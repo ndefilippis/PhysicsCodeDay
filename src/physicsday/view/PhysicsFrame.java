@@ -1,3 +1,4 @@
+package physicsday.view;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,15 +20,22 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
+import physicsday.controller.KeyHandler;
+import physicsday.controller.MouseHandler;
+import physicsday.controller.MouseMotionHandler;
+import physicsday.controller.ScrollHandler;
+import physicsday.model.World;
+import physicsday.util.Vector;
+
 @SuppressWarnings("serial")
-public class Frame extends JFrame {
+public class PhysicsFrame extends JFrame {
 	
 	public static MouseHandler mouseHandler;
 	public static KeyHandler keyHandler;
 	public static MouseMotionHandler motionHandler;
 	public static ScrollHandler scrollHandler;
 
-	public Frame(Panel panel) {
+	public PhysicsFrame(PhysicsPanel panel) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Physics");
 		MenuBar.createMenuBar(this);
