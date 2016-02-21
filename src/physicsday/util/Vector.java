@@ -74,4 +74,18 @@ public class Vector {
 	public static boolean isValid(Vector vec) {
 		return !Double.isNaN(vec.x) && !Double.isNaN(vec.y);
 	}
+	
+	public double Cross(Vector a){
+		return x*a.y - y * a.x;
+	}
+	
+	// this x s
+	public Vector Cross(double s){
+		return new Vector(s*y, -s*x);
+	}
+	
+	//s x this
+	public Vector PreCross(double s){
+		return new Vector(-s * y, s*x);
+	}
 }

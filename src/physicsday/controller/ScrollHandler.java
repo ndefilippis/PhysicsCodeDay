@@ -5,12 +5,17 @@ import java.awt.event.MouseWheelListener;
 import physicsday.model.World;
 import physicsday.view.PhysicsPanel;
 
-public class ScrollHandler implements MouseWheelListener{
+public class ScrollHandler extends Input implements MouseWheelListener{
+
+	public ScrollHandler(PhysicsPanel p, World world) {
+		super(p, world);
+		view.addMouseWheelListener(this);
+	}
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		PhysicsPanel.xScale /= Math.pow(2, e.getWheelRotation()/15.0);
-		PhysicsPanel.yScale /= Math.pow(2, e.getWheelRotation()/15.0);
+		view.xScale /= Math.pow(2, e.getWheelRotation()/15.0);
+		view.yScale /= Math.pow(2, e.getWheelRotation()/15.0);
 	}
 
 }

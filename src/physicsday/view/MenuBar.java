@@ -14,7 +14,9 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
 import physicsday.PhysicsDay;
+import physicsday.controller.Input;
 import physicsday.model.Block;
+import physicsday.model.Body;
 import physicsday.model.Ramp;
 import physicsday.model.Shape;
 import physicsday.model.Wall;
@@ -27,14 +29,18 @@ public class MenuBar {
 	private static JRadioButtonMenuItem rbMenuItem;
 	private static JCheckBoxMenuItem cbMenuItem;
 	private static PhysicsFrame frame;
+	private static World world;
+	private static PhysicsPanel view;
 	
-	public static void createMenuBar(PhysicsFrame frame){
+	public static void createMenuBar(PhysicsFrame frame, World world, PhysicsPanel view){
 		menuBar = new JMenuBar();
 		createFileMenu();
 		createWorldMenu();
 		createSimMenu();
 		MenuBar.frame = frame;
 		frame.setJMenuBar(menuBar);
+		MenuBar.world = world;
+		MenuBar.view = view;
 	}
 	private static void createFileMenu() {
 		// Build the first menu.
@@ -50,7 +56,7 @@ public class MenuBar {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				World.objects = new ArrayList<Shape>();
+				world.clear();
 			}
 		});
 		menu.add(menuItem);
@@ -60,7 +66,7 @@ public class MenuBar {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PhysicsPanel.gridlines = !PhysicsPanel.gridlines;
+				view.toggleGridlines();
 			}
 		});
 		menu.add(menuItem);
@@ -74,7 +80,7 @@ public class MenuBar {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					World.saveWorld();
+					world.saveWorld();
 				} catch (FileNotFoundException e1) {
 					e1.printStackTrace();
 				}
@@ -88,7 +94,7 @@ public class MenuBar {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					World.loadWorld();
+					world.loadWorld();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -107,7 +113,7 @@ public class MenuBar {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					World.resetState();
+					world.resetState();
 			}
 		});
 		menu.add(menuItem);
@@ -137,8 +143,7 @@ public class MenuBar {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PhysicsFrame.mouseHandler.canAdd = true;
-				PhysicsFrame.mouseHandler.toAdd = new Block(0, 0, 1, 1);
+				Input.toAdd = new Body(new Block(1, 1), 0, 0);
 			}
 		});
 		submenu.add(menuItem);
@@ -148,8 +153,7 @@ public class MenuBar {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PhysicsFrame.mouseHandler.canAdd = true;
-				PhysicsFrame.mouseHandler.toAdd = new Wall(0, 0, 3, 1);
+				Input.toAdd = new Wall(0, 0, 3, 1);
 			}
 		});
 		submenu.add(menuItem);
@@ -158,8 +162,7 @@ public class MenuBar {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PhysicsFrame.mouseHandler.canAdd = true;
-				PhysicsFrame.mouseHandler.toAdd = new Ramp(0, 0, 5, 5, true);
+				Input.toAdd = new Body(new Ramp(5, 5, true), 0, 0);
 			}
 		});
 		submenu.add(menuItem);
@@ -172,7 +175,7 @@ public class MenuBar {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.popupGravity();
+				frame.popupGravity(world);
 			}
 		});
 		menu.add(menuItem);
@@ -182,7 +185,7 @@ public class MenuBar {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.popupRestitution();
+				frame.popupRestitution(world);
 			}
 		});
 		menu.add(menuItem);

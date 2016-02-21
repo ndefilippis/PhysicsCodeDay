@@ -2,19 +2,14 @@ package physicsday.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.MouseInfo;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
 
-import physicsday.model.Block;
-import physicsday.model.Ramp;
+import physicsday.controller.Input;
+import physicsday.model.Body;
 import physicsday.model.Shape;
 import physicsday.model.World;
 import physicsday.util.Vector;
@@ -22,28 +17,31 @@ import physicsday.util.Vector;
 
 @SuppressWarnings("serial")
 public class PhysicsPanel extends JPanel{
+	public JLabel itemInfoLabel;
+	public JLabel timeLabel = new JLabel();
+	public final int PANEL_WIDTH = 1200;
+	public final int PANEL_HEIGHT = 650;
+	private boolean gridlines = true;
+	public double xScale = 25;
+	public double yScale = 25;
+	public double yOffset = 0;
+	public double xOffset = 0;
+	private ArrayList<Body> bodiesToDraw = new ArrayList<Body>();
+	private World world;
 	
-	public static JLabel itemInfo;
-	public static final int width = 1200;
-	public static final int height = 650;
-	public static boolean gridlines = true;
-	public static Shape selectedItem;
-	public static JLabel label = new JLabel();
-	public static double xScale = 25;
-	public static double yScale = 25;
-	public static double yOffset = 0;
-	public static double xOffset = 0;
-	public PhysicsPanel(){
-		setPreferredSize(new Dimension(width, height));
+	public PhysicsPanel(World world){
+		setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setSize(1600, 1200);
 		setLayout(null);
-		add(PhysicsPanel.label);
-		label.setBounds(1, 0, 12*8, 24);
-		label.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-		label.setOpaque(true);
-		itemInfo = new JLabel();
-		itemInfo.setBounds(0, height-30, width, 30);
-		add(itemInfo);
+		timeLabel = new JLabel();
+		timeLabel.setBounds(1, 0, 12*8, 24);
+		timeLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+		timeLabel.setOpaque(true);
+		this.add(timeLabel);
+		itemInfoLabel = new JLabel();
+		itemInfoLabel.setBounds(0, PANEL_HEIGHT-30, PANEL_WIDTH, 30);
+		this.add(itemInfoLabel);
+		this.world = world;
 	}
 
 	public int drawGridlines(Graphics g){
@@ -91,54 +89,64 @@ public class PhysicsPanel extends JPanel{
 		return result;
 	}
 
+	public void render(World w){
+		if(Input.selectedItem != null){
+			itemInfoLabel.setOpaque(true);
+			itemInfoLabel.setBackground(Color.WHITE);
+			itemInfoLabel.setText(Input.selectedItem.toString());
+			
+		}
+		else{
+			itemInfoLabel.setOpaque(false);
+			itemInfoLabel.setBackground(Color.WHITE);
+			itemInfoLabel.setText("");
+		}
+		bodiesToDraw.addAll(w.getObjectsInView(xOffset, yOffset, PANEL_WIDTH, PANEL_HEIGHT));
+		repaint();
+	}
+
 	@Override
 	public void paintComponent(Graphics g){
-		itemInfo.setBounds(0, getHeight()-30, getWidth(), 30);
 		super.paintComponent(g);
+		itemInfoLabel.setBounds(0, getHeight()-30, getWidth(), 30);
 		if(gridlines){
 			drawGridlines(g);
 		}
 		g.setColor(Color.BLACK);
-		for(Shape s : World.getObjectsInView(xOffset, yOffset, width, height)){
-			s.draw(g);
+		for(Body body : world.getObjectsInView(0, 0, 0, 0)){
+			body.draw(g, this);
 		}
-		if(PhysicsFrame.mouseHandler.canAdd){
-			int mouseX = MouseInfo.getPointerInfo().getLocation().x;
+		if(Input.selectedItem != null){
+			/*int mouseX = MouseInfo.getPointerInfo().getLocation().x;
 			int mouseY = MouseInfo.getPointerInfo().getLocation().y;
-			PhysicsFrame.mouseHandler.toAdd.setPosition(new Vector((mouseX-this.getLocationOnScreen().x-xOffset)/xScale-PhysicsFrame.mouseHandler.toAdd.getWidth()/2, (mouseY-this.getLocationOnScreen().y-yOffset)/yScale-PhysicsFrame.mouseHandler.toAdd.getHeight()/2));
+			Input.toAdd.setPosition(new Vector((mouseX-this.getLocationOnScreen().x-xOffset)/xScale-Input.toAdd.getWidth()/2, (mouseY-this.getLocationOnScreen().y-yOffset)/yScale-PhysicsFrame.mouseHandler.toAdd.getHeight()/2));
 			Color veil = new Color(255, 255, 255, 200);
-			if(!World.canAddAtLocation(PhysicsFrame.mouseHandler.toAdd)){
+			if(!World.canAddAtLocation(Input.toAdd)){
 				veil = new Color(255, 0, 0, 200);
 			}
-			PhysicsFrame.mouseHandler.toAdd.draw(g);
+			Input.toAdd.draw(g);
 			g.setColor(veil);
-			g.fillPolygon(PhysicsFrame.mouseHandler.toAdd.getOutline());
+			g.fillPolygon(Input.toAdd.shape.getOutline());*/
 		}
-		if(selectedItem != null){
-			PhysicsPanel.itemInfo.setOpaque(true);
-			PhysicsPanel.itemInfo.setBackground(Color.WHITE);
-			PhysicsPanel.itemInfo.setText(selectedItem.toString());
+		/*if(Input.selectedItem != null){
 			g.setColor(new Color(255, 255, 255, 100));
-			g.fillPolygon(selectedItem.getOutline());
+			g.fillPolygon(Input.selectedItem.shape.getOutline());
 			g.setColor(Color.RED);
-			g.drawPolygon(selectedItem.getOutline());
-		}
-		else{
-			PhysicsPanel.itemInfo.setOpaque(false);
-			PhysicsPanel.itemInfo.setBackground(Color.WHITE);
-			PhysicsPanel.itemInfo.setText("");
-		}
+			g.drawPolygon(Input.selectedItem.shape.getOutline());
+		}*///TODO: add this in the Input
 	}
 	
-	public static void resetView(){
+	public void resetView(){
 		xScale = 25;
 		yScale = 25;
 		xOffset = 0;
 		yOffset = 0;
 	}
-
-	public static void popupDialogMenu(Shape s) {
-		JRadioButton delete = new JRadioButton();
+	public void toggleGridlines(){
+		gridlines = !gridlines;
+	}
+	public void popupDialogMenu(Shape s) {
+		/*JRadioButton delete = new JRadioButton();
 		JRadioButton switchSlope = new JRadioButton();
 		JTextField xField = new JTextField(5);
 		JTextField yField = new JTextField(5);
@@ -183,8 +191,8 @@ public class PhysicsPanel extends JPanel{
 		int result = JOptionPane.showConfirmDialog(null, pan, "Enter X and Y values", JOptionPane.OK_CANCEL_OPTION);
 		if(result == JOptionPane.OK_OPTION){
 			if(delete.isSelected()){
-				World.objects.remove(selectedItem);
-				selectedItem = null;
+				World.removeObject(Input.selectedItem);
+				Input.selectedItem = null;
 				return;
 			}
 			try{
@@ -193,7 +201,7 @@ public class PhysicsPanel extends JPanel{
 				}
 				if(s instanceof Block && !mass.getText().isEmpty()){
 					try{
-						selectedItem.setMass(Double.parseDouble(mass.getText()));
+						Input.selectedItem.setMass(Double.parseDouble(mass.getText()));
 					}
 					catch(NumberFormatException e){
 						
@@ -201,17 +209,23 @@ public class PhysicsPanel extends JPanel{
 				}
 				double x;
 				if(!xField.getText().isEmpty() && !yField.getText().isEmpty()){
-					selectedItem.setVelocity(new Vector(Integer.parseInt(xField.getText()), Integer.parseInt(yField.getText())));
-				}
-				if(!wField.getText().isEmpty()){
-					selectedItem.setWidth(Integer.parseInt(wField.getText()));
-				}
-				selectedItem.setHeight(Integer.parseInt(hField.getText()));
-				
+					Input.selectedItem.setVelocity(new Vector(Integer.parseInt(xField.getText()), Integer.parseInt(yField.getText())));
+				}				
 			}
 			catch(NumberFormatException e){
 				
 			}
-		}
+		}*/
 	}
+	public Vector toScreenCoords(Vector pos){
+		double x = pos.x*xScale + xOffset;
+		double y = pos.y*yScale + yOffset;
+		return new Vector(x, y);
+	}
+	public Vector toScreenSize(Vector size){
+		double width = size.x*xScale;
+		double height = size.y*yScale;
+		return new Vector(width, height);
+	}
+	
 }

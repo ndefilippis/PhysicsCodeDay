@@ -1,16 +1,90 @@
 package physicsday.controller;
 
-import physicsday.model.Shape;
-import physicsday.util.Vector;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelListener;
 
-public class Input {
-	public boolean canAdd;
-	public Shape toAdd;
-	public boolean down;
-	public Vector startPosition;
-	public static Shape draggedItem;
-	public static Shape resizeItem;
+import physicsday.model.Body;
+import physicsday.model.World;
+import physicsday.util.Vector;
+import physicsday.view.PhysicsPanel;
+
+public class Input implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener{
+	protected World world;
+	protected PhysicsPanel view; 
+	public static Body toAdd;
+	public static boolean down;
+	public static Vector startPosition;
+	public static Vector prevPosition;
+	public static Body draggedItem;
+	public static Body resizeItem;
+	public static Body selectedItem;
 	
-	public Input(){
+	public Input(PhysicsPanel p, World world){
+		view = p;
+		this.world = world;
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

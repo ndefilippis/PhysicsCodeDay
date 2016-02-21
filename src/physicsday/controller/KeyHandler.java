@@ -7,7 +7,12 @@ import physicsday.model.World;
 import physicsday.view.PhysicsFrame;
 import physicsday.view.PhysicsPanel;
 
-public class KeyHandler implements KeyListener{
+public class KeyHandler extends Input implements KeyListener{
+
+	public KeyHandler(PhysicsPanel p, World world) {
+		super(p, world);
+		view.addKeyListener(this);
+	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -19,20 +24,19 @@ public class KeyHandler implements KeyListener{
 			PhysicsDay.toggleRunning();
 		}
 		if(e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
-			if(PhysicsPanel.selectedItem != null){
-				World.objects.remove(PhysicsPanel.selectedItem);
-				PhysicsPanel.selectedItem = null;
+			if(Input.selectedItem != null){
+				world.removeObject(Input.selectedItem);
+				Input.selectedItem = null;
 			}
 		}
 		if(e.getKeyCode() == KeyEvent.VK_R){
-			World.resetState();
+			world.resetState();
 		}
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
-			PhysicsFrame.mouseHandler.canAdd = false;
-			PhysicsFrame.mouseHandler.toAdd = null;
+			Input.toAdd = null;
 		}
 		if(e.getKeyCode() == KeyEvent.VK_V){
-			PhysicsPanel.resetView();
+			view.resetView();
 		}
 	}
 

@@ -3,59 +3,54 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import physicsday.PhysicsDay;
+import physicsday.model.Body;
 import physicsday.model.Shape;
 import physicsday.model.World;
 import physicsday.util.Vector;
 import physicsday.view.PhysicsFrame;
 import physicsday.view.PhysicsPanel;
 
-public class MouseHandler implements MouseListener{
-	public boolean canAdd;
-	public Shape toAdd;
-	public boolean down;
-	public Vector startPosition;
-	public static Shape draggedItem;
-	public static Shape resizeItem;
+public class MouseHandler extends Input implements MouseListener{
 	
+	public MouseHandler(PhysicsPanel p, World world) {
+		super(p, world);
+		view.addMouseListener(this);
+	}
+		
 	@Override
 	public void mouseClicked(MouseEvent e) {
-			Shape s;
-			if((s = World.getShapeAt(e.getX()-PhysicsDay.getPanel().getLocationOnScreen().x, e.getY()-PhysicsDay.getPanel().getLocationOnScreen().y)) != null){
-				if(s.equals(PhysicsPanel.selectedItem)){
-					PhysicsPanel.popupDialogMenu(s);
-				}
-				PhysicsPanel.selectedItem = s;
-				return;
-			}
-
-		PhysicsPanel.selectedItem = null;
-		PhysicsPanel.itemInfo.setOpaque(false);
-		PhysicsPanel.itemInfo.setText("");
+		
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
-		startPosition = new Vector(e.getX()/PhysicsPanel.xScale,e.getY()/PhysicsPanel.yScale);
-		if(PhysicsFrame.mouseHandler.canAdd){
-			resizeItem = PhysicsFrame.mouseHandler.toAdd;
+		Body b;
+		if((b = world.getShapeAt(e.getX()-view.getLocationOnScreen().x, e.getY()-view.getLocationOnScreen().y, view)) != null){
+			if(b.shape.equals(Input.selectedItem)){
+				view.popupDialogMenu(b.shape);
+			}
+			Input.selectedItem = b;
+			return;
 		}
-		MouseMotionHandler.prevPosition = new Vector(e.getX()/PhysicsPanel.xScale,e.getY()/PhysicsPanel.yScale);
-		Shape s;
-		if((s = World.getShapeAt(e.getX()-PhysicsDay.getPanel().getLocationOnScreen().x, e.getY()-PhysicsDay.getPanel().getLocationOnScreen().y)) != null){
-			draggedItem = s;
+		Input.startPosition = new Vector(e.getX()/view.xScale,e.getY()/view.yScale);
+		if(Input.toAdd != null){
+			Input.resizeItem = Input.toAdd;
 		}
-		down = true;
+		Input.prevPosition = new Vector(e.getX()/view.xScale,e.getY()/view.yScale);
+		if((b = world.getShapeAt(e.getX()-view.getLocationOnScreen().x, e.getY()-view.getLocationOnScreen().y, view)) != null){
+			Input.draggedItem = b;
+		}
+		Input.down = true;
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		if(PhysicsFrame.mouseHandler.canAdd && World.canAddAtLocation(PhysicsFrame.mouseHandler.toAdd)){
-			World.objects.add(PhysicsFrame.mouseHandler.toAdd);
-			PhysicsPanel.selectedItem = PhysicsFrame.mouseHandler.toAdd;
-			PhysicsFrame.mouseHandler.canAdd = false;
+		if(Input.toAdd != null && world.canAddAtLocation(Input.toAdd, view)){
+			world.add(Input.toAdd);
+			Input.selectedItem = Input.toAdd;
 			return;
 		}
-		down = false;
-		draggedItem = null;
-		resizeItem = null;
+		Input.down = false;
+		Input.draggedItem = null;
+		Input.resizeItem = null;
 	}
 	@Override
 	public void mouseEntered(MouseEvent e) {	

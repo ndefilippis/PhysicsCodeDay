@@ -1,28 +1,18 @@
 package physicsday.model;
-import java.awt.Graphics;
-import java.awt.Polygon;
-import java.awt.Rectangle;
-import java.awt.geom.Area;
 
-
-public class Wall extends AABB{
-
+public class Wall extends Body{
+	double width;
+	double height;
 	public Wall(double x, double y, double width, double height) {
-		super(x, y, width, height);
-		setMass(Double.POSITIVE_INFINITY);
-		anchored = true;
-		inv_mass = 0;
-	}
-
-	@Override
-	public double friction(Shape s) {
-		// TODO Auto-generated method stub
-		return 0;
+		super(new Block(width, height), x, y);
+		this.width = width;
+		this.height = height;
+		this.setMass(Double.POSITIVE_INFINITY);
 	}
 	
 	@Override
-	public Shape copy() {
-		return new Wall(currState.position.x, currState.position.y, getWidth(), getHeight());
+	public Body copy() {
+		return new Wall(getPosition().x, getPosition().y, width, height);
 	}
 	
 }

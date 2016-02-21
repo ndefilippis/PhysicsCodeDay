@@ -3,6 +3,7 @@ package physicsday.util;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
+import physicsday.model.Body;
 import physicsday.model.Shape;
 
 public class QuadTree{
@@ -16,29 +17,29 @@ public class QuadTree{
 	private class Node {
 		private Node[] nodes;
 		private Rectangle2D bounds;
-		private ArrayList<Shape> objects;
+		private ArrayList<Body> objects;
 		
 		Node(Rectangle2D bounds){
 			this.bounds = bounds;
-			objects = new ArrayList<Shape>();
+			objects = new ArrayList<Body>();
 			nodes = new Node[4];
 		}
-		private int getIndex(Shape shape){
+		private int getIndex(Body body){
 			int index = -1;
 			double xMid = bounds.getX() + bounds.getWidth()/2;
 			double yMid = bounds.getY() + bounds.getHeight()/2;
+			BoundingBox rect = body.shape.boundingBox();
+			boolean top = (rect.y() < yMid && rect.y() + rect.height() < yMid);
+			boolean bottom = rect.y() > yMid;
 			
-			boolean top = (shape.drawY() < yMid && shape.drawY() + shape.drawHeight() < yMid);
-			boolean bottom = shape.drawY() > yMid;
-			
-			if(shape.drawX() < xMid && shape.drawX() + shape.drawWidth() < xMid){
+			if(rect.x() < xMid && rect.x() + rect.width() < xMid){
 				if(top){
 					index = 1;
 				} else if (bottom){
 					index = 2;
 				}
 			}
-			else if(shape.drawX() > xMid){
+			else if(rect.x() > xMid){
 				if(top){
 					index = 0;
 				} else if (bottom){
@@ -66,17 +67,17 @@ public class QuadTree{
 				}
 			}
 		}
-		private void insert(Shape shape){
+		private void insert(Body body){
 			if(nodes[0] != null){
-				int index = getIndex(shape);
+				int index = getIndex(body);
 				
 				if(index != -1){
-					nodes[index].insert(shape);
+					nodes[index].insert(body);
 					return;
 				}
 			}
 			
-			objects.add(shape);
+			objects.add(body);
 			if(objects.size() > MAX_OBJECTS){
 				if(nodes[0] == null){
 					split();
@@ -94,16 +95,16 @@ public class QuadTree{
 				}
 			}
 		}
-		private ArrayList<Shape> retrieve(Shape s, ArrayList<Shape> list) {
-			ArrayList<Shape> _ret = new ArrayList<Shape>();
-			int index = getIndex(s);
+		private ArrayList<Body> retrieve(Body b, ArrayList<Body> list) {
+			ArrayList<Body> _ret = new ArrayList<Body>();
+			int index = getIndex(b);
 			if(nodes[0] != null){
 				if(index != -1){
-					nodes[index].retrieve(s, list);
+					nodes[index].retrieve(b, list);
 				}
 				else{
 					for(int i = 0; i < 4; i++){
-						list.addAll(nodes[i].retrieve(s, list));
+						list.addAll(nodes[i].retrieve(b, list));
 					}
 				}
 			}
@@ -116,11 +117,11 @@ public class QuadTree{
 	public void clear(){
 		this.overallRoot.clear();
 	}
-	public void insert(Shape shape){
-		overallRoot.insert(shape);
+	public void insert(Body body){
+		overallRoot.insert(body);
 	}	
-	public ArrayList<Shape> retreive(Shape s){
-		return overallRoot.retrieve(s, new ArrayList<Shape>());
+	public ArrayList<Body> retreive(Body b){
+		return overallRoot.retrieve(b, new ArrayList<Body>());
 	}
 	
 	

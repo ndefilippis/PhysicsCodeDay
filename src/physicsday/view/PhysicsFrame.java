@@ -29,25 +29,11 @@ import physicsday.util.Vector;
 
 @SuppressWarnings("serial")
 public class PhysicsFrame extends JFrame {
-	
-	public static MouseHandler mouseHandler;
-	public static KeyHandler keyHandler;
-	public static MouseMotionHandler motionHandler;
-	public static ScrollHandler scrollHandler;
 
 	public PhysicsFrame(PhysicsPanel panel) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Physics");
-		MenuBar.createMenuBar(this);
 		getContentPane().add(panel);
-		mouseHandler = new MouseHandler();
-		keyHandler = new KeyHandler();
-		motionHandler = new MouseMotionHandler();
-		scrollHandler = new ScrollHandler();
-		this.addMouseListener(mouseHandler);
-		this.addKeyListener(keyHandler);
-		this.addMouseMotionListener(motionHandler);
-		this.addMouseWheelListener(scrollHandler);
 	}
 
 	public void display() {
@@ -59,7 +45,7 @@ public class PhysicsFrame extends JFrame {
 	}
 	
 
-	public void popupRestitution() {
+	public void popupRestitution(World world) {
 		JTextField restitution = new JTextField(5);
 		JPanel pan = new JPanel();
 		pan.add(new JLabel("Restiution"));
@@ -69,7 +55,7 @@ public class PhysicsFrame extends JFrame {
 		if(result == JOptionPane.OK_OPTION){
 			try{
 				double rest = Double.parseDouble(restitution.getText());
-				World.energyConserved = rest;
+				world.energyConserved = rest;
 			}
 			catch(NumberFormatException e){
 				
@@ -77,7 +63,7 @@ public class PhysicsFrame extends JFrame {
 		}
 	}
 
-	public void popupGravity() {
+	public void popupGravity(World world) {
 		JTextField gravity = new JTextField(5);
 		JPanel pan = new JPanel();
 		pan.add(new JLabel("Gravity"));
@@ -87,7 +73,7 @@ public class PhysicsFrame extends JFrame {
 		if(result == JOptionPane.OK_OPTION){
 			try{
 				double grav = Double.parseDouble(gravity.getText());
-				World.gravity = new Vector(0, grav);
+				world.gravity = new Vector(0, grav);
 			}
 			catch(NumberFormatException e){
 				

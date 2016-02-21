@@ -4,46 +4,45 @@ import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
+import java.awt.geom.Rectangle2D;
 
+import physicsday.util.BoundingBox;
 import physicsday.util.Vector;
+import physicsday.view.PhysicsPanel;
 
-public class AABB extends Shape{
-
-	public AABB(double x, double y, double width, double height) {
-		super(x, y, width, height);
-		// TODO Auto-generated constructor stub
+public abstract class AABB extends Shape{
+	protected double height;
+	protected double width;
+	
+	public AABB(double width, double height) {
+		super();
+		this.width = width;
+		this.height = height;
 	}
 
-	public void draw(Graphics g){
-		g.setColor(new Color(Math.min((int)(128*inv_mass), 255), Math.min((int)(200*inv_mass), 255), Math.min((int)(128*inv_mass), 255)));
-		g.fillRect(drawX()-drawWidth()/2, drawY()-drawHeight()/2, drawWidth(), drawHeight());
+	public void draw(Graphics g, PhysicsPanel panel){
+		double color = (int)Math.min(body.getInvMass(), 1);
+		backgroundColor = new Color((int)(128*color), (int)(200*color), (int)(128*color));
+		g.setColor(backgroundColor);
+		Vector pos = panel.toScreenCoords(body.getPosition());
+		Vector size = panel.toScreenSize(new Vector(width, height));
+		g.fillRect((int)(pos.x-size.x/2), (int)(pos.y-size.y/2), (int)size.x, (int)size.y);
 		g.setColor(Color.BLACK);
-		g.drawRect(drawX()-drawWidth()/2, drawY()-drawHeight()/2, drawWidth(), drawHeight());
+		g.drawRect((int)(pos.x-size.x/2), (int)(pos.y-size.y/2), (int)size.x, (int)size.y);
 	}
 
-	@Override
-	public Polygon getOutline() {
-		int[] x = {drawX()-drawWidth()/2, drawX()+drawWidth()/2, drawX()+drawWidth()/2, drawX()-drawWidth()/2};
-		int[] y = {drawY()-drawHeight()/2, drawY()-drawHeight()/2, drawY()+drawHeight()/2, drawY()+drawHeight()/2};
-		return new Polygon(x, y, 4);
+	public double getWidth() {
+		return width;
 	}
-
-	@Override
-	public Area getArea() {
-		Rectangle r = new Rectangle(drawX()-drawWidth()/2, drawY()-drawHeight()/2, drawWidth(), drawHeight()); 
-		return new Area(r);
+	public double getHeight(){
+		return height;
 	}
-
-	@Override
-	public Shape copy() {
-		AABB aabb = new AABB(currState.position.x, currState.position.y, getWidth(), getHeight());
-		aabb.currState.velocity = new Vector(currState.velocity.x, currState.velocity.y);
-		return aabb;
+	public BoundingBox boundingBox(){
+		return new BoundingBox(body.getPosition(), width, height);
 	}
-
-	@Override
-	public double friction(Shape s) {
-		return 0;
+	public Area getScreenArea(PhysicsPanel panel){
+		Vector top = panel.toScreenCoords(new Vector(body.getPosition().x-width/2, body.getPosition().y - height/2));
+		Vector size = panel.toScreenSize(new Vector(width, height));
+		return new Area(new Rectangle2D.Double(top.x, top.y, size.x, size.y));
 	}
-
 }
