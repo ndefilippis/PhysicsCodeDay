@@ -7,7 +7,7 @@ import physicsday.model.World;
 import physicsday.view.PhysicsFrame;
 import physicsday.view.PhysicsPanel;
 
-public class KeyHandler extends Input implements KeyListener{
+public class KeyHandler extends PhysicsInput implements KeyListener{
 
 	public KeyHandler(PhysicsPanel p, World world) {
 		super(p, world);
@@ -24,16 +24,16 @@ public class KeyHandler extends Input implements KeyListener{
 			PhysicsDay.toggleRunning();
 		}
 		if(e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
-			if(Input.selectedItem != null){
-				world.removeObject(Input.selectedItem);
-				Input.selectedItem = null;
+			if(PhysicsInput.selectedItem != null){
+				world.removeObject(PhysicsInput.selectedItem);
+				PhysicsInput.selectedItem = null;
 			}
 		}
 		if(e.getKeyCode() == KeyEvent.VK_R){
 			world.resetState();
 		}
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
-			Input.toAdd = null;
+			PhysicsInput.toAdd = null;
 		}
 		if(e.getKeyCode() == KeyEvent.VK_V){
 			view.resetView();

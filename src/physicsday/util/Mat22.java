@@ -26,11 +26,20 @@ public class Mat22 {
 		m[1][1] = c;
 	}
 	
+	public Mat22() {
+		m[0][0] = 1;
+		m[1][1] = 1;
+	}
+
 	public Vector multiply(Vector v){
 		return new Vector(m[0][0] * v.x+m[0][1]*v.y, m[1][0]*v.x+m[1][1]*v.y);
 	}
 	
 	public double[][] getMatrix(){
 		return m;
+	}
+
+	public Mat22 transpose() {
+		return new Mat22(m[0][0], m[1][0], m[0][1], m[1][1]);
 	}
 }

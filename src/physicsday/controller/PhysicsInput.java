@@ -5,6 +5,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
 import physicsday.model.Body;
@@ -12,9 +13,10 @@ import physicsday.model.World;
 import physicsday.util.Vector;
 import physicsday.view.PhysicsPanel;
 
-public class Input implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener{
+public class PhysicsInput implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener{
 	protected World world;
-	protected PhysicsPanel view; 
+	protected PhysicsPanel view;
+	public boolean mouseInside; 
 	public static Body toAdd;
 	public static boolean down;
 	public static Vector startPosition;
@@ -23,7 +25,7 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 	public static Body resizeItem;
 	public static Body selectedItem;
 	
-	public Input(PhysicsPanel p, World world){
+	public PhysicsInput(PhysicsPanel p, World world){
 		view = p;
 		this.world = world;
 	}
@@ -84,6 +86,12 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
 		// TODO Auto-generated method stub
 		
 	}

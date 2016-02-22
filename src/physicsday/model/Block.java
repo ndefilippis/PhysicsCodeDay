@@ -1,22 +1,20 @@
 package physicsday.model;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Polygon;
-import java.awt.Rectangle;
-import java.awt.geom.Area;
 
-import physicsday.util.BoundingBox;
-import physicsday.util.Vector;
-
-
-public class Block extends AABB{
-	public Block(double width, double height) {
-		super(height, width);
+public class Block extends Body{
+	double width, height;
+	
+	public Block(double x, double y, double width, double height) {
+		super(Polygon.createBox(width, height), x, y);
+		this.width = width;
+		this.height = height;
+		inertia = width*height*height*height/12;
+		invInertia = 1/inertia;
 	}
 
 	@Override
-	public Shape copy() {
-		Block b = new Block(width, height);
+	public Body copy() {
+		super.copy();
+		Block b = new Block(getPosition().x, getPosition().y, width, height);
 		return b;
 	}
 

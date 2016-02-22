@@ -1,7 +1,6 @@
 package physicsday.model;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Polygon;
 import java.awt.geom.Area;
 
 import physicsday.util.BoundingBox;
@@ -9,15 +8,16 @@ import physicsday.util.Vector;
 import physicsday.view.PhysicsPanel;
 
 
-public class Ramp extends Shape{
+public class Ramp extends Body{
 	boolean positive;
 	double width, height;
 
 	public Ramp(double width, double height, boolean positive) {
+		super(new Polygon(), width, height);
 		this.width = width;
 		this.height = height;
 		this.positive = positive;
-		body.setMass(Integer.MAX_VALUE);
+		setMass(Integer.MAX_VALUE);
 	}
 	
 	public void draw(Graphics g){
@@ -29,30 +29,18 @@ public class Ramp extends Shape{
 	}
 
 	@Override
-	public Shape copy() {
+	public Body copy() {
 		Ramp r = new Ramp(width, height, this.positive);
 		return r;
 		
 	}
 	
 	public BoundingBox boundingBox(){
-		return new BoundingBox(body.getPosition(), width, height);
+		return new BoundingBox(getPosition(), width, height);
 	}
 
 	public void switchFacing() {
 		positive = !positive;
-	}
-
-	@Override
-	public void draw(Graphics g, PhysicsPanel panel) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Area getScreenArea(PhysicsPanel panel) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 

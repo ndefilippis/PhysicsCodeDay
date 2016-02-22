@@ -1,28 +1,25 @@
 package physicsday.model;
 
-import java.awt.Graphics;
 import physicsday.util.Vector;
-import physicsday.view.PhysicsPanel;
 
 public class Body {
-	public Shape shape;
-	private State currState;
-	private State prevState;
-	private double mass;
-	private double invMass;
-	private double inertia;
-	private double invInertia;
-	double staticFriction = 0.3;
-	double dynamicFriction = 0.1;
+	public final Shape shape;
+	private State currState, prevState;
+	protected double mass, invMass, inertia, invInertia;
+	double staticFriction;
+	double dynamicFriction;
 	double restitution;
 	
 	public Body(Shape shape, double x, double y){
 		this.shape = shape;
-		shape.body = this;
+		currState = new State();
+		currState.position.set(x, y);
+		staticFriction = 0.5;
+		dynamicFriction = 0.3;
+		restitution = 0.2;
 		mass = 1;
 		invMass = 1;
-		currState = new State();
-		currState.position = new Vector(x, y);
+		shape.body = this;
 	}
 	
 	public Body(Body other) {
@@ -35,88 +32,72 @@ public class Body {
 		return currState.position;
 	}
 	public void setPosition(Vector p){
-		this.currState.position = p;
+		this.currState.position.set(p);;
 		
 	}
-	
 	public Vector getVelocity(){
 		return currState.velocity;
+	}
+	public void setVelocity(Vector vector) {
+		currState.velocity.set(vector);
 	}
 	public double getAngularVelocity(){
 		return currState.angularVelocity;
 	}
 	
-	public void draw(Graphics g, PhysicsPanel panel){
-		shape.draw(g, panel);
-	}
-	
-	public void update(double dt){
-		if(!Vector.isValid(currState.velocity)){
-			currState.velocity = prevState.velocity;
-		}
-		if(!Vector.isValid(currState.position)){
-			currState.position = prevState.position;
-		}
-		prevState = new State(currState);
-		currState.integrate(dt);
-		shape.setOrientation(currState.orientation);
-		currState.force = new Vector(0,0);
-		currState.torque = 0;
-	}
 	
 	public void applyForce(Vector f){
-		currState.force = currState.force.add(f);
+		currState.force.addi(f);
 	}
-	public void applyTorque(double t){
-		currState.torque += t;
-	}
+
 	public void applyImpulse(Vector impulse, Vector contact){
-		currState.velocity = currState.velocity.add(impulse.multiply(invMass));
+		currState.velocity.addsi(impulse, invMass);
 		currState.angularVelocity += contact.Cross(impulse)*invInertia;
 	}
 	
-	private class State{
-		public Vector momentum;
-		public Vector position;
-		public double orientation;
-		public double angularMomentum;
+	public void integrateForces(double dt, Vector gravity){
+		currState.integrateForces(dt, gravity);
+	}
+	public void integrateVelocity(double dt, Vector gravity){
+		currState.integrateVelocity(dt, gravity);
 		
-		public Vector velocity;
+	}
+	
+	private class State{
+		public final Vector position;
+		public double orientation;
+		
+		public final Vector velocity;
 		public double angularVelocity;
 		
-		public Vector force;
+		public final Vector force;
 		public double torque;
 		
 		public State(){
-			momentum = new Vector();
 			velocity = new Vector();
 			position = new Vector();
 			force = new Vector();
 		}
 		
 		public State(State other){
-			momentum = new Vector(other.momentum);
 			velocity = new Vector(other.velocity);
 			position = new Vector(other.position);
 			force = new Vector(other.force);
-			recalculate();
 		}
-
-		public void integrate(double dt) {
-			System.out.println(force);
-			momentum = momentum.add(force.multiply(dt));
-			angularMomentum += torque*dt;
-			recalculate();
-			position = position.add(velocity.multiply(dt));
+		
+		public void integrateForces(double dt, Vector gravity){
+			if(invMass == 0) return;
+			velocity.addsi(force, dt/2*invMass);
+			velocity.addsi(gravity, dt/2);
+			angularVelocity += torque*invInertia*dt/2.0;
+		}
+		
+		public void integrateVelocity(double dt, Vector gravity){
+			if(invMass == 0) return;
+			position.addsi(velocity, dt);
 			orientation += angularVelocity * dt;
-		}
-
-		private void recalculate(){
-			velocity = momentum.multiply(invMass);
-			angularVelocity = angularMomentum*invInertia;
-			if(velocity.x <= 0.005) velocity.x = 0;
-			if(velocity.y <= 0.005) velocity.y = 0;
-			if(angularVelocity <= 0.005) angularVelocity = 0;
+			shape.setOrientation(orientation);
+			integrateForces(dt, gravity);
 		}
 	}
 
@@ -132,23 +113,19 @@ public class Body {
 		return invMass;
 	}
 
-	public String saveString() {
-		return shape.toString();
-	}
-
 	public Body copy() {
 		return new Body(this);
-	}
-
-	public void setVelocity(Vector vector) {
-		currState.velocity = vector;
 	}
 
 	public double getInvInertia() {
 		return invInertia;
 	}
 
-	public void addPosition(Vector vec) {
-		currState.position = currState.position.add(vec);
+	public void setTorque(double t) {
+		currState.torque = t;
+	}
+	
+	public void setForce(double x, double y){
+		currState.force.set(x, y);
 	}
 }

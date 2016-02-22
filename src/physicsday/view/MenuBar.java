@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -14,7 +15,7 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
 import physicsday.PhysicsDay;
-import physicsday.controller.Input;
+import physicsday.controller.PhysicsInput;
 import physicsday.model.Block;
 import physicsday.model.Body;
 import physicsday.model.Ramp;
@@ -32,15 +33,15 @@ public class MenuBar {
 	private static World world;
 	private static PhysicsPanel view;
 	
-	public static void createMenuBar(PhysicsFrame frame, World world, PhysicsPanel view){
+	public static void createMenuBar(JFrame window, World world, PhysicsScreen screen){
 		menuBar = new JMenuBar();
 		createFileMenu();
 		createWorldMenu();
 		createSimMenu();
-		MenuBar.frame = frame;
-		frame.setJMenuBar(menuBar);
+		MenuBar.frame = window;
+		window.setJMenuBar(menuBar);
 		MenuBar.world = world;
-		MenuBar.view = view;
+		MenuBar.view = screen;
 	}
 	private static void createFileMenu() {
 		// Build the first menu.
@@ -143,7 +144,7 @@ public class MenuBar {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Input.toAdd = new Body(new Block(1, 1), 0, 0);
+				PhysicsInput.toAdd = new Block(1, 1, 0, 0);
 			}
 		});
 		submenu.add(menuItem);
@@ -153,7 +154,7 @@ public class MenuBar {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Input.toAdd = new Wall(0, 0, 3, 1);
+				PhysicsInput.toAdd = new Wall(0, 0, 3, 1);
 			}
 		});
 		submenu.add(menuItem);
@@ -162,7 +163,7 @@ public class MenuBar {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Input.toAdd = new Body(new Ramp(5, 5, true), 0, 0);
+				PhysicsInput.toAdd = new Ramp(5, 5, true);
 			}
 		});
 		submenu.add(menuItem);

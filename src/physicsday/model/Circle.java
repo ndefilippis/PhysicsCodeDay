@@ -12,12 +12,6 @@ public class Circle extends Shape{
 	public Circle(double radius){
 		this.radius = radius;
 	}
-	
-	@Override
-	public void draw(Graphics g, PhysicsPanel panel) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public Shape copy() {
@@ -28,11 +22,4 @@ public class Circle extends Shape{
 	public BoundingBox boundingBox() {
 		return new BoundingBox(body.getPosition(), radius, radius);
 	}
-
-	@Override
-	public Area getScreenArea(PhysicsPanel panel) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

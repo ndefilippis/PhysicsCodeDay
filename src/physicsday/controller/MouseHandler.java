@@ -10,7 +10,7 @@ import physicsday.util.Vector;
 import physicsday.view.PhysicsFrame;
 import physicsday.view.PhysicsPanel;
 
-public class MouseHandler extends Input implements MouseListener{
+public class MouseHandler extends PhysicsInput implements MouseListener{
 	
 	public MouseHandler(PhysicsPanel p, World world) {
 		super(p, world);
@@ -25,32 +25,32 @@ public class MouseHandler extends Input implements MouseListener{
 	public void mousePressed(MouseEvent e) {
 		Body b;
 		if((b = world.getShapeAt(e.getX()-view.getLocationOnScreen().x, e.getY()-view.getLocationOnScreen().y, view)) != null){
-			if(b.shape.equals(Input.selectedItem)){
+			if(b.shape.equals(PhysicsInput.selectedItem)){
 				view.popupDialogMenu(b.shape);
 			}
-			Input.selectedItem = b;
+			PhysicsInput.selectedItem = b;
 			return;
 		}
-		Input.startPosition = new Vector(e.getX()/view.xScale,e.getY()/view.yScale);
-		if(Input.toAdd != null){
-			Input.resizeItem = Input.toAdd;
+		PhysicsInput.startPosition = new Vector(e.getX()/view.xScale,e.getY()/view.yScale);
+		if(PhysicsInput.toAdd != null){
+			PhysicsInput.resizeItem = PhysicsInput.toAdd;
 		}
-		Input.prevPosition = new Vector(e.getX()/view.xScale,e.getY()/view.yScale);
+		PhysicsInput.prevPosition = new Vector(e.getX()/view.xScale,e.getY()/view.yScale);
 		if((b = world.getShapeAt(e.getX()-view.getLocationOnScreen().x, e.getY()-view.getLocationOnScreen().y, view)) != null){
-			Input.draggedItem = b;
+			PhysicsInput.draggedItem = b;
 		}
-		Input.down = true;
+		PhysicsInput.down = true;
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		if(Input.toAdd != null && world.canAddAtLocation(Input.toAdd, view)){
-			world.add(Input.toAdd);
-			Input.selectedItem = Input.toAdd;
+		if(PhysicsInput.toAdd != null && world.canAddAtLocation(PhysicsInput.toAdd, view)){
+			world.add(PhysicsInput.toAdd);
+			PhysicsInput.selectedItem = PhysicsInput.toAdd;
 			return;
 		}
-		Input.down = false;
-		Input.draggedItem = null;
-		Input.resizeItem = null;
+		PhysicsInput.down = false;
+		PhysicsInput.draggedItem = null;
+		PhysicsInput.resizeItem = null;
 	}
 	@Override
 	public void mouseEntered(MouseEvent e) {	

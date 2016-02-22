@@ -1,29 +1,21 @@
 package physicsday.model;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.geom.Area;
 import physicsday.util.BoundingBox;
-import physicsday.view.PhysicsPanel;
+import physicsday.util.Mat22;
 
 public abstract class Shape{
 	protected double orientation;
-	protected Color backgroundColor;
-	protected Color outline;
+	protected Mat22 u = new Mat22();
 	public Body body;
 
 	public Shape(){
-		backgroundColor = Color.BLACK;
-		outline = Color.BLACK;
 	}
 	
-	public abstract void draw(Graphics g, PhysicsPanel panel);
-	
 	public abstract Shape copy();
-	public abstract Area getScreenArea(PhysicsPanel panel);
 	public abstract BoundingBox boundingBox();
 
 	public void setOrientation(double orientation) {
 		this.orientation = orientation;
+		u = new Mat22(orientation);
 	}
 }

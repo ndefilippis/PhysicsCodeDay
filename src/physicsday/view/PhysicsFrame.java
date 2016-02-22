@@ -55,7 +55,6 @@ public class PhysicsFrame extends JFrame {
 		if(result == JOptionPane.OK_OPTION){
 			try{
 				double rest = Double.parseDouble(restitution.getText());
-				world.energyConserved = rest;
 			}
 			catch(NumberFormatException e){
 				

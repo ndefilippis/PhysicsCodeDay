@@ -2,13 +2,14 @@ package physicsday.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.MouseInfo;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import physicsday.controller.Input;
+import physicsday.controller.PhysicsInput;
 import physicsday.model.Body;
 import physicsday.model.Shape;
 import physicsday.model.World;
@@ -90,10 +91,10 @@ public class PhysicsPanel extends JPanel{
 	}
 
 	public void render(World w){
-		if(Input.selectedItem != null){
+		if(PhysicsInput.selectedItem != null){
 			itemInfoLabel.setOpaque(true);
 			itemInfoLabel.setBackground(Color.WHITE);
-			itemInfoLabel.setText(Input.selectedItem.toString());
+			itemInfoLabel.setText(PhysicsInput.selectedItem.toString());
 			
 		}
 		else{
@@ -101,8 +102,8 @@ public class PhysicsPanel extends JPanel{
 			itemInfoLabel.setBackground(Color.WHITE);
 			itemInfoLabel.setText("");
 		}
-		bodiesToDraw.addAll(w.getObjectsInView(xOffset, yOffset, PANEL_WIDTH, PANEL_HEIGHT));
 		repaint();
+
 	}
 
 	@Override
@@ -116,24 +117,24 @@ public class PhysicsPanel extends JPanel{
 		for(Body body : world.getObjectsInView(0, 0, 0, 0)){
 			body.draw(g, this);
 		}
-		if(Input.selectedItem != null){
-			/*int mouseX = MouseInfo.getPointerInfo().getLocation().x;
+		if(PhysicsInput.selectedItem != null){
+			int mouseX = MouseInfo.getPointerInfo().getLocation().x;
 			int mouseY = MouseInfo.getPointerInfo().getLocation().y;
-			Input.toAdd.setPosition(new Vector((mouseX-this.getLocationOnScreen().x-xOffset)/xScale-Input.toAdd.getWidth()/2, (mouseY-this.getLocationOnScreen().y-yOffset)/yScale-PhysicsFrame.mouseHandler.toAdd.getHeight()/2));
+			PhysicsInput.toAdd.setPosition(new Vector((mouseX-this.getLocationOnScreen().x-xOffset)/xScale, (mouseY-this.getLocationOnScreen().y-yOffset)/yScale));
 			Color veil = new Color(255, 255, 255, 200);
-			if(!World.canAddAtLocation(Input.toAdd)){
+			if(!world.canAddAtLocation(PhysicsInput.toAdd, this)){
 				veil = new Color(255, 0, 0, 200);
 			}
-			Input.toAdd.draw(g);
+			PhysicsInput.toAdd.draw(g, this);
 			g.setColor(veil);
-			g.fillPolygon(Input.toAdd.shape.getOutline());*/
+			PhysicsInput.toAdd.draw(g, this);
 		}
-		/*if(Input.selectedItem != null){
+		if(PhysicsInput.selectedItem != null){
 			g.setColor(new Color(255, 255, 255, 100));
-			g.fillPolygon(Input.selectedItem.shape.getOutline());
+			PhysicsInput.selectedItem.draw(g, this);
 			g.setColor(Color.RED);
-			g.drawPolygon(Input.selectedItem.shape.getOutline());
-		}*///TODO: add this in the Input
+			PhysicsInput.selectedItem.draw(g, this);
+		}//TODO: add this in the Input
 	}
 	
 	public void resetView(){

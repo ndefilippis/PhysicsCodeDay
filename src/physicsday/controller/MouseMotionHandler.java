@@ -7,7 +7,7 @@ import physicsday.util.Vector;
 import physicsday.view.PhysicsFrame;
 import physicsday.view.PhysicsPanel;
 
-public class MouseMotionHandler extends Input implements MouseMotionListener {
+public class MouseMotionHandler extends PhysicsInput implements MouseMotionListener {
 
 	public MouseMotionHandler(PhysicsPanel p, World world) {
 		super(p, world);

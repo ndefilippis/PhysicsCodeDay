@@ -19,19 +19,8 @@ public class Manifold {
 	
 	public void solve(){
 		normal = new Vector();
-		if(a.shape instanceof AABB){
-			if(b.shape instanceof AABB){
-				Collision.AABBtoAABB(this, a, b);
-			}
-			if(b.shape instanceof Ramp){
-				Collision.PolygonToPolygon(this, a, b);
-			}
-		}
-		if(a.shape instanceof Ramp){
-			if(b.shape instanceof Ramp){
-				Collision.PolygonToPolygon(this, a, b);
-			}
-			if(b.shape instanceof AABB){
+		if(a.shape instanceof Polygon){
+			if(b.shape instanceof Polygon){
 				Collision.PolygonToPolygon(this, a, b);
 			}
 		}
@@ -71,16 +60,17 @@ public class Manifold {
 			double rbCrossN = rb.Cross(normal);
 			double invMassSum = a.getInvMass() + b.getInvMass() + Math.pow(raCrossN, 2)*a.getInvInertia() + Math.pow(rbCrossN, 2)*b.getInvInertia();
 			
-			double j = -(1+restitution)*contactVel;
+			double j = -(1.0+restitution)*contactVel;
 			j /= invMassSum*contactCount;
 			Vector impulse = normal.multiply(j);
-			a.applyImpulse(impulse.multiply(-1), ra);
-			a.applyImpulse(impulse, rb);
+			a.applyImpulse(impulse.neg(), ra);
+			b.applyImpulse(impulse, rb);
 			
 			rv = b.getVelocity().add(rb.PreCross(b.getAngularVelocity())).subtract(
 						a.getVelocity().subtract(ra.PreCross(a.getAngularVelocity())));
-			Vector t = rv.subtract(normal.multiply(rv.dot(normal)));
-			t = t.normalize();
+			Vector t = new Vector(rv);
+			t.addsi(normal, -rv.dot(normal));
+			t.normalizei();
 			double jt = -rv.dot(t);
 			jt /= invMassSum*contactCount;
 			if(Math.abs(jt) <= 0.005) return;
@@ -91,17 +81,17 @@ public class Manifold {
 			else{
 				tanImpulse = t.multiply(-j*dynamicFriction);
 			}
-			a.applyImpulse(tanImpulse.multiply(-1), ra);
+			a.applyImpulse(tanImpulse.neg(), ra);
 			b.applyImpulse(tanImpulse, rb);
 		}
 	}
 	
 	public void applyPositionalCorrection(){
-		double slop = 0.05;
-		double percent = 0.4;
-		Vector correction = normal.multiply(percent*Math.max(penetrationDepth - slop,  0)/(a.getInvMass()+b.getInvMass()));
-		a.addPosition(correction.multiply(-1).multiply(a.getInvMass()));
-		a.addPosition(correction.multiply(b.getInvMass()));
+		double slop = 0.1;
+		double percent = 0.2;
+		double correction = percent*Math.max(penetrationDepth - slop,  0)/(a.getInvMass()+b.getInvMass());
+		a.setPosition(a.getPosition().addsi(normal, -correction*a.getInvMass()));
+		b.setPosition(b.getPosition().addsi(normal,  correction*b.getInvMass()));
 	}
 	
 	public void infiniteMassCorrection(){

@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.geom.Area;
 
 import physicsday.util.BoundingBox;
+import physicsday.util.Mat22;
 import physicsday.util.Vector;
 import physicsday.view.PhysicsPanel;
 
@@ -93,27 +94,12 @@ public class Polygon extends Shape{
 	} 
 
 	@Override
-	public void draw(Graphics g, PhysicsPanel panel) {
-		int[] xpoints = new int[numVerticies];
-		int[] ypoints = new int[numVerticies];
-		for(int i = 0; i < numVerticies; i++){
-			Vector vec = panel.toScreenCoords(verticies[i]);
-			xpoints[i] = (int)vec.x;
-			ypoints[i] = (int)vec.y;
-		}
-		g.setColor(backgroundColor);
-		g.fillPolygon(xpoints, ypoints, numVerticies);
-		g.setColor(outline);
-		g.drawPolygon(xpoints, ypoints, numVerticies);
-		
-	}
-
-	@Override
 	public Shape copy() {
 		Polygon p = new Polygon();
 		p.numVerticies = numVerticies;
 		p.verticies = new Vector[numVerticies];
 		p.normals = new Vector[numVerticies];
+		p.u = u;
 		for(int i = 0; i < numVerticies; i++){
 			p.verticies[i] = verticies[i];
 			p.normals[i] = normals[i];	
@@ -134,19 +120,6 @@ public class Polygon extends Shape{
 			if(vertex.y > max.y) max.y = vertex.y;
 		}
 		return new BoundingBox(min, max);
-	}
-
-	
-	@Override
-	public Area getScreenArea(PhysicsPanel panel) {
-		int[] xpoints = new int[numVerticies];
-		int[] ypoints = new int[numVerticies];
-		for(int i = 0; i < numVerticies; i++){
-			Vector vec = panel.toScreenCoords(verticies[i]);
-			xpoints[i] = (int)vec.x;
-			ypoints[i] = (int)vec.y;
-		}
-		return new Area(new java.awt.Polygon(xpoints, ypoints, numVerticies));
 	}
 
 	public Vector getSupport(Vector direction){
