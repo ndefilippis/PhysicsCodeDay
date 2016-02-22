@@ -9,9 +9,9 @@ import physicsday.util.Vector;
 import physicsday.view.PhysicsPanel;
 
 public class Polygon extends Shape{
-	int numVerticies;
-	Vector[] verticies;
-	Vector[] normals;
+	public int numVerticies;
+	public Vector[] verticies;
+	public Vector[] normals;
 
 	public Polygon(){
 		numVerticies = 0;

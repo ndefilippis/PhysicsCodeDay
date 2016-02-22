@@ -25,9 +25,7 @@ public class PhysicsInput implements KeyListener, MouseListener, MouseMotionList
 	public static Body resizeItem;
 	public static Body selectedItem;
 	
-	public PhysicsInput(PhysicsPanel p, World world){
-		view = p;
-		this.world = world;
+	public PhysicsInput(){
 	}
 
 	@Override

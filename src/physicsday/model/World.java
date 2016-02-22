@@ -67,7 +67,6 @@ public class World {
 		for (Body b : initState) {
 			objects.add(b.copy());
 		}
-		PhysicsDay.resetLoop();
 	}
 
 	
@@ -79,5 +78,9 @@ public class World {
 	public void clear() {
 		objects.clear();
 		contacts.clear();
+	}
+
+	public ArrayList<Body> getBodies() {
+		return objects;
 	}
 }

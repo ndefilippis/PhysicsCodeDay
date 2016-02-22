@@ -17,10 +17,11 @@ import physicsday.model.Block;
 import physicsday.model.Body;
 import physicsday.model.Ramp;
 import physicsday.model.Wall;
+import physicsday.model.World;
 import physicsday.util.Vector;
 
-public class PhysicsFileHanlder {
-	public void saveWorld() throws FileNotFoundException {
+public class PhysicsFileHandler {
+	public static void saveWorld(World world) throws FileNotFoundException {
 		JFileChooser fileChooser = new JFileChooser();
 		if (fileChooser.showSaveDialog(PhysicsDay.getFrame()) == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();

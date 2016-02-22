@@ -5,8 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.MouseInfo;
 import java.awt.RenderingHints;
-import java.awt.geom.Area;
-import java.util.ArrayList;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -14,11 +13,11 @@ import javax.swing.JPanel;
 import physicsday.controller.PhysicsEngine;
 import physicsday.controller.PhysicsInput;
 import physicsday.controller.PhysicsLoop;
-import physicsday.model.Body;
 import physicsday.model.World;
 
 public class PhysicsScreen extends JPanel{
 	private static final long serialVersionUID = 1L;
+	private BufferedImage buffer;
 	private PhysicsLoop loop;
 	private PhysicsEngine engine;
 	private PhysicsInput input;
@@ -29,8 +28,9 @@ public class PhysicsScreen extends JPanel{
 		this.setSize(d);
 		this.setPreferredSize(d);
 		this.setFocusable(true);	
+		buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		this.loop = loop;
-		this.engine = physicsDay;
+		this.engine = engine;
 		this.input = new PhysicsInput();
 		this.world = new World();
 	}
@@ -87,7 +87,7 @@ public class PhysicsScreen extends JPanel{
 		}
 	}
 	
-	public boolean canAddAtLocation(Body toAdd, PhysicsPanel panel) {
+	/*public boolean canAddAtLocation(Body toAdd, PhysicsPanel panel) {
 		for (Body b : objects) {
 			Area a1 = b.shape.getScreenArea(panel);
 			a1.intersect(toAdd.shape.getScreenArea(panel));
@@ -97,10 +97,6 @@ public class PhysicsScreen extends JPanel{
 		}
 		return true;
 	}
-
-	public ArrayList<Body> getObjectsInView(double xOffset, double yOffset, double width, double height) {
-		return objects;
-	}
 	
 	public Body getShapeAt(int x, int y, PhysicsPanel p) {
 		for (int i = objects.size() - 1; i >= 0; i--) {
@@ -109,13 +105,13 @@ public class PhysicsScreen extends JPanel{
 			}
 		}
 		return null;
-	}
+	}*/
 	
 	public static void showWindow(PhysicsScreen screen, String title){
 		if(screen != null){
 			JFrame window = new JFrame(title);
 			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			MenuBar.createMenuBar(window, screen.world, screen);
+			//MenuBar.createMenuBar(window, screen.world, screen);
 			window.add(screen);
 			window.pack();
 			window.setVisible(true);

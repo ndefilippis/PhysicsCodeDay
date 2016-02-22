@@ -5,7 +5,7 @@ import physicsday.util.Mat22;
 
 public abstract class Shape{
 	protected double orientation;
-	protected Mat22 u = new Mat22();
+	public Mat22 u = new Mat22();
 	public Body body;
 
 	public Shape(){

@@ -29,9 +29,9 @@ public class MenuBar {
 	private static JMenuItem menuItem;
 	private static JRadioButtonMenuItem rbMenuItem;
 	private static JCheckBoxMenuItem cbMenuItem;
-	private static PhysicsFrame frame;
+	private static JFrame frame;
 	private static World world;
-	private static PhysicsPanel view;
+	private static PhysicsScreen view;
 	
 	public static void createMenuBar(JFrame window, World world, PhysicsScreen screen){
 		menuBar = new JMenuBar();
@@ -81,7 +81,7 @@ public class MenuBar {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					world.saveWorld();
+					PhysicsFileHandler.saveWorld(world);
 				} catch (FileNotFoundException e1) {
 					e1.printStackTrace();
 				}
