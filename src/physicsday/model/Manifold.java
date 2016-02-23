@@ -3,7 +3,8 @@ package physicsday.model;
 import physicsday.util.Vector;
 
 public class Manifold {
-	private Body a, b;
+	private Body a;
+	private Body b;
 	double penetrationDepth;
 	Vector normal;
 	Vector[] contacts;
@@ -104,11 +105,9 @@ public class Manifold {
 	}
 
 	public void applyPositionalCorrection() {
-		double slop = 0.05;
-		double percent = 0.4;
-		double correction = percent * Math.max(penetrationDepth - slop, 0) / (a.getInvMass() + b.getInvMass());
-		a.setPosition(a.getPosition().addsi(normal, -correction * a.getInvMass()));
-		b.setPosition(b.getPosition().addsi(normal, correction * b.getInvMass()));
+		double correction = Math.max( penetrationDepth - 0.01, 0.0 ) / (a.getInvMass() + b.getInvMass()) * 0.1;
+		a.setPosition(a.getPosition().addsi( normal, -a.getInvMass() * correction ));
+		b.setPosition(b.getPosition().addsi( normal, b.getInvMass() * correction ));
 	}
 
 	public void infiniteMassCorrection() {

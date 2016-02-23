@@ -114,6 +114,7 @@ public class Collision {
 	}
 	
 	public static void PolygonToPolygon(Manifold m, Body a, Body b) {
+		
 		Polygon a1 = (Polygon)a.shape;
 		Polygon b1 = (Polygon)b.shape;
 		m.contactCount = 0;
@@ -131,7 +132,7 @@ public class Collision {
 		
 		Polygon ref;
 		Polygon inc;
-		if(penetrationA >= 0.95*penetrationB + penetrationA*0.01){
+		if(penetrationA >= penetrationB ){
 			ref = a1;
 			inc = b1;
 			refIndex = faceA[0];

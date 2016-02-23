@@ -24,7 +24,7 @@ public class VariableLoop implements PhysicsLoop {
 		if(!engine.isRunning()){
 			return false;
 		}
-		world.update(SECONDS_PER_UPDATE);
+		//world.update(SECONDS_PER_UPDATE);
 		engine.update(world);
 		if(!engine.isRunning()){
 			return false;

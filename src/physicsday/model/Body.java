@@ -14,9 +14,9 @@ public class Body {
 		this.shape = shape;
 		currState = new State();
 		currState.position.set(x, y);
-		staticFriction = 0.5;
-		dynamicFriction = 0.3;
-		restitution = 0.1;
+		staticFriction = 0.0;
+		dynamicFriction = 0.0;
+		restitution = 1.4;
 		mass = 1;
 		invMass = 1;
 		shape.body = this;
@@ -88,7 +88,7 @@ public class Body {
 		public void integrateForces(double dt, Vector gravity){
 			if(invMass == 0) return;
 			velocity.addsi(force, dt/2*invMass);
-			velocity.addsi(gravity, dt/2);
+			velocity.addsi(gravity, dt/2.0);
 			angularVelocity += torque*invInertia*dt/2.0;
 		}
 		

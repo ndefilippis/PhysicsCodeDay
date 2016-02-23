@@ -11,7 +11,9 @@ public class World {
 	public Vector gravity = new Vector(0, 9.81);
 
 	public World() {
-		add(new Block(1, -2, 4, 4));
+		Body b = new Block(8, -2, 4, 4);
+		//b.applyImpulse(new Vector(200, 0), new Vector(1, 0));
+		add(b);
 		add(new Wall(50, 24, 100, 10));
 	}
 
@@ -83,5 +85,9 @@ public class World {
 
 	public ArrayList<Body> getBodies() {
 		return objects;
+	}
+	
+	public ArrayList<Manifold> getContacts(){
+		return contacts;
 	}
 }

@@ -8,9 +8,9 @@ import java.io.IOException;
 import physicsday.controller.PhysicsEngine;
 import physicsday.controller.PhysicsInput;
 import physicsday.controller.PhysicsLoop;
-import physicsday.controller.PhysicsTime;
 import physicsday.controller.VariableLoop;
 import physicsday.model.Body;
+import physicsday.model.Manifold;
 import physicsday.model.Polygon;
 import physicsday.model.World;
 import physicsday.util.Vector;
@@ -121,7 +121,10 @@ public class PhysicsDay implements PhysicsEngine{
 					xpoints[i] = (int)getScreenCoorinates(vi).x;
 					ypoints[i] = (int)getScreenCoorinates(vi).y;
 				}
+				gr.setColor(new Color(128, 200, 128));
 				gr.fillPolygon(xpoints, ypoints, p.numVerticies);
+				gr.setColor(Color.BLUE);
+				gr.drawPolygon(xpoints, ypoints, p.numVerticies);
 			}
 		}
 	}
