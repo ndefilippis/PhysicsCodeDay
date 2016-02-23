@@ -16,7 +16,7 @@ public class Body {
 		currState.position.set(x, y);
 		staticFriction = 0.0;
 		dynamicFriction = 0.0;
-		restitution = 1.4;
+		restitution = 0.3;
 		mass = 1;
 		invMass = 1;
 		shape.body = this;

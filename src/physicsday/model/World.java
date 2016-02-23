@@ -22,8 +22,10 @@ public class World {
 		objects.add(b);
 		return b;
 	}
-
+	double dt = 0;
 	public void update(double dt) {
+		this.dt += dt;
+		
 		contacts.clear();
 		for (int i = 0; i < objects.size(); i++) {
 			Body a = objects.get(i);
@@ -45,6 +47,7 @@ public class World {
 		for(int i = 0; i < contacts.size(); i++){
 			contacts.get(i).init();
 		}
+		System.out.println(this.dt);
 		for(int i = 0; i < 10; i++){
 			for(int j = 0; j < contacts.size(); j++){
 				contacts.get(j).applyImpulse();
