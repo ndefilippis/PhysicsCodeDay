@@ -10,7 +10,7 @@ import physicsday.view.PhysicsPanel;
 public class KeyHandler extends PhysicsInput implements KeyListener{
 
 	public KeyHandler(PhysicsPanel p, World world) {
-		super(p, world);
+		//super(p, world);
 		view.addKeyListener(this);
 	}
 
@@ -21,7 +21,7 @@ public class KeyHandler extends PhysicsInput implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_SPACE){
-			PhysicsDay.toggleRunning();
+			//PhysicsDay.toggleRunning();
 		}
 		if(e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
 			if(PhysicsInput.selectedItem != null){

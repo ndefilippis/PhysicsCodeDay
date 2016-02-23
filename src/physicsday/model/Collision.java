@@ -66,14 +66,13 @@ public class Collision {
 			Vector nw = a.u.multiply(n);
 			Mat22 buT = b.u.transpose();
 			n = buT.multiply(nw);
-			
-			Vector s = b.getSupport(n.multiply(-1));
+			Vector s = b.getSupport(n.neg());
 			
 			Vector v = a.verticies[i];
 			v = a.u.multiply(v).add(a.body.getPosition());
 			v = v.subtract(b.body.getPosition());
 			v = buT.multiply(v);
-
+			
 			double d = n.dot(s.subtract(v));
 			if(d > bestDistance){
 				bestDistance = d;
@@ -99,9 +98,8 @@ public class Collision {
 	  if(d1 <= 0.0f) out[sp++] = face[0];
 	  if(d2 <= 0.0f) out[sp++] = face[1];
 	  
-	  if(d1 * d2 < 0.0f) // less than to ignore -0.0f
+	  if(d1 * d2 < 0.0f)
 	  {
-	    // Push interesection point
 	    double alpha = d1 / (d1 - d2);
 	    out[sp] = face[1].subtract(face[0]).multiply(alpha).add(face[0]);
 	    ++sp;
@@ -156,7 +154,6 @@ public class Collision {
 		v2 = ref.u.multiply(v2).add(ref.body.getPosition());
 		
 		Vector sidePlaneNormal = v2.subtract(v1).normalize();
-		
 		Vector refFaceNormal = new Vector(sidePlaneNormal.y, -sidePlaneNormal.x);
 		double refC = refFaceNormal.dot(v1);
 		double negSide = -sidePlaneNormal.dot(v1);

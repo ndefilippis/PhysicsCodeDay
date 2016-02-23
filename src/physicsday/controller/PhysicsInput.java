@@ -93,4 +93,9 @@ public class PhysicsInput implements KeyListener, MouseListener, MouseMotionList
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void clear() {
+		// TODO Auto-generated method stub
+		
+	}
 }

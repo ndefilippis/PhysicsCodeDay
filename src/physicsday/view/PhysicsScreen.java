@@ -1,5 +1,6 @@
 package physicsday.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -18,10 +19,13 @@ import physicsday.model.World;
 public class PhysicsScreen extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private BufferedImage buffer;
+	private Graphics2D graphics;
 	private PhysicsLoop loop;
 	private PhysicsEngine engine;
 	private PhysicsInput input;
 	private World world;
+	
+	
 	
 	public PhysicsScreen(int width, int height, PhysicsLoop loop, PhysicsEngine engine){
 		Dimension d = new Dimension(width, height);
@@ -49,7 +53,7 @@ public class PhysicsScreen extends JPanel{
 		loop.onStart(engine);
 		
 		while(engine.isRunning()){
-			if(loop.onLoop(engine, input, this.getGraphics(), world)){
+			if(loop.onLoop(engine, input, graphics, world)){
 				renderGraphics(getGraphics());
 				resetGraphics();
 			}
@@ -71,20 +75,10 @@ public class PhysicsScreen extends JPanel{
 		gr.dispose();
 	}
 	
-	private void resetGraphics()
-	{
-		// Get the graphics of the buffer
+	private void resetGraphics(){
 		graphics = (Graphics2D)buffer.getGraphics();
-
-		// Clear the buffer with the background color
-		graphics.setColor( getBackground() );
-		graphics.fillRect( 0, 0, getWidth(), getHeight() );
-
-		// If antialiasing is turned on enable it.
-		if (antialising)
-		{
-			graphics.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
-		}
+		graphics.setColor(getBackground() );
+		graphics.fillRect(0, 0, getWidth(), getHeight() );
 	}
 	
 	/*public boolean canAddAtLocation(Body toAdd, PhysicsPanel panel) {
@@ -114,9 +108,11 @@ public class PhysicsScreen extends JPanel{
 			//MenuBar.createMenuBar(window, screen.world, screen);
 			window.add(screen);
 			window.pack();
-			window.setVisible(true);
-			
+			window.setVisible(true);		
 			screen.start();
 		}
+		
 	}
+	
+	
 }

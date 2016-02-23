@@ -9,7 +9,7 @@ public interface PhysicsEngine {
 	
 	public void input(PhysicsInput input);
 	
-	public void update(PhysicsTime time, World world);
+	public void update(World world);
 	
 	public void draw(Graphics2D gr, World world);
 	

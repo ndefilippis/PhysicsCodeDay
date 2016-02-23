@@ -13,7 +13,7 @@ import physicsday.view.PhysicsPanel;
 public class MouseHandler extends PhysicsInput implements MouseListener{
 	
 	public MouseHandler(PhysicsPanel p, World world) {
-		super(p, world);
+		//super(p, world);
 		view.addMouseListener(this);
 	}
 		
@@ -24,33 +24,33 @@ public class MouseHandler extends PhysicsInput implements MouseListener{
 	@Override
 	public void mousePressed(MouseEvent e) {
 		Body b;
-		if((b = world.getShapeAt(e.getX()-view.getLocationOnScreen().x, e.getY()-view.getLocationOnScreen().y, view)) != null){
-			if(b.shape.equals(PhysicsInput.selectedItem)){
-				view.popupDialogMenu(b.shape);
-			}
-			PhysicsInput.selectedItem = b;
-			return;
-		}
-		PhysicsInput.startPosition = new Vector(e.getX()/view.xScale,e.getY()/view.yScale);
+		//if((b = world.getShapeAt(e.getX()-view.getLocationOnScreen().x, e.getY()-view.getLocationOnScreen().y, view)) != null){
+		//	if(b.shape.equals(PhysicsInput.selectedItem)){
+		//		view.popupDialogMenu(b.shape);
+		//	}
+		//	PhysicsInput.selectedItem = b;
+		//	return;
+		//}
+		//PhysicsInput.startPosition = new Vector(e.getX()/view.xScale,e.getY()/view.yScale);
 		if(PhysicsInput.toAdd != null){
 			PhysicsInput.resizeItem = PhysicsInput.toAdd;
 		}
 		PhysicsInput.prevPosition = new Vector(e.getX()/view.xScale,e.getY()/view.yScale);
-		if((b = world.getShapeAt(e.getX()-view.getLocationOnScreen().x, e.getY()-view.getLocationOnScreen().y, view)) != null){
-			PhysicsInput.draggedItem = b;
-		}
+		//if((b = world.getShapeAt(e.getX()-view.getLocationOnScreen().x, e.getY()-view.getLocationOnScreen().y, view)) != null){
+		//	PhysicsInput.draggedItem = b;
+		//}
 		PhysicsInput.down = true;
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		if(PhysicsInput.toAdd != null && world.canAddAtLocation(PhysicsInput.toAdd, view)){
+		//if(PhysicsInput.toAdd != null && world.canAddAtLocation(PhysicsInput.toAdd, view)){
 			world.add(PhysicsInput.toAdd);
 			PhysicsInput.selectedItem = PhysicsInput.toAdd;
 			return;
-		}
-		PhysicsInput.down = false;
-		PhysicsInput.draggedItem = null;
-		PhysicsInput.resizeItem = null;
+		//}
+		//PhysicsInput.down = false;
+		//PhysicsInput.draggedItem = null;
+		//PhysicsInput.resizeItem = null;
 	}
 	@Override
 	public void mouseEntered(MouseEvent e) {	

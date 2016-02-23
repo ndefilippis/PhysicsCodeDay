@@ -21,12 +21,12 @@ public class VariableLoop implements PhysicsLoop {
 		engine.input(input);
 		input.clear();
 		
-		if(!engine.isPlaying()){
+		if(!engine.isRunning()){
 			return false;
 		}
 		world.update(SECONDS_PER_UPDATE);
 		engine.update(world);
-		if(!engine.isPlaying()){
+		if(!engine.isRunning()){
 			return false;
 		}
 		engine.draw(gr, world);
@@ -34,7 +34,7 @@ public class VariableLoop implements PhysicsLoop {
 	}
 	public static void resumeLoop(){
 		isRunning = true;
-		new Thread(physicsDay).start();
+		//new Thread(physicsDay).start();
 	}
 	
 	public static void pauseLoop(){
@@ -46,37 +46,7 @@ public class VariableLoop implements PhysicsLoop {
 		isRunning = false;
 	}
 	
-	public void run() {
-		time = System.nanoTime()/1000000000.0;
-		if(reset){
-			startTime = time;
-			reset = false;
-		}
-		else{
-			startTime = time - lastTime;
-		}
-		pauseTime = 0;
-		double accumulator = 0.0;
-		while(true){
-			time = System.nanoTime()/1000000000.0;
-			while (isRunning) {
-				currTime = System.nanoTime() / 1000000000.0;
-				String s = time - startTime + "";
-				panel.timeLabel.setText(" time: " + s.substring(0, Math.min(6, s.length()))+" s");
-				accumulator += currTime - time;
-				accumulator = Math.min(0.2,  accumulator);
-				while (accumulator >= SECONDS_PER_UPDATE) {
-					world.update(SECONDS_PER_UPDATE);
-					accumulator -= SECONDS_PER_UPDATE;
-				}
-				time = currTime;
-				panel.render(world);
-			}
-			panel.render(world);
-		}
-		
-	}
-	public static void toggleRunning() {
+	public void toggleRunning() {
 		if(isRunning){
 			pauseLoop();
 		}

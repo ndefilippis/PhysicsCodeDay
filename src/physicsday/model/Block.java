@@ -7,8 +7,9 @@ public class Block extends Body{
 		super(Polygon.createBox(width, height), x, y);
 		this.width = width;
 		this.height = height;
-		inertia = width*height*height*height/12;
+		inertia = 42.6;
 		invInertia = 1/inertia;
+		setMass(width*height);
 	}
 
 	@Override

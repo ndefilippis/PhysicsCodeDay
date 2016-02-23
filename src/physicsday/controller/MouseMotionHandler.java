@@ -10,7 +10,7 @@ import physicsday.view.PhysicsPanel;
 public class MouseMotionHandler extends PhysicsInput implements MouseMotionListener {
 
 	public MouseMotionHandler(PhysicsPanel p, World world) {
-		super(p, world);
+		//super(p, world);
 		view.addMouseMotionListener(this);
 	}
 

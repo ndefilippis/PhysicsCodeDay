@@ -8,7 +8,7 @@ import physicsday.view.PhysicsPanel;
 public class ScrollHandler extends PhysicsInput implements MouseWheelListener{
 
 	public ScrollHandler(PhysicsPanel p, World world) {
-		super(p, world);
+		//super(p, world);
 		view.addMouseWheelListener(this);
 	}
 

@@ -67,7 +67,7 @@ public class MenuBar {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				view.toggleGridlines();
+				//view.toggleGridlines();
 			}
 		});
 		menu.add(menuItem);
@@ -94,11 +94,11 @@ public class MenuBar {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					world.loadWorld();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+				//try {
+				//world.loadWorld();
+				//} catch (IOException e1) {
+				//	e1.printStackTrace();
+				//}
 			}
 		});
 		
@@ -124,7 +124,7 @@ public class MenuBar {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PhysicsDay.toggleRunning();
+				//PhysicsDay.toggleRunning();
 			}
 		});
 		menu.add(menuItem);
@@ -176,7 +176,7 @@ public class MenuBar {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.popupGravity(world);
+				//frame.popupGravity(world);
 			}
 		});
 		menu.add(menuItem);
@@ -186,7 +186,7 @@ public class MenuBar {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.popupRestitution(world);
+				//frame.popupRestitution(world);
 			}
 		});
 		menu.add(menuItem);

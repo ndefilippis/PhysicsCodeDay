@@ -123,7 +123,7 @@ public class Polygon extends Shape{
 	}
 
 	public Vector getSupport(Vector direction){
-		double bestDistance = Double.MIN_VALUE;
+		double bestDistance = -Double.MAX_VALUE;
 		Vector bestVector = null;
 		for(int i = 0; i < numVerticies; i++){
 			Vector v = verticies[i];

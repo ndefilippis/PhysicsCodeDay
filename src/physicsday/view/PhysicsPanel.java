@@ -45,50 +45,7 @@ public class PhysicsPanel extends JPanel{
 		this.world = world;
 	}
 
-	public int drawGridlines(Graphics g){
-		double xEvery = xScale;
-		int count = 0;
-		
-		while(xEvery <= 5){
-			xEvery *= (5+Math.pow(2, count/15.0));
-			count++;
-		}
-		double yEvery = yScale;
-		count = 0;
-		while(yEvery <= 5){
-			yEvery *= (5+Math.pow(2, count/15.0));
-			count++;
-		}
-		int result = count;
-		count = 0;
-		while(xEvery >= 50){
-			xEvery /= 5;
-			count--;
-		}
-		count = 0;
-		while(yEvery >= 50){
-			yEvery /= 5;
-			count--;
-		}
-		if(count != 0) result = count;
-		g.setColor(Color.GRAY);
-		for(int i = 0; i <= getWidth()/xEvery; i++){
-			
-			g.drawLine((int)(i*xEvery+xOffset%(xEvery*5)), 0, (int)(i*xEvery+xOffset%(xEvery*5)), getHeight());
-			if(i % 5 == 0){
-				g.fillRect((int)((i-1)*xEvery+xOffset%(xEvery*5)), 0, 3, getHeight());
-				g.setColor(Color.GRAY);
-			}
-		}
-		for(int i = 0; i <= getHeight()/yEvery; i++){
-			g.drawLine(0, (int)(i*yEvery+yOffset%(yEvery*5)), getWidth(), (int)(i*yEvery+yOffset%(yEvery*5)));
-			if(i % 5 == 0){
-				g.fillRect(0, (int)((i-1)*yEvery+yOffset%(yEvery*5)), getWidth(), 3);
-				g.setColor(Color.GRAY);
-			}
-		}
-		return result;
-	}
+	
 
 	public void render(World w){
 		if(PhysicsInput.selectedItem != null){

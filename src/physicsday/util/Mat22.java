@@ -42,4 +42,8 @@ public class Mat22 {
 	public Mat22 transpose() {
 		return new Mat22(m[0][0], m[1][0], m[0][1], m[1][1]);
 	}
+	
+	public String toString(){
+		return "[["+m[0][0]+", "+m[0][1] + "]\n"+"["+m[1][0]+", " + m[1][1]+"]]";
+	}
 }

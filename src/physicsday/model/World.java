@@ -11,7 +11,8 @@ public class World {
 	public Vector gravity = new Vector(0, 9.81);
 
 	public World() {
-	
+		add(new Block(1, -2, 4, 4));
+		add(new Wall(50, 24, 100, 10));
 	}
 
 	public Body add(Body b) {
@@ -22,7 +23,6 @@ public class World {
 
 	public void update(double dt) {
 		contacts.clear();
-		
 		for (int i = 0; i < objects.size(); i++) {
 			Body a = objects.get(i);
 			for (int j = i + 1; j < objects.size(); j++) {
@@ -48,6 +48,7 @@ public class World {
 				contacts.get(j).applyImpulse();
 			}
 		}
+
 		for(int i = 0; i < objects.size(); i++){
 			objects.get(i).integrateVelocity(dt, gravity);
 		}

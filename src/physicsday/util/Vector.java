@@ -75,8 +75,8 @@ public class Vector {
 
 	public Vector divide(double s, Vector out){
 		double invS = 1.0 / s;
-		out.x = x / invS;
-		out.y = y / invS;
+		out.x = x * invS;
+		out.y = y * invS;
 		return out;
 	}	
 	public Vector divide(double s){
@@ -119,7 +119,7 @@ public class Vector {
 		if(this.lengthSquared() == 0.0){
 			return new Vector(0, 0);
 		}
-		return this.divide(length());
+		return divide(length());
 	}
 	
 	public Vector project(Vector v){
