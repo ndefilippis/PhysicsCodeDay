@@ -1,5 +1,6 @@
 package physicsday.controller;
 
+import java.awt.MouseInfo;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -14,30 +15,26 @@ import physicsday.util.Vector;
 import physicsday.view.PhysicsPanel;
 
 public class PhysicsInput implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener{
-	protected World world;
-	protected PhysicsPanel view;
-	public boolean mouseInside; 
-	public static Body toAdd;
-	public static boolean down;
-	public static Vector startPosition;
-	public static Vector prevPosition;
-	public static Body draggedItem;
-	public static Body resizeItem;
-	public static Body selectedItem;
+	public int scrollWheel = 0;
+	public int keys = 0;
+	public Vector draggedDistance = new Vector();
+	public boolean[] keyDown = new boolean[256];
+	public boolean[] mouseDown = new boolean[MouseInfo.getNumberOfButtons()];
+	public boolean mouseInside;
+	public Vector lastLocation = new Vector();
 	
 	public PhysicsInput(){
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		draggedDistance.addi(new Vector( e.getX() - lastLocation.x, e.getY() - lastLocation.y));
+		lastLocation.set(e.getX(), e.getY());
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		lastLocation.set(e.getX(), e.getY());
 	}
 
 	@Override
@@ -78,24 +75,23 @@ public class PhysicsInput implements KeyListener, MouseListener, MouseMotionList
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		if(!keyDown[e.getKeyCode()]){
+			keyDown[e.getKeyCode()] = true;
+			keys++;
+		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		keyDown[e.getKeyCode()] = false;
 	}
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		// TODO Auto-generated method stub
-		
+		scrollWheel -= e.getWheelRotation();
 	}
 
 	public void clear() {
-		// TODO Auto-generated method stub
-		
+		keys = 0;
 	}
 }

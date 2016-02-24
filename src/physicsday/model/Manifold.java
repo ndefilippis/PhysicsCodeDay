@@ -27,6 +27,17 @@ public class Manifold {
 			if (b.shape instanceof Polygon) {
 				Collision.PolygonToPolygon(this, a, b);
 			}
+			if(b.shape instanceof Circle){
+				Collision.PolygonToCircle(this, a, b);
+			}
+		}
+		if(a.shape instanceof Circle){
+			if(b.shape instanceof Circle){
+				Collision.CircleToCircle(this, a, b);
+			}
+			if(b.shape instanceof Polygon){
+				Collision.CircleToPolygon(this, a, b);
+			}
 		}
 	}
 
@@ -105,7 +116,7 @@ public class Manifold {
 	}
 
 	public void applyPositionalCorrection() {
-		double correction = Math.max( penetrationDepth - 0.01, 0.0 ) / (a.getInvMass() + b.getInvMass()) * 0.1;
+		double correction = Math.max( penetrationDepth - 0.01, 0.0 ) / (a.getInvMass() + b.getInvMass()) * 0.4;
 		a.setPosition(a.getPosition().addsi( normal, -a.getInvMass() * correction ));
 		b.setPosition(b.getPosition().addsi( normal, b.getInvMass() * correction ));
 	}

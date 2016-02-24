@@ -5,7 +5,7 @@ import physicsday.util.Vector;
 public class Body {
 	public final Shape shape;
 	private State currState, prevState;
-	protected double mass, invMass, inertia, invInertia;
+	private double mass, invMass, inertia = 10, invInertia = 0.1;
 	double staticFriction;
 	double dynamicFriction;
 	double restitution;
@@ -14,8 +14,8 @@ public class Body {
 		this.shape = shape;
 		currState = new State();
 		currState.position.set(x, y);
-		staticFriction = 0.0;
-		dynamicFriction = 0.0;
+		staticFriction = 0.3;
+		dynamicFriction = 0.2;
 		restitution = 0.3;
 		mass = 1;
 		invMass = 1;
@@ -109,6 +109,12 @@ public class Body {
 		this.invMass = 1/mass;
 	}
 	
+	public void setInertia(double inertia) {
+		this.inertia = inertia;
+		this.invInertia = 1/inertia;
+		
+	}
+	
 	public double getInvMass() {
 		return invMass;
 	}
@@ -127,5 +133,9 @@ public class Body {
 	
 	public void setForce(double x, double y){
 		currState.force.set(x, y);
+	}
+
+	public void setVelocity(double x, double y) {
+		currState.velocity.set(x, y);
 	}
 }

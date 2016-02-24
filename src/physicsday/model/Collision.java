@@ -8,7 +8,106 @@ public class Collision {
 	public static boolean gt(double a, double b){
 		return a >= 0.95*b + 0.01*a;
 	}
+	
+	public static void CircleToCircle(Manifold m, Body a, Body b){
+		Circle a1 = (Circle)a.shape;
+		Circle b1 = (Circle)b.shape;
 
+		Vector normal = b.getPosition().subtract(a.getPosition());
+		double distSq = normal.lengthSquared();
+		double radius = a1.radius + b1.radius;
+		if(distSq >= radius*radius){
+			m.contactCount = 0;
+			return;
+		}
+		double distance = Math.sqrt(distSq);
+		m.contactCount = 1;
+		if(distance == 0.0){
+			m.penetrationDepth = radius;
+			m.normal = new Vector(1, 0);
+			m.contacts[0] = a.getPosition();
+		}
+		else{
+			m.penetrationDepth = radius - distance;
+			m.normal = normal.divide(distance);
+			m.contacts[0] = m.normal.multiply(a1.radius).add(a.getPosition());
+		}
+	}
+
+	public static void CircleToPolygon(Manifold m, Body a, Body b){
+		Circle a1 = (Circle) a.shape;
+		Polygon b1 = (Polygon)b.shape;
+		m.contactCount = 0;
+		Vector center = a.getPosition();
+		center = b1.u.transpose().multiply(center.subtract(b.getPosition()));
+		
+		double separation = -Double.MAX_VALUE;
+		int faceNormal = 0;
+		for(int i = 0; i < b1.numVerticies; i++){
+			double s = b1.normals[i].dot(center.subtract(b1.verticies[i]));
+			
+			if(s > a1.radius){
+				return;
+			}
+			if(s > separation){
+				separation = s;
+				faceNormal = i;
+			}
+		}
+		Vector v1 = b1.verticies[faceNormal];
+		int i2 =  faceNormal + 1 < b1.numVerticies ? faceNormal + 1 : 0;
+		Vector v2 = b1.verticies[i2];
+		
+		if(separation < 0.0005){
+			m.contactCount = 1;
+			m.normal = (b1.u.multiply(b1.normals[faceNormal])).neg();
+			m.contacts[0] = m.normal.multiply(a1.radius).add(a.getPosition());
+			return;
+		}
+		double d1 = (center.subtract(v1)).dot((v2.subtract(v1)));
+		double d2 = (center.subtract(v2)).dot((v1.subtract(v2)));
+		m.penetrationDepth = a1.radius - separation;
+		if(d1 <= 0){
+			if(center.distanceSquaredTo(v1) > a1.radius*a1.radius){
+				return;
+			}
+			m.contactCount = 1;
+			Vector n = v1.subtract(center);
+			n = b1.u.multiply(n);
+			n.normalizei();
+			m.normal = n;
+			v1 = b1.u.multiply(v1).add(b.getPosition());
+			m.contacts[0] = v1;
+		}
+		else if(d2 <= 0){
+			if(center.distanceSquaredTo(v2) > a1.radius*a1.radius){
+				return;
+			}
+			m.contactCount = 1;
+			Vector n = v2.subtract(center);
+			v2 = b1.u.multiply(v2).add(b.getPosition());
+			m.contacts[0] = v2;
+			n = b1.u.multiply(n);
+			n.normalizei();
+			m.normal = n;
+		}
+		else{
+			Vector n = b1.normals[faceNormal];
+			if(center.subtract(v1).dot(n) > a1.radius){
+				return;
+			}
+			n = b1.u.multiply(n);
+			m.normal = n.neg();
+			m.contacts[0] = m.normal.multiply(a1.radius).add(a.getPosition());
+			m.contactCount = 1;
+		}
+	}
+	
+	public static void PolygonToCircle(Manifold m, Body a, Body b){
+		CircleToPolygon(m, b, a);
+		m.normal.negi();
+	}
+	
 	public static void PolygonToPolygon( Manifold m, Body a, Body b )
 	{
 		Polygon A = (Polygon)a.shape;
@@ -73,12 +172,12 @@ public class Collision {
 		// c : clipped point
 		// n : incident normal
 
-		// Setup reference face vertices
+		// Setup reference face verticies
 		Vector v1 = RefPoly.verticies[referenceIndex];
 		referenceIndex = referenceIndex + 1 == RefPoly.numVerticies ? 0 : referenceIndex + 1;
 		Vector v2 = RefPoly.verticies[referenceIndex];
 
-		// Transform vertices to world space
+		// Transform verticies to world space
 		// v1 = RefPoly->u * v1 + RefPoly->body->position;
 		// v2 = RefPoly->u * v2 + RefPoly->body->position;
 		v1 = RefPoly.u.multiply( v1 ).addi( RefPoly.body.getPosition() );
@@ -179,7 +278,7 @@ public class Collision {
 
 			// Retrieve vertex on face from A, transform into
 			// B's model space
-			// Vector v = A->m_vertices[i];
+			// Vector v = A->m_verticies[i];
 			// v = A->u * v + A->body->position;
 			// v -= B->body->position;
 			// v = buT * v;
@@ -230,12 +329,12 @@ public class Collision {
 			}
 		}
 
-		// Assign face vertices for incidentFace
-		// v[0] = IncPoly->u * IncPoly->m_vertices[incidentFace] +
+		// Assign face verticies for incidentFace
+		// v[0] = IncPoly->u * IncPoly->m_verticies[incidentFace] +
 		// IncPoly->body->position;
 		// incidentFace = incidentFace + 1 >= (int32)IncPoly->m_numVerticies ? 0 :
 		// incidentFace + 1;
-		// v[1] = IncPoly->u * IncPoly->m_vertices[incidentFace] +
+		// v[1] = IncPoly->u * IncPoly->m_verticies[incidentFace] +
 		// IncPoly->body->position;
 
 		v[0] = IncPoly.u.multiply( IncPoly.verticies[incidentFace] ).addi( IncPoly.body.getPosition() );

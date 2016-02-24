@@ -157,6 +157,14 @@ public class Vector {
 		return new Vector(s*y, -s*x);
 	}
 	
+	public double distanceSquaredTo(Vector vec){
+		return vec.subtract(this).lengthSquared();
+	}
+	
+	public double distanceTo(Vector vec){
+		return vec.subtract(this).length();
+	}
+	
 	//s x this
 	public Vector PreCross(double s){
 		return new Vector(-s * y, s*x);
