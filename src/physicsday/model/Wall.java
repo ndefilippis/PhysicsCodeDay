@@ -8,8 +8,9 @@ public class Wall extends Body{
 		this.width = width;
 		this.height = height;
 		this.setMass(Double.POSITIVE_INFINITY);
+		this.setInertia(Double.POSITIVE_INFINITY);
 	}
-	
+
 	@Override
 	public Body copy() {
 		return new Wall(getPosition().x, getPosition().y, width, height);

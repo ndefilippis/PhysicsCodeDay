@@ -15,14 +15,16 @@ public class Vector {
 		this.y = other.y;
 	}
 	
-	public void set(double x, double y){
+	public Vector set(double x, double y){
 		this.x = x;
 		this.y = y;
+		return this;
 	}
 	
-	public void set(Vector p) {
+	public Vector set(Vector p) {
 		this.x = p.x;
 		this.y = p.y;
+		return this;
 	}
 	
 	public Vector add(Vector add, Vector out){
@@ -153,6 +155,14 @@ public class Vector {
 	// this x s
 	public Vector Cross(double s){
 		return new Vector(s*y, -s*x);
+	}
+	
+	public double distanceSquaredTo(Vector vec){
+		return vec.subtract(this).lengthSquared();
+	}
+	
+	public double distanceTo(Vector vec){
+		return vec.subtract(this).length();
 	}
 	
 	//s x this

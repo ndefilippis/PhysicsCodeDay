@@ -46,4 +46,9 @@ public class Mat22 {
 	public String toString(){
 		return "[["+m[0][0]+", "+m[0][1] + "]\n"+"["+m[1][0]+", " + m[1][1]+"]]";
 	}
+
+	public Vector multiplyi(Vector vec) {
+		vec.set(multiply(vec));
+		return vec;
+	}
 }
