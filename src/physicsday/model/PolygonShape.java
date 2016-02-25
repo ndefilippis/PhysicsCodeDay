@@ -6,30 +6,31 @@ import java.awt.geom.Area;
 import physicsday.util.BoundingBox;
 import physicsday.util.Mat22;
 import physicsday.util.Vector;
-import physicsday.view.PhysicsPanel;
 
-public class Polygon extends Shape{
+public class PolygonShape extends Shape{
 	public int numVerticies;
 	public Vector[] verticies;
 	public Vector[] normals;
 
-	public Polygon(){
+	public PolygonShape(){
 		numVerticies = 0;
 		verticies = new Vector[0];
 		normals = new Vector[0];
 	}
 
-	public Polygon(Vector[] verticies, int count){
+	public PolygonShape(Vector[] verts, int count){
+		verticies = new Vector[count];
+		normals = new Vector[count];
 		assert(count > 2);
 		int right = 0;
-		double highestX = verticies[0].x;
-		for(int i = 0; i < count; i++){
-			if(verticies[i].x > highestX){
+		double highestX = verts[0].x;
+		for(int i = 1; i < count; i++){
+			if(verts[i].x > highestX){
 				right = i;
-				highestX = verticies[i].x;
+				highestX = verts[i].x;
 			}
-			else if(verticies[i].x == highestX){
-				if(verticies[i].y < verticies[right].y){
+			else if(verts[i].x == highestX){
+				if(verts[i].y < verts[right].y){
 					right = i;
 				}
 			}
@@ -45,8 +46,8 @@ public class Polygon extends Shape{
 					nextHull = i;
 					continue;
 				}
-				Vector e1 = verticies[nextHull].subtract(verticies[hull[outCount]]);
-	        	Vector e2 = verticies[i].subtract(verticies[hull[outCount]]);
+				Vector e1 = verts[nextHull].subtract(verts[hull[outCount]]);
+	        	Vector e2 = verts[i].subtract(verts[hull[outCount]]);
 	        	double c = e1.Cross(e2);
 	        	if(c < 0.0f){
 	          		nextHull = i;
@@ -55,17 +56,15 @@ public class Polygon extends Shape{
 	          		nextHull = i;
 	        	}
 	      	}
-	      ++outCount;
-	      hullIndex = nextHull;
-	      if(nextHull == right)
-	      {
-	        numVerticies = outCount;
-	        break;
-	      }
+	     	 ++outCount;
+	      	hullIndex = nextHull;
+	     	if(nextHull == right){
+	       		numVerticies = outCount;
+	        	break;
+	      	}
 		}
-		verticies = new Vector[numVerticies];
 		for(int i = 0; i < numVerticies; i++){
-			this.verticies[i] = verticies[hull[i]];
+			this.verticies[i] = verts[hull[i]];
 		}
 		for(int i = 0; i < numVerticies; i++){
 			int i2 = i + 1 < numVerticies ? i + 1 : 0;
@@ -75,8 +74,36 @@ public class Polygon extends Shape{
 		}
 	}
 	
-	public static Polygon createBox(double width, double height){
-		Polygon p = new Polygon();
+	public void init(){
+		Vector center = new Vector(0, 0);
+		double area = 0;
+		double I = 0;
+		for(int i = 0; i < numVerticies; i++){
+			Vector p1 = verticies[i];
+			Vector p2 = verticies[(i+1) % numVerticies];
+			double d = p1.Cross(p2);
+			double tArea = 0.5*d;
+			area += tArea;
+			double weight = tArea / 3.0;
+			center.addsi(p1, weight);
+			center.addsi(p2, weight);
+			
+			double x2 = p1.x * p1.x + p2.x * p1.x + p2.x * p2.x;
+			double y2 = p1.y * p1.y + p2.y * p1.y + p2.y * p2.y;
+			
+			I += (0.25f / 3 * d) * (x2 + y2);
+		}
+		
+		center.multiplyi(1.0/area);
+		for(int i = 0; i < numVerticies; i++){
+			verticies[i].subtracti(center);
+		}
+		body.setMass(area);
+		body.setInertia(I);
+	}
+	
+	public static PolygonShape createBox(double width, double height){
+		PolygonShape p = new PolygonShape();
 		p.numVerticies = 4;
 		p.verticies = new Vector[4];
 		p.normals = new Vector[4];
@@ -95,7 +122,7 @@ public class Polygon extends Shape{
 
 	@Override
 	public Shape copy() {
-		Polygon p = new Polygon();
+		PolygonShape p = new PolygonShape();
 		p.numVerticies = numVerticies;
 		p.verticies = new Vector[numVerticies];
 		p.normals = new Vector[numVerticies];

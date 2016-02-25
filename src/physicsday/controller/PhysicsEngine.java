@@ -16,5 +16,6 @@ public interface PhysicsEngine {
 	public void destroy();
 	
 	public boolean isRunning();
-
+	
+	public boolean isUpdating();
 }

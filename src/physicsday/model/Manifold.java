@@ -23,19 +23,19 @@ public class Manifold {
 
 	public void solve() {
 		normal = new Vector();
-		if (a.shape instanceof Polygon) {
-			if (b.shape instanceof Polygon) {
+		if (a.shape instanceof PolygonShape) {
+			if (b.shape instanceof PolygonShape) {
 				Collision.PolygonToPolygon(this, a, b);
 			}
-			if(b.shape instanceof Circle){
+			if(b.shape instanceof CircleShape){
 				Collision.PolygonToCircle(this, a, b);
 			}
 		}
-		if(a.shape instanceof Circle){
-			if(b.shape instanceof Circle){
+		if(a.shape instanceof CircleShape){
+			if(b.shape instanceof CircleShape){
 				Collision.CircleToCircle(this, a, b);
 			}
-			if(b.shape instanceof Polygon){
+			if(b.shape instanceof PolygonShape){
 				Collision.CircleToPolygon(this, a, b);
 			}
 		}
@@ -59,7 +59,8 @@ public class Manifold {
 	}
 
 	public void applyImpulse() {
-		if (Math.abs(a.getInvMass() + b.getInvMass()) < 0.005) {
+		if (Math.abs(a.getInvMass() + b.getInvMass()) == 0.00001) {
+			System.out.println("HEY");
 			infiniteMassCorrection();
 			return;
 		}

@@ -39,9 +39,16 @@ public class MenuBar {
 		createWorldMenu();
 		createSimMenu();
 		MenuBar.frame = window;
-		window.setJMenuBar(menuBar);
 		MenuBar.world = world;
 		MenuBar.view = screen;
+		window.setJMenuBar(menuBar);
+	}
+	private static JMenuItem addMenuItem(JMenu menu, String name, int alt, KeyStroke accelerator, String context){
+		menuItem = new JMenuItem(name, alt);
+		menuItem.setAccelerator(accelerator);
+		menuItem.getAccessibleContext().setAccessibleDescription(context);
+		menu.add(menuItem);
+		return menuItem;
 	}
 	private static void createFileMenu() {
 		// Build the first menu.
@@ -49,34 +56,24 @@ public class MenuBar {
 		menu.setMnemonic(KeyEvent.VK_F);
 		menu.getAccessibleContext().setAccessibleDescription("A File menu");
 		menuBar.add(menu);
-
-		// a group of JMenuItems
-		menuItem = new JMenuItem("New", KeyEvent.VK_N);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
-		menuItem.getAccessibleContext().setAccessibleDescription("Clears the project");
+		
+		menuItem = addMenuItem(menu, "New", KeyEvent.VK_N, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK), "Clears the project");
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				world.clear();
 			}
 		});
-		menu.add(menuItem);
-		menuItem = new JMenuItem("Toggle Gridlines", KeyEvent.VK_G);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
-		menuItem.getAccessibleContext().setAccessibleDescription("Toggles gridlines");
+		
+		menuItem = addMenuItem(menu, "Toggle Gridlines", KeyEvent.VK_G, KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK), "Toggles girlines");
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//view.toggleGridlines();
 			}
 		});
-		menu.add(menuItem);
 		
-		
-		menu.add(menuItem);
-		menuItem = new JMenuItem("Save", KeyEvent.VK_S);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-		menuItem.getAccessibleContext().setAccessibleDescription("Saves the world"); //lol
+		menuItem = addMenuItem(menu, "Save", KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK), "Saves the world");
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -87,10 +84,8 @@ public class MenuBar {
 				}
 			}
 		});
-		menu.add(menuItem);
-		menuItem = new JMenuItem("Open", KeyEvent.VK_L);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
-		menuItem.getAccessibleContext().setAccessibleDescription("Loads a world");
+
+		menuItem = addMenuItem(menu, "Open", KeyEvent.VK_L, KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK), "Loads a world" );
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -101,36 +96,31 @@ public class MenuBar {
 				//}
 			}
 		});
-		
-		menu.add(menuItem);
 	}
 	private static void createSimMenu(){
+		
 		menu = new JMenu("Simulation");
 		menu.setMnemonic(KeyEvent.VK_N);
 		menu.getAccessibleContext().setAccessibleDescription("Sets world properties");
-		menuItem = new JMenuItem("Reset", KeyEvent.VK_R);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
-		menuItem.getAccessibleContext().setAccessibleDescription("Resets the world");
+		
+		menuItem = addMenuItem(menu, "Reset", KeyEvent.VK_R, KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK), "Resets the world");
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 					world.resetState();
 			}
 		});
-		menu.add(menuItem);
-		menuItem = new JMenuItem("Resume/Pause", KeyEvent.VK_SPACE);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, ActionEvent.CTRL_MASK));
-		menuItem.getAccessibleContext().setAccessibleDescription("Stops and starts the simulation");
+		
+		menuItem = addMenuItem(menu, "Resume/Pause", KeyEvent.VK_SPACE, KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, ActionEvent.CTRL_MASK), "Stops and starts the simulation");	
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//PhysicsDay.toggleRunning();
 			}
 		});
-		menu.add(menuItem);
+
 		menuBar.add(menu);
 	}
-
 	private static void createWorldMenu() {
 		// Build second menu in the menu bar.
 		menu = new JMenu("World");
@@ -138,59 +128,40 @@ public class MenuBar {
 		menu.getAccessibleContext().setAccessibleDescription("Sets world properties");
 		submenu = new JMenu("Add");
 		submenu.setMnemonic(KeyEvent.VK_S);
+		
+		menuItem = addMenuItem(submenu, "Block", KeyEvent.VK_B, KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.SHIFT_MASK), "Adds block");;
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PhysicsDay.bodyToAdd = new Block(1, 1, 0, 0);
+			}
+		});
 
-		menuItem = new JMenuItem("Block");
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.SHIFT_MASK));
+		menuItem = addMenuItem(submenu, "Wall", KeyEvent.VK_W, KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.SHIFT_MASK), "Adds Wall");
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PhysicsInput.toAdd = new Block(1, 1, 0, 0);
+				PhysicsDay.bodyToAdd = new Wall(0, 0, 3, 1);
 			}
 		});
-		submenu.add(menuItem);
 
-		menuItem = new JMenuItem("Wall");
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.SHIFT_MASK));
+		menuItem = addMenuItem(submenu, "Ramp", KeyEvent.VK_T, KeyStroke.getKeyStroke(KeyEvent.VK_T, ActionEvent.SHIFT_MASK), "Adds Ramp");
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PhysicsInput.toAdd = new Wall(0, 0, 3, 1);
+				PhysicsDay.bodyToAdd = new Ramp(5, 5, true);
 			}
 		});
-		submenu.add(menuItem);
-		menuItem = new JMenuItem("Ramp");
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.SHIFT_MASK));
-		menuItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				PhysicsInput.toAdd = new Ramp(5, 5, true);
-			}
-		});
-		submenu.add(menuItem);
+
 		menu.add(submenu);
 		
-		
-		menuItem = new JMenuItem("Gravity", KeyEvent.VK_T);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
-		menuItem.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
+		menuItem = addMenuItem(menu, "Gravity", KeyEvent.VK_G, KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.ALT_MASK), "Changes Gravity");
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//frame.popupGravity(world);
 			}
 		});
-		menu.add(menuItem);
-		menuItem = new JMenuItem("Restitution", KeyEvent.VK_T);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
-		menuItem.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
-		menuItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//frame.popupRestitution(world);
-			}
-		});
-		menu.add(menuItem);
-		
 		menuBar.add(menu);
 	}
 }

@@ -13,7 +13,8 @@ public abstract class Shape{
 	
 	public abstract Shape copy();
 	public abstract BoundingBox boundingBox();
-
+	public abstract void init();
+	
 	public void setOrientation(double orientation) {
 		this.orientation = orientation;
 		u = new Mat22(orientation);

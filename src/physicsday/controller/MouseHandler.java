@@ -11,16 +11,7 @@ import physicsday.view.PhysicsFrame;
 import physicsday.view.PhysicsPanel;
 
 public class MouseHandler extends PhysicsInput implements MouseListener{
-	
-	public MouseHandler(PhysicsPanel p, World world) {
-		//super(p, world);
-		view.addMouseListener(this);
-	}
-		
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		
-	}
+
 	@Override
 	public void mousePressed(MouseEvent e) {
 		Body b;

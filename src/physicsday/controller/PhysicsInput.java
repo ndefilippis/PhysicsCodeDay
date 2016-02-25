@@ -12,16 +12,19 @@ import java.awt.event.MouseWheelListener;
 import physicsday.model.Body;
 import physicsday.model.World;
 import physicsday.util.Vector;
-import physicsday.view.PhysicsPanel;
 
 public class PhysicsInput implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener{
 	public int scrollWheel = 0;
 	public int keys = 0;
+	public int mouseButtons = 0;
 	public Vector draggedDistance = new Vector();
 	public boolean[] keyDown = new boolean[256];
+	public boolean[] keysUp = new boolean[256];
 	public boolean[] mouseDown = new boolean[MouseInfo.getNumberOfButtons()];
+	public boolean[] mouseUp = new boolean[MouseInfo.getNumberOfButtons()];
 	public boolean mouseInside;
 	public Vector lastLocation = new Vector();
+	public Vector pressedLocation = new Vector();
 	
 	public PhysicsInput(){
 	}
@@ -45,14 +48,15 @@ public class PhysicsInput implements KeyListener, MouseListener, MouseMotionList
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		pressedLocation.set(e.getX(), e.getY());
+		mouseDown[e.getButton()] = true;
+		mouseButtons++;
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		mouseDown[e.getButton()] = false;
+		mouseUp[e.getButton()] = true;
 	}
 
 	@Override
@@ -84,14 +88,24 @@ public class PhysicsInput implements KeyListener, MouseListener, MouseMotionList
 	@Override
 	public void keyReleased(KeyEvent e) {
 		keyDown[e.getKeyCode()] = false;
+		keysUp[e.getKeyCode()] = true;
 	}
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		scrollWheel -= e.getWheelRotation();
+		scrollWheel += e.getWheelRotation();
 	}
 
 	public void clear() {
 		keys = 0;
+		mouseButtons = 0;
+		draggedDistance.set(0, 0);
+		for(int i = 0; i < keysUp.length; i++){
+			keysUp[i] = false;
+		}
+		for(int i = 0; i < mouseUp.length; i++){
+			mouseUp[i] = false;
+		}
+		scrollWheel = 0;
 	}
 }

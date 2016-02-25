@@ -6,6 +6,12 @@ public class Vector {
 		this.x = x;
 		this.y = y;
 	}
+	
+	public Vector(double c){
+		this.x = c;
+		this.y = c;
+	}
+	
 	public Vector(){
 		this.x = 0;
 		this.y = 0;
@@ -67,12 +73,41 @@ public class Vector {
 		out.x = x*s;
 		out.y = y*s;
 		return out;
-	}	
+	}
+	
 	public Vector multiply(double s){
 		return multiply(s, new Vector());
 	}
 	public Vector multiplyi(double s){
 		return multiply(s, this);
+	}
+	
+	public Vector multiplyc(Vector v, Vector out){
+		out.x = v.x*x;
+		out.y = v.y*y;
+		return out;		
+	}
+	
+	public Vector multiplyc(Vector v){
+		return multiplyc(v, new Vector());
+	}
+	
+	public Vector multiplyci(Vector v){
+		return multiplyc(v, this);
+	}
+
+	public Vector dividec(Vector v, Vector out){
+		out.x = x/v.x;
+		out.y = y/v.y;
+		return out;		
+	}
+	
+	public Vector dividec(Vector v){
+		return dividec(v, new Vector());
+	}
+	
+	public Vector divideyci(Vector v){
+		return dividec(v, this);
 	}
 
 	public Vector divide(double s, Vector out){

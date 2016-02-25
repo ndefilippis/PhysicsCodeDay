@@ -5,7 +5,6 @@ import java.awt.geom.Area;
 
 import physicsday.util.BoundingBox;
 import physicsday.util.Vector;
-import physicsday.view.PhysicsPanel;
 
 
 public class Ramp extends Body{
@@ -13,7 +12,7 @@ public class Ramp extends Body{
 	double width, height;
 
 	public Ramp(double width, double height, boolean positive) {
-		super(new Polygon(), width, height);
+		super(new PolygonShape(), width, height);
 		this.width = width;
 		this.height = height;
 		this.positive = positive;

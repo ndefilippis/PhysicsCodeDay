@@ -4,7 +4,7 @@ public class Block extends Body{
 	double width, height;
 	
 	public Block(double x, double y, double width, double height) {
-		super(Polygon.createBox(width, height), x, y);
+		super(PolygonShape.createBox(width, height), x, y);
 		this.width = width;
 		this.height = height;
 		setInertia(42.6);

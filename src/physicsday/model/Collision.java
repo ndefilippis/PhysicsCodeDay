@@ -10,8 +10,8 @@ public class Collision {
 	}
 	
 	public static void CircleToCircle(Manifold m, Body a, Body b){
-		Circle a1 = (Circle)a.shape;
-		Circle b1 = (Circle)b.shape;
+		CircleShape a1 = (CircleShape)a.shape;
+		CircleShape b1 = (CircleShape)b.shape;
 
 		Vector normal = b.getPosition().subtract(a.getPosition());
 		double distSq = normal.lengthSquared();
@@ -35,8 +35,8 @@ public class Collision {
 	}
 
 	public static void CircleToPolygon(Manifold m, Body a, Body b){
-		Circle a1 = (Circle) a.shape;
-		Polygon b1 = (Polygon)b.shape;
+		CircleShape a1 = (CircleShape) a.shape;
+		PolygonShape b1 = (PolygonShape)b.shape;
 		m.contactCount = 0;
 		Vector center = a.getPosition();
 		center = b1.u.transpose().multiply(center.subtract(b.getPosition()));
@@ -110,8 +110,8 @@ public class Collision {
 	
 	public static void PolygonToPolygon( Manifold m, Body a, Body b )
 	{
-		Polygon A = (Polygon)a.shape;
-		Polygon B = (Polygon)b.shape;
+		PolygonShape A = (PolygonShape)a.shape;
+		PolygonShape B = (PolygonShape)b.shape;
 		m.contactCount = 0;
 
 		// Check for a separating axis with A's face planes
@@ -133,8 +133,8 @@ public class Collision {
 		int referenceIndex;
 		boolean flip; // Always point from a to b
 
-		Polygon RefPoly; // Reference
-		Polygon IncPoly; // Incident
+		PolygonShape RefPoly; // Reference
+		PolygonShape IncPoly; // Incident
 
 		// Determine which shape contains reference face
 		if (gt( penetrationA, penetrationB ))
@@ -254,7 +254,7 @@ public class Collision {
 		m.contactCount = cp;
 	}
 
-	public static double findAxisLeastPenetration( int[] faceIndex, Polygon A, Polygon B )
+	public static double findAxisLeastPenetration( int[] faceIndex, PolygonShape A, PolygonShape B )
 	{
 		double bestDistance = -Float.MAX_VALUE;
 		int bestIndex = 0;
@@ -300,7 +300,7 @@ public class Collision {
 		return bestDistance;
 	}
 
-	public static void findIncidentFace( Vector[] v, Polygon RefPoly, Polygon IncPoly, int referenceIndex )
+	public static void findIncidentFace( Vector[] v, PolygonShape RefPoly, PolygonShape IncPoly, int referenceIndex )
 	{
 		Vector referenceNormal = RefPoly.normals[referenceIndex];
 

@@ -5,7 +5,7 @@ import physicsday.util.Vector;
 public class Body {
 	public final Shape shape;
 	private State currState, prevState;
-	private double mass, invMass, inertia = 10, invInertia = 0.1;
+	private double mass, invMass, inertia, invInertia;
 	double staticFriction;
 	double dynamicFriction;
 	double restitution;
@@ -20,6 +20,7 @@ public class Body {
 		mass = 1;
 		invMass = 1;
 		shape.body = this;
+		shape.init();
 	}
 	
 	public Body(Body other) {

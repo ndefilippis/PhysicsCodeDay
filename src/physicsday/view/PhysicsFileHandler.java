@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import physicsday.PhysicsDay;
@@ -21,24 +22,30 @@ import physicsday.model.World;
 import physicsday.util.Vector;
 
 public class PhysicsFileHandler {
+	private static JFrame frame;
+	
+	public PhysicsFileHandler(JFrame frame){
+		this.frame = frame;
+	}
 	public static void saveWorld(World world) throws FileNotFoundException {
 		JFileChooser fileChooser = new JFileChooser();
-		if (fileChooser.showSaveDialog(PhysicsDay.getFrame()) == JFileChooser.APPROVE_OPTION) {
+		if (fileChooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
 			PrintWriter out = new PrintWriter(new FileOutputStream(file));
 			out.println(".PHY");
-			out.println(objects.size());
-			for (Body b : objects) {
-				out.println(b.saveString());
+			out.println(world.getBodies().size());
+			for (Body b : world.getBodies()) {
+				
+				out.println(b.getPosition());
 			}
 			out.close();
 		}
 	}
 
-	public void loadWorld(File file) throws NumberFormatException, IOException {
+	public static void loadWorld(File file, World world) throws NumberFormatException, IOException {
 		BufferedReader in = new BufferedReader(new FileReader(file));
 		if (in.readLine().startsWith(".PHY")) {
-			objects = new ArrayList<Body>();
+			world.clear();
 			int n = Integer.parseInt(in.readLine());
 			for (int i = 0; i < n; i++) {
 				Body bodyToAdd = null;
@@ -63,31 +70,33 @@ public class PhysicsFileHandler {
 					bodyToAdd = new Block(x, y, width, height);
 				}
 				bodyToAdd.setVelocity(new Vector(velocityx, velocityy));
-				add(bodyToAdd);
+				world.add(bodyToAdd);
 			}
 			in.close();
 		} else {
-			JOptionPane.showMessageDialog(PhysicsDay.getFrame(), "Unable to open: not a .phy file");
+			JOptionPane.showMessageDialog(frame, "Unable to open: not a .phy file");
 		}
 	}
 
-	public void loadWorld() throws IOException {
+	public static void loadWorld(World world) throws IOException {
 		JFileChooser fileChooser = new JFileChooser();
-		if (fileChooser.showOpenDialog(PhysicsDay.getFrame()) == JFileChooser.APPROVE_OPTION) {
+		if (fileChooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
-			loadWorld(file);
+			loadWorld(file, world);
 		}
-		saveState();
+		saveState(world);
 	}
 
-	public void loadWorld(String string) throws NumberFormatException, IOException {
-		loadWorld(new File(string));
-		saveState();
+	public static void loadWorld(String string, World world) throws NumberFormatException, IOException {
+		loadWorld(new File(string), world);
+		saveState(world);
 	}
-	public void saveState() {
-		initState = new ArrayList<Body>();
-		for (Body b : objects) {
-			initState.add(b.copy());
+	
+	static ArrayList<Body> initialState = new ArrayList<Body>();
+	public static void saveState(World world) {
+		initialState = new ArrayList<Body>();
+		for (Body b : world.getBodies()) {
+			initialState.add(b.copy());
 		}
 	}
 }

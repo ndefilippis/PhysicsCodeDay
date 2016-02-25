@@ -81,7 +81,7 @@ public class World {
 	}
 
 	public ArrayList<Body> getBodies() {
-		return objects;
+		return (ArrayList<Body>)objects.clone();
 	}
 	
 	public ArrayList<Manifold> getContacts(){
