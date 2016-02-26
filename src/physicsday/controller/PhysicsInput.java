@@ -55,8 +55,8 @@ public class PhysicsInput implements KeyListener, MouseListener, MouseMotionList
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		mouseDown[e.getButton()] = false;
 		mouseUp[e.getButton()] = true;
+		mouseDown[e.getButton()] = false;
 	}
 
 	@Override
@@ -87,7 +87,6 @@ public class PhysicsInput implements KeyListener, MouseListener, MouseMotionList
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		keyDown[e.getKeyCode()] = false;
 		keysUp[e.getKeyCode()] = true;
 	}
 
@@ -102,6 +101,7 @@ public class PhysicsInput implements KeyListener, MouseListener, MouseMotionList
 		draggedDistance.set(0, 0);
 		for(int i = 0; i < keysUp.length; i++){
 			keysUp[i] = false;
+			keyDown[i] = false;
 		}
 		for(int i = 0; i < mouseUp.length; i++){
 			mouseUp[i] = false;

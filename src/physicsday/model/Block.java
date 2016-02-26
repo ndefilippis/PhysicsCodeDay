@@ -7,8 +7,6 @@ public class Block extends Body{
 		super(PolygonShape.createBox(width, height), x, y);
 		this.width = width;
 		this.height = height;
-		setInertia(42.6);
-		setMass(width*height);
 	}
 
 	@Override

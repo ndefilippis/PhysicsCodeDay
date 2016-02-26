@@ -19,24 +19,25 @@ import physicsday.model.PolygonShape;
 import physicsday.model.Wall;
 import physicsday.model.World;
 import physicsday.util.Vector;
+import physicsday.view.Camera;
 import physicsday.view.PhysicsRenderer;
 import physicsday.view.PhysicsScreen;
 import physicsday.view.Renderer;
 
 public class PhysicsDay implements PhysicsEngine{
-	private static PhysicsDay physicsDay;	
-	
+	static PhysicsScreen screen;
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		PhysicsDay physicsDay = new PhysicsDay();
 		PhysicsLoop loop = new VariableLoop();
-		PhysicsScreen screen = new PhysicsScreen(1600, 1200, loop, physicsDay);
+		screen = new PhysicsScreen(1600, 1200, loop, physicsDay);
 		screen.setBackground(Color.WHITE);
 		PhysicsScreen.showWindow(screen, "PhysicsDay");	
 	}
 
-	public World world;
-	public boolean running;
-	public double accumulator;
+	private World world;
+	private boolean running;
+	private double accumulator;
+	private Camera camera;
 	private Renderer renderer;
 	
 	long time;
@@ -46,6 +47,7 @@ public class PhysicsDay implements PhysicsEngine{
 	@Override
 	public void start(World world) {
 		this.world = world;
+		camera = new Camera(1600, 1200, 25);
 		accumulator = 0;
 		running = true;
 		renderer = new PhysicsRenderer();
@@ -57,16 +59,20 @@ public class PhysicsDay implements PhysicsEngine{
 	public Body selectedBody;
 	@Override
 	public void input(PhysicsInput input) {
-		((PhysicsRenderer)renderer).moveOffset(input.draggedDistance);
+		if(bodyToAdd != null){
+			//bodyToAdd.setSize();
+		}
+		else{
+			((PhysicsRenderer)renderer).moveOffset(input.draggedDistance);
+		}
 		((PhysicsRenderer)renderer).zoom(new Vector(Math.pow(2, -input.scrollWheel/15.0)));
-		if(input.keys > 0){
-			if(input.keyDown[KeyEvent.VK_A]){
+			if(input.keysUp[KeyEvent.VK_A]){
 				PolygonShape p = PolygonShape.createBox(10, 10);
 				Body b = new Body(p, 50*Math.random()+5, 5*Math.random()+5);
 				b.setVelocity(100*Math.random()-50, 100*Math.random()-50);
 				world.add(b);
 			}
-			if(input.keyDown[KeyEvent.VK_R]){
+			if(input.keysUp[KeyEvent.VK_R]){
 				
 				world.clear();
 				world.add(new Wall(50, 24, 100, 10));
@@ -81,28 +87,42 @@ public class PhysicsDay implements PhysicsEngine{
 				updating = !updating;
 				time = System.nanoTime();
 			}
+			if(input.keyDown[KeyEvent.VK_BACK_SPACE] || input.keyDown[KeyEvent.VK_DELETE]){
+				if(selectedBody != null){
+					world.removeObject(selectedBody);
+					selectedBody = null;
+				}
+			}
+		if(input.mouseDown[MouseEvent.BUTTON1]){
+			if(bodyToAdd != null){
+				bodyToAdd.shape.resize(((PhysicsRenderer)renderer).getWorldCoordiantes(input.lastLocation));
+			}
 		}
 		if(input.mouseUp[MouseEvent.BUTTON1]){
 			Body b;
 
 			if((b = getSelectedItem(input.pressedLocation)) != null){
+				if(b.equals(selectedBody)){
+					screen.popupBodyDialog(selectedBody);
+				}
 				selectedBody = b;
 			}
-			else{
-				Vector worldPos = renderer.getWorldCoordiantes(input.pressedLocation);
-				int n = (int)(10*Math.random()+5);
-				Vector[] points = new Vector[n];
-				for(int i = 0; i < n; i++){
-					points[i] = new Vector(100*Math.random()-50, 100*Math.random()-50);
-				}
-				PolygonShape p = new PolygonShape(points, n);
-				world.add(new Body(p, worldPos.x, worldPos.y));
+			else if(selectedBody != null){
+				selectedBody = null;
+			}
+			else if(bodyToAdd != null){
+				world.add(bodyToAdd);
+				bodyToAdd = null;
 			}
 		}
 		if(input.mouseUp[MouseEvent.BUTTON3]){
 			Vector worldPos = renderer.getWorldCoordiantes(input.pressedLocation);
 			CircleShape c = new CircleShape(1);
 			world.add(new Body(c, worldPos.x, worldPos.y));
+		}
+		if(bodyToAdd != null && !input.mouseDown[MouseEvent.BUTTON1]){
+			Vector pos = ((PhysicsRenderer)renderer).getWorldCoordiantes(input.lastLocation);
+			bodyToAdd.setPosition(pos);
 		}
 	}
 	
@@ -120,9 +140,9 @@ public class PhysicsDay implements PhysicsEngine{
 		long currTime = System.nanoTime();
 		accumulator += (currTime - time)/1000000000.0;
 		elapsedTime += (currTime - time)/1000000000.0;
-		while(accumulator >= 1/60.0){
-			world.update(1/60.0);
-			accumulator -= 1 / 60.0;
+		while(accumulator >= 1/320.0){
+			world.update(1/320.0);
+			accumulator -= 1 / 320.0;
 		}
 		time = currTime;
 	}
@@ -135,7 +155,7 @@ public class PhysicsDay implements PhysicsEngine{
 			drawGridlines(gr);
 		}
 		for(Body b : world.getBodies()){
-			renderer.render(b, gr);
+			renderer.renderBody(b, camera, gr);
 		}
 		
 		if(selectedBody != null){

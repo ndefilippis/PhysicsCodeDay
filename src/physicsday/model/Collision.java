@@ -276,16 +276,8 @@ public class Collision {
 			// Vector s = B->GetSupport( -n );
 			Vector s = B.getSupport( n.neg() );
 
-			// Retrieve vertex on face from A, transform into
-			// B's model space
-			// Vector v = A->m_verticies[i];
-			// v = A->u * v + A->body->position;
-			// v -= B->body->position;
-			// v = buT * v;
 			Vector v = buT.multiplyi( A.u.multiply( A.verticies[i] ).addi( A.body.getPosition() ).subtracti( B.body.getPosition() ) );
 
-			// Compute penetration distance (in B's model space)
-			// real d = Dot( n, s - v );
 			double d = n.dot(s.subtract( v ));
 
 			// Store greatest distance

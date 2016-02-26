@@ -1,7 +1,5 @@
 package physicsday.util;
 
-import physicsday.view.PhysicsPanel;
-
 public class BoundingBox {
 	private Vector top;
 	private Vector bottom;

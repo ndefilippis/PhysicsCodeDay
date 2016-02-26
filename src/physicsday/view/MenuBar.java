@@ -3,8 +3,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
@@ -15,11 +13,9 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
 import physicsday.PhysicsDay;
-import physicsday.controller.PhysicsInput;
 import physicsday.model.Block;
 import physicsday.model.Body;
-import physicsday.model.Ramp;
-import physicsday.model.Shape;
+import physicsday.model.CircleShape;
 import physicsday.model.Wall;
 import physicsday.model.World;
 
@@ -133,7 +129,7 @@ public class MenuBar {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PhysicsDay.bodyToAdd = new Block(1, 1, 0, 0);
+				PhysicsDay.bodyToAdd = new Block(0, 0, 1, 1);
 			}
 		});
 
@@ -141,15 +137,15 @@ public class MenuBar {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PhysicsDay.bodyToAdd = new Wall(0, 0, 3, 1);
+				PhysicsDay.bodyToAdd = new Wall(0, 0, 2, 1);
 			}
 		});
 
-		menuItem = addMenuItem(submenu, "Ramp", KeyEvent.VK_T, KeyStroke.getKeyStroke(KeyEvent.VK_T, ActionEvent.SHIFT_MASK), "Adds Ramp");
+		menuItem = addMenuItem(submenu, "Circle", KeyEvent.VK_C, KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.SHIFT_MASK), "Adds Circle");
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PhysicsDay.bodyToAdd = new Ramp(5, 5, true);
+				PhysicsDay.bodyToAdd = new Body(new CircleShape(1), 0, 0);
 			}
 		});
 

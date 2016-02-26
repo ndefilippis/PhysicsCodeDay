@@ -4,7 +4,6 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import physicsday.model.Body;
-import physicsday.model.Shape;
 
 public class QuadTree{
 	private Node overallRoot;
@@ -96,7 +95,6 @@ public class QuadTree{
 			}
 		}
 		private ArrayList<Body> retrieve(Body b, ArrayList<Body> list) {
-			ArrayList<Body> _ret = new ArrayList<Body>();
 			int index = getIndex(b);
 			if(nodes[0] != null){
 				if(index != -1){
@@ -112,6 +110,23 @@ public class QuadTree{
 			
 			return list;
 		}
+		public void remove(Body b) {
+			for(int i = objects.size()-1; i >= 0; i--){
+				if(objects.get(i).equals(b)){
+					objects.remove(i);
+					return;
+				}
+			}
+			for(Node n : nodes){
+				if(n != null){
+					n.remove(b);
+				}
+			}
+		}
+	}
+	
+	public void remove(Body b){
+		this.overallRoot.remove(b);
 	}
 	
 	public void clear(){

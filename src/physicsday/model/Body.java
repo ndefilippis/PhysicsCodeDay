@@ -1,5 +1,7 @@
 package physicsday.model;
 
+import javax.swing.JTextField;
+
 import physicsday.util.Vector;
 
 public class Body {
@@ -138,5 +140,17 @@ public class Body {
 
 	public void setVelocity(double x, double y) {
 		currState.velocity.set(x, y);
+	}
+
+	public double getOrientation() {
+		return currState.orientation;
+	}
+
+	public void setAngularVelocity(double val) {
+		currState.angularVelocity = val;
+	}
+
+	public void setOrientation(double val) {
+		currState.orientation = val;
 	}
 }

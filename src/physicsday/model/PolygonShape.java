@@ -161,5 +161,15 @@ public class PolygonShape extends Shape{
 			}
 		}
 		return bestVector;
+	}
+
+	@Override
+	public void resize(Vector vec) {
+		Vector rv = vec.subtract(body.getPosition());
+		for(int i = 0; i < numVerticies; i++){
+			verticies[i].set(verticies[i].normalize().multiply(Math.min(Math.abs(rv.x)+1, Math.abs(rv.y)+1)));
+		}
+		if(body.getInvMass() != 0)
+		init();
 	}	
 }

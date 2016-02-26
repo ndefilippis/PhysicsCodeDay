@@ -1,6 +1,7 @@
 package physicsday.model;
 
 import physicsday.util.BoundingBox;
+import physicsday.util.Vector;
 
 public class CircleShape extends Shape{
 	public double radius;
@@ -23,5 +24,12 @@ public class CircleShape extends Shape{
 	@Override
 	public BoundingBox boundingBox() {
 		return new BoundingBox(body.getPosition(), radius*2, radius*2);
+	}
+
+	@Override
+	public void resize(Vector vec) {
+		Vector rd = vec.subtract(body.getPosition());
+		radius = Math.min(Math.abs(rd.x), Math.abs(rd.y))+1;
+		init();
 	}
 }

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.MouseInfo;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -13,11 +14,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import physicsday.controller.PhysicsEngine;
 import physicsday.controller.PhysicsInput;
 import physicsday.controller.PhysicsLoop;
+import physicsday.model.Body;
 import physicsday.model.World;
 import physicsday.util.Vector;
 
@@ -82,31 +85,11 @@ public class PhysicsScreen extends JPanel{
 		graphics.setColor(getBackground() );
 		graphics.fillRect(0, 0, getWidth(), getHeight() );
 	}
-	
-	/*public boolean canAddAtLocation(Body toAdd, PhysicsPanel panel) {
-		for (Body b : objects) {
-			Area a1 = b.shape.getScreenArea(panel);
-			a1.intersect(toAdd.shape.getScreenArea(panel));
-			if (!a1.isEmpty()) {
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	public Body getShapeAt(int x, int y, PhysicsPanel p) {
-		for (int i = objects.size() - 1; i >= 0; i--) {
-			if (objects.get(i).shape.getScreenArea(p).contains(x, y)) {
-				return objects.get(i);
-			}
-		}
-		return null;
-	}*/
+
 	public static void showWindow(PhysicsScreen screen, String title){
 		if(screen != null){
 			JFrame window = new JFrame(title);
 			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			//MenuBar.createMenuBar(window, screen.world, screen);
 			window.getContentPane().add(screen);
 			MenuBar.createMenuBar(window, screen.world, screen);
 			window.pack();
@@ -134,76 +117,127 @@ public class PhysicsScreen extends JPanel{
 		}
 		throw new IllegalArgumentException();
 	}
-	/*JRadioButton delete = new JRadioButton();
-	JRadioButton switchSlope = new JRadioButton();
-	JTextField xField = new JTextField(5);
-	JTextField yField = new JTextField(5);
-	JTextField wField = new JTextField(5);
-	JTextField hField = new JTextField(5);
-	JTextField mass = new JTextField(5);
-	JPanel pan = new JPanel();
-	if(s instanceof Ramp || s instanceof Block)
-		pan.setLayout(new GridLayout(4,5));
-	else{
-		pan.setLayout(new GridLayout(3, 5));
-	}
-	pan.add(Box.createHorizontalStrut(5));
-	pan.add(new JLabel("Delete"));
-	pan.add(Box.createHorizontalStrut(5));
-	pan.add(delete);
-	pan.add(Box.createHorizontalStrut(5));
-	if(s instanceof Ramp){
-		pan.add(Box.createHorizontalStrut(5));
-		pan.add(new JLabel("Switch Facing"));
-		pan.add(Box.createHorizontalStrut(5));
-		pan.add(switchSlope);
-		pan.add(Box.createHorizontalStrut(5));
-	}
-	if(s instanceof Block){
+
+	public void popupBodyDialog(Body selectedBody) {
+		JTextField mass = new JTextField(10);
+		JTextField inertia = new JTextField(10);
+		JTextField x = new JTextField(10);
+		JTextField y = new JTextField(10);
+		JTextField r = new JTextField(10);
+		JTextField vx = new JTextField(10);
+		JTextField vy = new JTextField(10);
+		JTextField vr = new JTextField(10);
+		JPanel pan = new JPanel();
+		pan.setLayout(new GridLayout(8,3));
+
 		pan.add(Box.createHorizontalStrut(5));
 		pan.add(new JLabel("Mass"));
-		pan.add(Box.createHorizontalStrut(5));
 		pan.add(mass);
+		mass.setText(1.0/selectedBody.getInvMass()+"");
 		pan.add(Box.createHorizontalStrut(5));
-	}
-	pan.add(new JLabel("X Velocity:"));
-	pan.add(xField);
-	pan.add(Box.createHorizontalStrut(5));
-	pan.add(new JLabel("Y Velocity:"));
-	pan.add(yField);
-	pan.add(new JLabel("Width:"));
-	pan.add(wField);
-	pan.add(Box.createHorizontalStrut(5));
-	pan.add(new JLabel("Height:"));
-	pan.add(hField);
-	int result = JOptionPane.showConfirmDialog(null, pan, "Enter X and Y values", JOptionPane.OK_CANCEL_OPTION);
-	if(result == JOptionPane.OK_OPTION){
-		if(delete.isSelected()){
-			World.removeObject(Input.selectedItem);
-			Input.selectedItem = null;
-			return;
-		}
-		try{
-			if(s instanceof Ramp && switchSlope.isSelected()){
-				((Ramp)s).switchFacing();
+		
+		pan.add(Box.createHorizontalStrut(5));
+		pan.add(new JLabel("Inertia"));
+		pan.add(inertia);
+		inertia.setText(1.0/selectedBody.getInvInertia()+"");
+		pan.add(Box.createHorizontalStrut(5));
+		
+		pan.add(Box.createHorizontalStrut(5));
+		pan.add(new JLabel("x"));
+		pan.add(x);
+		x.setText(selectedBody.getPosition().x+"");
+		pan.add(Box.createHorizontalStrut(5));
+		
+		pan.add(Box.createHorizontalStrut(5));
+		pan.add(new JLabel("y"));
+		pan.add(y);
+		y.setText(selectedBody.getPosition().y+"");
+		pan.add(Box.createHorizontalStrut(5));
+		
+		pan.add(Box.createHorizontalStrut(5));
+		pan.add(new JLabel("r"));
+		pan.add(r);
+		r.setText(selectedBody.getOrientation()+"");
+		pan.add(Box.createHorizontalStrut(5));
+		
+		pan.add(Box.createHorizontalStrut(5));
+		pan.add(new JLabel("Vx"));
+		pan.add(vx);
+		vx.setText(selectedBody.getVelocity().x+"");
+		pan.add(Box.createHorizontalStrut(5));
+		
+		pan.add(Box.createHorizontalStrut(5));
+		pan.add(new JLabel("Vy"));
+		pan.add(vy);
+		vy.setText(selectedBody.getVelocity().y+"");
+		pan.add(Box.createHorizontalStrut(5));
+		
+		pan.add(Box.createHorizontalStrut(5));
+		pan.add(new JLabel("Vr"));
+		pan.add(vr);
+		vr.setText(selectedBody.getAngularVelocity()+"");
+		pan.add(Box.createHorizontalStrut(5));
+		
+		int result = JOptionPane.showConfirmDialog(null, pan, selectedBody.getClass()+"", JOptionPane.OK_CANCEL_OPTION);
+		if(result == JOptionPane.OK_OPTION){
+			double val;
+			
+			try{
+				val = Double.parseDouble(mass.getText());
+				selectedBody.setMass(val);			
 			}
-			if(s instanceof Block && !mass.getText().isEmpty()){
-				try{
-					Input.selectedItem.setMass(Double.parseDouble(mass.getText()));
-				}
-				catch(NumberFormatException e){
-					
-				}
+			catch(NumberFormatException e){
+				
 			}
-			double x;
-			if(!xField.getText().isEmpty() && !yField.getText().isEmpty()){
-				Input.selectedItem.setVelocity(new Vector(Integer.parseInt(xField.getText()), Integer.parseInt(yField.getText())));
-			}				
-		}
-		catch(NumberFormatException e){
+			
+			try{
+				val = Double.parseDouble(vx.getText());
+				selectedBody.setVelocity(val, selectedBody.getVelocity().y);			
+			}
+			catch(NumberFormatException e){
+				
+			}
+			
+			try{
+				val = Double.parseDouble(vy.getText());
+				selectedBody.setVelocity(selectedBody.getVelocity().x, val);			
+			}
+			catch(NumberFormatException e){
+				
+			}
+			try{
+				val = Double.parseDouble(x.getText());
+				Vector pos = new Vector(val, selectedBody.getPosition().y);
+				selectedBody.setPosition(pos);			
+			}
+			catch(NumberFormatException e){
+				
+			}
+			try{
+				val = Double.parseDouble(y.getText());
+				Vector pos = new Vector(selectedBody.getPosition().x, val);
+				selectedBody.setPosition(pos);		
+			}
+			catch(NumberFormatException e){
+				
+			}
+			try{
+				val = Double.parseDouble(vr.getText());
+				selectedBody.setAngularVelocity(val);			
+			}
+			catch(NumberFormatException e){
+				
+			}
+			try{
+				val = Double.parseDouble(r.getText());
+				selectedBody.setOrientation(val);			
+			}
+			catch(NumberFormatException e){
+				
+			}
 			
 		}
-	}*/
+	}
 	
 	
 }

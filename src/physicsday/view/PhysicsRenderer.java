@@ -11,6 +11,7 @@ import java.awt.geom.Ellipse2D;
 import physicsday.model.Body;
 import physicsday.model.CircleShape;
 import physicsday.model.PolygonShape;
+import physicsday.model.World;
 import physicsday.util.Vector;
 
 public class PhysicsRenderer implements Renderer{
@@ -20,17 +21,6 @@ public class PhysicsRenderer implements Renderer{
 	public PhysicsRenderer(){
 		scale = new Vector(25, 25);
 		offset = new Vector(0, 0);
-	}
-	
-	@Override
-	public void render(Body b, Graphics2D gr) {
-		
-		if(b.shape instanceof CircleShape){
-			drawCircle((CircleShape)b.shape, gr);
-		}
-		if(b.shape instanceof PolygonShape){
-			drawPolygon((PolygonShape)b.shape, gr);
-		}
 	}
 
 	private void drawCircle(CircleShape shape, Graphics2D gr) {
@@ -47,6 +37,9 @@ public class PhysicsRenderer implements Renderer{
 	private void drawPolygon(PolygonShape shape, Graphics2D gr) {
 		double weight = 1;
 		gr.setColor(new Color((int)(weight*128), (int)(weight*200), (int)(weight*128)));
+		if(shape.body.getInvMass() == 0){
+			gr.setColor(Color.BLACK);
+		}
 		gr.fillPolygon(screenPolygon(shape));
 		
 		gr.setColor(Color.BLUE);
@@ -119,6 +112,22 @@ public class PhysicsRenderer implements Renderer{
 		gr.fill(getScreenArea(selectedBody));
 		gr.setColor(Color.RED);
 		gr.draw(getScreenArea(selectedBody));
+	}
+
+	@Override
+	public void renderBody(Body b, Camera camera, Graphics2D gr, RenderFlag... flags) {
+		if(b.shape instanceof CircleShape){
+			drawCircle((CircleShape)b.shape, gr);
+		}
+		if(b.shape instanceof PolygonShape){
+			drawPolygon((PolygonShape)b.shape, gr);
+		}
+	}
+
+	@Override
+	public void renderWorld(World world, Camera camera, Graphics2D gr, RenderFlag... flags) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
