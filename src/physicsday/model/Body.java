@@ -8,9 +8,9 @@ public class Body {
 	public final Shape shape;
 	private State currState, prevState;
 	private double mass, invMass, inertia, invInertia;
-	double staticFriction;
-	double dynamicFriction;
-	double restitution;
+	public double staticFriction;
+	public double dynamicFriction;
+	public double restitution;
 	
 	public Body(Shape shape, double x, double y){
 		this.shape = shape;

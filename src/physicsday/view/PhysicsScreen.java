@@ -127,8 +127,13 @@ public class PhysicsScreen extends JPanel{
 		JTextField vx = new JTextField(10);
 		JTextField vy = new JTextField(10);
 		JTextField vr = new JTextField(10);
+		
+		JTextField sf = new JTextField(10);
+		JTextField df = new JTextField(10);
+		JTextField rest = new JTextField(10);
+		
 		JPanel pan = new JPanel();
-		pan.setLayout(new GridLayout(8,3));
+		pan.setLayout(new GridLayout(11,3));
 
 		pan.add(Box.createHorizontalStrut(5));
 		pan.add(new JLabel("Mass"));
@@ -176,6 +181,24 @@ public class PhysicsScreen extends JPanel{
 		pan.add(new JLabel("Vr"));
 		pan.add(vr);
 		vr.setText(selectedBody.getAngularVelocity()+"");
+		pan.add(Box.createHorizontalStrut(5));
+		
+		pan.add(Box.createHorizontalStrut(5));
+		pan.add(new JLabel("Static Friction"));
+		pan.add(sf);
+		sf.setText(selectedBody.staticFriction+"");
+		pan.add(Box.createHorizontalStrut(5));
+		
+		pan.add(Box.createHorizontalStrut(5));
+		pan.add(new JLabel("Dynamic Friction"));
+		pan.add(df);
+		df.setText(selectedBody.dynamicFriction+"");
+		pan.add(Box.createHorizontalStrut(5));
+		
+		pan.add(Box.createHorizontalStrut(5));
+		pan.add(new JLabel("Restitution"));
+		pan.add(rest);
+		rest.setText(selectedBody.restitution+"");
 		pan.add(Box.createHorizontalStrut(5));
 		
 		int result = JOptionPane.showConfirmDialog(null, pan, selectedBody.getClass()+"", JOptionPane.OK_CANCEL_OPTION);
@@ -228,9 +251,33 @@ public class PhysicsScreen extends JPanel{
 			catch(NumberFormatException e){
 				
 			}
+			
 			try{
 				val = Double.parseDouble(r.getText());
 				selectedBody.setOrientation(val);			
+			}
+			catch(NumberFormatException e){
+				
+			}
+			
+			try{
+				val = Double.parseDouble(sf.getText());
+				selectedBody.staticFriction = val;			
+			}
+			catch(NumberFormatException e){
+				
+			}
+			
+			try{
+				val = Double.parseDouble(df.getText());
+				selectedBody.dynamicFriction = val;	
+			}
+			catch(NumberFormatException e){
+				
+			}
+			try{
+				val = Double.parseDouble(rest.getText());
+				selectedBody.restitution = val;			
 			}
 			catch(NumberFormatException e){
 				
