@@ -32,4 +32,9 @@ public class CircleShape extends Shape{
 		radius = Math.min(Math.abs(rd.x), Math.abs(rd.y))+1;
 		init();
 	}
+
+	@Override
+	public String saveString() {
+		return "c:"+radius;
+	}
 }

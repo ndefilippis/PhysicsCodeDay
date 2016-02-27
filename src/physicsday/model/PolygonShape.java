@@ -1,10 +1,6 @@
 package physicsday.model;
 
-import java.awt.Graphics;
-import java.awt.geom.Area;
-
 import physicsday.util.BoundingBox;
-import physicsday.util.Mat22;
 import physicsday.util.Vector;
 
 public class PolygonShape extends Shape{
@@ -120,6 +116,22 @@ public class PolygonShape extends Shape{
 		return p;
 	} 
 
+	public static PolygonShape createRamp(double width, double height, boolean positive){
+		PolygonShape p = new PolygonShape();
+		p.numVerticies = 3;
+		p.verticies = new Vector[3];
+		p.normals = new Vector[3];
+		double hw = width/2;
+		double hh = height/2;
+		p.verticies[0] = new Vector(-hw, hh);
+		p.verticies[1] = new Vector(hw, hh);
+		p.verticies[2] = positive ? new Vector(hw, -hh) : new Vector(-hw, -hh);
+		p.normals[0] = new Vector(0, 1);
+		p.normals[1] = positive ? new Vector(1, 0) : new Vector(-hh, -hw).normalize();
+		p.normals[2] = positive ? new Vector(hh, -hw).normalize() : new Vector(-1, 0);
+		return p;
+	}
+
 	@Override
 	public Shape copy() {
 		PolygonShape p = new PolygonShape();
@@ -171,5 +183,14 @@ public class PolygonShape extends Shape{
 		}
 		if(body.getInvMass() != 0)
 		init();
+	}
+
+	@Override
+	public String saveString() {
+		String s = "p:"+numVerticies+":";
+		for(int i = 0; i < numVerticies; i++){
+			s+=":"+verticies[i].x+":"+verticies[i].y;
+		}
+		return s;
 	}	
 }

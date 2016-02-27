@@ -1,20 +1,18 @@
 package physicsday.view;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.MouseInfo;
-import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 
 import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import physicsday.controller.PhysicsEngine;
@@ -22,7 +20,6 @@ import physicsday.controller.PhysicsInput;
 import physicsday.controller.PhysicsLoop;
 import physicsday.model.Body;
 import physicsday.model.World;
-import physicsday.util.Vector;
 
 public class PhysicsScreen extends JPanel{
 	private static final long serialVersionUID = 1L;
@@ -119,171 +116,38 @@ public class PhysicsScreen extends JPanel{
 	}
 
 	public void popupBodyDialog(Body selectedBody) {
-		JTextField mass = new JTextField(10);
-		JTextField inertia = new JTextField(10);
-		JTextField x = new JTextField(10);
-		JTextField y = new JTextField(10);
-		JTextField r = new JTextField(10);
-		JTextField vx = new JTextField(10);
-		JTextField vy = new JTextField(10);
-		JTextField vr = new JTextField(10);
-		
-		JTextField sf = new JTextField(10);
-		JTextField df = new JTextField(10);
-		JTextField rest = new JTextField(10);
-		
+		HashMap<String, Double> props = selectedBody.getBodyProps();
+		JTextField[] propsInput = new JTextField[props.size()];
 		JPanel pan = new JPanel();
-		pan.setLayout(new GridLayout(11,3));
+		pan.setLayout(new GridLayout(props.size(),3));
+		int i = 0;
+		for(String s : props.keySet()){
+			propsInput[i] = new JTextField(10);
+			pan.add(Box.createHorizontalStrut(5));
+			pan.add(new JLabel(s));
+			pan.add(propsInput[i]);
+			propsInput[i].setText(props.get(s).toString());
+			pan.add(Box.createHorizontalStrut(5));
+			i++;
+		}
 
-		pan.add(Box.createHorizontalStrut(5));
-		pan.add(new JLabel("Mass"));
-		pan.add(mass);
-		mass.setText(1.0/selectedBody.getInvMass()+"");
-		pan.add(Box.createHorizontalStrut(5));
-		
-		pan.add(Box.createHorizontalStrut(5));
-		pan.add(new JLabel("Inertia"));
-		pan.add(inertia);
-		inertia.setText(1.0/selectedBody.getInvInertia()+"");
-		pan.add(Box.createHorizontalStrut(5));
-		
-		pan.add(Box.createHorizontalStrut(5));
-		pan.add(new JLabel("x"));
-		pan.add(x);
-		x.setText(selectedBody.getPosition().x+"");
-		pan.add(Box.createHorizontalStrut(5));
-		
-		pan.add(Box.createHorizontalStrut(5));
-		pan.add(new JLabel("y"));
-		pan.add(y);
-		y.setText(selectedBody.getPosition().y+"");
-		pan.add(Box.createHorizontalStrut(5));
-		
-		pan.add(Box.createHorizontalStrut(5));
-		pan.add(new JLabel("r"));
-		pan.add(r);
-		r.setText(selectedBody.getOrientation()+"");
-		pan.add(Box.createHorizontalStrut(5));
-		
-		pan.add(Box.createHorizontalStrut(5));
-		pan.add(new JLabel("Vx"));
-		pan.add(vx);
-		vx.setText(selectedBody.getVelocity().x+"");
-		pan.add(Box.createHorizontalStrut(5));
-		
-		pan.add(Box.createHorizontalStrut(5));
-		pan.add(new JLabel("Vy"));
-		pan.add(vy);
-		vy.setText(selectedBody.getVelocity().y+"");
-		pan.add(Box.createHorizontalStrut(5));
-		
-		pan.add(Box.createHorizontalStrut(5));
-		pan.add(new JLabel("Vr"));
-		pan.add(vr);
-		vr.setText(selectedBody.getAngularVelocity()+"");
-		pan.add(Box.createHorizontalStrut(5));
-		
-		pan.add(Box.createHorizontalStrut(5));
-		pan.add(new JLabel("Static Friction"));
-		pan.add(sf);
-		sf.setText(selectedBody.staticFriction+"");
-		pan.add(Box.createHorizontalStrut(5));
-		
-		pan.add(Box.createHorizontalStrut(5));
-		pan.add(new JLabel("Dynamic Friction"));
-		pan.add(df);
-		df.setText(selectedBody.dynamicFriction+"");
-		pan.add(Box.createHorizontalStrut(5));
-		
-		pan.add(Box.createHorizontalStrut(5));
-		pan.add(new JLabel("Restitution"));
-		pan.add(rest);
-		rest.setText(selectedBody.restitution+"");
-		pan.add(Box.createHorizontalStrut(5));
 		
 		int result = JOptionPane.showConfirmDialog(null, pan, selectedBody.getClass()+"", JOptionPane.OK_CANCEL_OPTION);
 		if(result == JOptionPane.OK_OPTION){
 			double val;
-			
-			try{
-				val = Double.parseDouble(mass.getText());
-				selectedBody.setMass(val);			
+			i = 0;
+			for(String s : props.keySet()){
+				try{
+					val = Double.parseDouble(propsInput[i].getText());
+					props.put(s, val);
+				}
+				catch(NumberFormatException e){
+					
+				}
+				i++;
 			}
-			catch(NumberFormatException e){
-				
-			}
-			
-			try{
-				val = Double.parseDouble(vx.getText());
-				selectedBody.setVelocity(val, selectedBody.getVelocity().y);			
-			}
-			catch(NumberFormatException e){
-				
-			}
-			
-			try{
-				val = Double.parseDouble(vy.getText());
-				selectedBody.setVelocity(selectedBody.getVelocity().x, val);			
-			}
-			catch(NumberFormatException e){
-				
-			}
-			try{
-				val = Double.parseDouble(x.getText());
-				Vector pos = new Vector(val, selectedBody.getPosition().y);
-				selectedBody.setPosition(pos);			
-			}
-			catch(NumberFormatException e){
-				
-			}
-			try{
-				val = Double.parseDouble(y.getText());
-				Vector pos = new Vector(selectedBody.getPosition().x, val);
-				selectedBody.setPosition(pos);		
-			}
-			catch(NumberFormatException e){
-				
-			}
-			try{
-				val = Double.parseDouble(vr.getText());
-				selectedBody.setAngularVelocity(val);			
-			}
-			catch(NumberFormatException e){
-				
-			}
-			
-			try{
-				val = Double.parseDouble(r.getText());
-				selectedBody.setOrientation(val);			
-			}
-			catch(NumberFormatException e){
-				
-			}
-			
-			try{
-				val = Double.parseDouble(sf.getText());
-				selectedBody.staticFriction = val;			
-			}
-			catch(NumberFormatException e){
-				
-			}
-			
-			try{
-				val = Double.parseDouble(df.getText());
-				selectedBody.dynamicFriction = val;	
-			}
-			catch(NumberFormatException e){
-				
-			}
-			try{
-				val = Double.parseDouble(rest.getText());
-				selectedBody.restitution = val;			
-			}
-			catch(NumberFormatException e){
-				
-			}
-			
 		}
+		selectedBody.setBodyProps(props);
 	}
 	
 	

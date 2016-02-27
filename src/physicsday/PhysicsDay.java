@@ -7,8 +7,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
-import javax.swing.JLabel;
-
 import physicsday.controller.PhysicsEngine;
 import physicsday.controller.PhysicsInput;
 import physicsday.controller.PhysicsLoop;
@@ -22,6 +20,7 @@ import physicsday.util.Vector;
 import physicsday.view.Camera;
 import physicsday.view.PhysicsRenderer;
 import physicsday.view.PhysicsScreen;
+import physicsday.view.RenderFlag;
 import physicsday.view.Renderer;
 
 public class PhysicsDay implements PhysicsEngine{
@@ -50,7 +49,7 @@ public class PhysicsDay implements PhysicsEngine{
 		camera = new Camera(1600, 1200, 25);
 		accumulator = 0;
 		running = true;
-		renderer = new PhysicsRenderer();
+		renderer = new PhysicsRenderer(camera);
 		time = System.nanoTime();
 	}
 	
@@ -63,9 +62,9 @@ public class PhysicsDay implements PhysicsEngine{
 			//bodyToAdd.setSize();
 		}
 		else{
-			((PhysicsRenderer)renderer).moveOffset(input.draggedDistance);
+			camera.moveOffset(input.draggedDistance);
 		}
-		((PhysicsRenderer)renderer).zoom(new Vector(Math.pow(2, -input.scrollWheel/15.0)));
+		camera.zoom(new Vector(Math.pow(2, -input.scrollWheel/15.0)));
 			if(input.keysUp[KeyEvent.VK_A]){
 				PolygonShape p = PolygonShape.createBox(10, 10);
 				Body b = new Body(p, 50*Math.random()+5, 5*Math.random()+5);
@@ -77,17 +76,17 @@ public class PhysicsDay implements PhysicsEngine{
 				world.clear();
 				world.add(new Wall(50, 24, 100, 10));
 			}
-			if(input.keyDown[KeyEvent.VK_S]){
+			if(input.keysDown[KeyEvent.VK_S]){
 				CircleShape c = new CircleShape(Math.random()*7+1);
 				Body b = new Body(c, 50*Math.random()+5, 5*Math.random()+5);
 				b.setVelocity(10*Math.random()-5, 10*Math.random()-5);
 				world.add(b);
 			}
-			if(input.keyDown[KeyEvent.VK_SPACE]){
+			if(input.keysDown[KeyEvent.VK_SPACE]){
 				updating = !updating;
 				time = System.nanoTime();
 			}
-			if(input.keyDown[KeyEvent.VK_BACK_SPACE] || input.keyDown[KeyEvent.VK_DELETE]){
+			if(input.keysDown[KeyEvent.VK_BACK_SPACE] || input.keysDown[KeyEvent.VK_DELETE]){
 				if(selectedBody != null){
 					world.removeObject(selectedBody);
 					selectedBody = null;
@@ -95,7 +94,7 @@ public class PhysicsDay implements PhysicsEngine{
 			}
 		if(input.mouseDown[MouseEvent.BUTTON1]){
 			if(bodyToAdd != null){
-				bodyToAdd.shape.resize(((PhysicsRenderer)renderer).getWorldCoordiantes(input.lastLocation));
+				bodyToAdd.shape.resize(camera.getWorldCoordiantes(input.lastLocation));
 			}
 		}
 		if(input.mouseUp[MouseEvent.BUTTON1]){
@@ -116,19 +115,19 @@ public class PhysicsDay implements PhysicsEngine{
 			}
 		}
 		if(input.mouseUp[MouseEvent.BUTTON3]){
-			Vector worldPos = renderer.getWorldCoordiantes(input.pressedLocation);
+			Vector worldPos = camera.getWorldCoordiantes(input.pressedLocation);
 			CircleShape c = new CircleShape(1);
 			world.add(new Body(c, worldPos.x, worldPos.y));
 		}
 		if(bodyToAdd != null && !input.mouseDown[MouseEvent.BUTTON1]){
-			Vector pos = ((PhysicsRenderer)renderer).getWorldCoordiantes(input.lastLocation);
+			Vector pos = camera.getWorldCoordiantes(input.lastLocation);
 			bodyToAdd.setPosition(pos);
 		}
 	}
 	
 	private Body getSelectedItem(Vector pressedLocation) {
 		for(Body b : world.getBodies()){
-			if(renderer.getScreenArea(b).contains(pressedLocation.x, pressedLocation.y)){
+			if(camera.getScreenArea(b).contains(pressedLocation.x, pressedLocation.y)){
 				return b;
 			}
 		}
@@ -155,14 +154,14 @@ public class PhysicsDay implements PhysicsEngine{
 			drawGridlines(gr);
 		}
 		for(Body b : world.getBodies()){
-			renderer.renderBody(b, camera, gr);
+			renderer.renderBody(b, gr);
 		}
 		
 		if(selectedBody != null){
-			((PhysicsRenderer)renderer).renderSelected(selectedBody, gr);
+			renderer.renderBody(selectedBody, gr, RenderFlag.SELECTED);
 		}
 		if(bodyToAdd != null){
-			((PhysicsRenderer)renderer).renderOpaque(bodyToAdd, gr);
+			renderer.renderBody(bodyToAdd, gr, RenderFlag.OPAQUE);
 		}
 		
 		gr.setColor(Color.WHITE);
@@ -175,8 +174,6 @@ public class PhysicsDay implements PhysicsEngine{
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -190,8 +187,8 @@ public class PhysicsDay implements PhysicsEngine{
 	}
 
 	private int drawGridlines(Graphics g){
-		Vector scale = ((PhysicsRenderer)renderer).getScale();
-		Vector offset = ((PhysicsRenderer)renderer).getOffset();
+		Vector scale = camera.getScreenSize(new Vector(1, 1));
+		Vector offset = camera.getScreenVector(new Vector(0, 0));
 		double xEvery = scale.x;
 		int count = 0;
 		

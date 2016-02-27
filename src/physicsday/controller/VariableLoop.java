@@ -4,9 +4,6 @@ import java.awt.Graphics2D;
 import physicsday.model.World;
 
 public class VariableLoop implements PhysicsLoop {
-	private static final double SECONDS_PER_UPDATE = 1.0 / 320.0;
-	private static double startTime;
-	private static double currTime;
 	private static boolean isRunning = false;
 	@Override
 	public void onStart(PhysicsEngine engine) {

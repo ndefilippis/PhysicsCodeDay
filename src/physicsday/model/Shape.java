@@ -21,4 +21,6 @@ public abstract class Shape{
 		this.orientation = orientation;
 		u = new Mat22(orientation);
 	}
+
+	public abstract String saveString();
 }

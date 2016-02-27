@@ -1,9 +1,7 @@
 package physicsday.model;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
-import physicsday.util.QuadTree;
 import physicsday.util.Vector;
 
 public class World {
@@ -89,7 +87,7 @@ public class World {
 	}
 
 	public ArrayList<Body> getBodies() {
-		return (ArrayList<Body>)objects.clone();
+		return new ArrayList<Body>(objects);
 	}
 	
 	public ArrayList<Manifold> getContacts(){

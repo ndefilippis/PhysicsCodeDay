@@ -13,7 +13,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import physicsday.PhysicsDay;
 import physicsday.model.Block;
 import physicsday.model.Body;
 import physicsday.model.Ramp;
@@ -25,7 +24,7 @@ public class PhysicsFileHandler {
 	private static JFrame frame;
 	
 	public PhysicsFileHandler(JFrame frame){
-		this.frame = frame;
+		PhysicsFileHandler.frame = frame;
 	}
 	public static void saveWorld(World world) throws FileNotFoundException {
 		JFileChooser fileChooser = new JFileChooser();

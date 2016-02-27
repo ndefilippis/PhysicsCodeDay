@@ -3,19 +3,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
-
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
 import physicsday.PhysicsDay;
 import physicsday.model.Block;
 import physicsday.model.Body;
 import physicsday.model.CircleShape;
+import physicsday.model.PolygonShape;
 import physicsday.model.Wall;
 import physicsday.model.World;
 
@@ -23,20 +21,14 @@ public class MenuBar {
 	private static JMenuBar menuBar;
 	private static JMenu menu, submenu;
 	private static JMenuItem menuItem;
-	private static JRadioButtonMenuItem rbMenuItem;
-	private static JCheckBoxMenuItem cbMenuItem;
-	private static JFrame frame;
 	private static World world;
-	private static PhysicsScreen view;
 	
 	public static void createMenuBar(JFrame window, World world, PhysicsScreen screen){
 		menuBar = new JMenuBar();
 		createFileMenu();
 		createWorldMenu();
 		createSimMenu();
-		MenuBar.frame = window;
 		MenuBar.world = world;
-		MenuBar.view = screen;
 		window.setJMenuBar(menuBar);
 	}
 	private static JMenuItem addMenuItem(JMenu menu, String name, int alt, KeyStroke accelerator, String context){
@@ -146,6 +138,14 @@ public class MenuBar {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				PhysicsDay.bodyToAdd = new Body(new CircleShape(1), 0, 0);
+			}
+		});
+		
+		menuItem = addMenuItem(submenu, "Ramp", KeyEvent.VK_E, KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.SHIFT_MASK), "Adds Ramp");
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PhysicsDay.bodyToAdd = new Body(PolygonShape.createRamp(5, 5, true), 0, 0);
 			}
 		});
 

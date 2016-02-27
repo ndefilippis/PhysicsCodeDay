@@ -1,6 +1,7 @@
 package physicsday.model;
 
-import javax.swing.JTextField;
+import java.util.HashMap;
+import java.util.Map;
 
 import physicsday.util.Vector;
 
@@ -11,6 +12,7 @@ public class Body {
 	public double staticFriction;
 	public double dynamicFriction;
 	public double restitution;
+	
 	
 	public Body(Shape shape, double x, double y){
 		this.shape = shape;
@@ -66,6 +68,10 @@ public class Body {
 		
 	}
 	
+	public Vector interpolatePosition(double alpha){
+		return currState.position.multiply(alpha).add(prevState.position.multiply(1-alpha));
+	}
+	
 	private class State{
 		public final Vector position;
 		public double orientation;
@@ -105,7 +111,7 @@ public class Body {
 	}
 
 	public String toString(){
-		return ""+shape.getClass().toString().substring(6)+":    mass: "+mass+"    "+"position: "+currState.position+"   velocity: "+currState.velocity;
+		return ""+shape.getClass().toString().substring(6)+":    mass: "+mass+"    inertia: "+inertia+"    position: "+currState.position+"   velocity: "+currState.velocity;
 	}
 	public void setMass(double mass) {
 		this.mass = mass;
@@ -128,6 +134,44 @@ public class Body {
 
 	public double getInvInertia() {
 		return invInertia;
+	}
+
+	public String saveString(){
+		String s = "";
+		s += shape.saveString()+"\n";
+		HashMap<String, Double> props = getBodyProps();
+		for(String t : props.keySet()){
+			s+=t+":"+props.get(t);
+		}
+		return s;
+	}
+	
+	public HashMap<String, Double> getBodyProps(){
+		HashMap<String, Double> props = new HashMap<String, Double>();
+		props.put("x", currState.position.x);
+		props.put("y", currState.position.y);
+		props.put("r", currState.orientation);
+		props.put("Vx", currState.velocity.x);
+		props.put("Vy", currState.velocity.y);
+		props.put("Vr", currState.angularVelocity);
+		props.put("Mass", mass);
+		props.put("Inertia", inertia);
+		props.put("Static Friction", staticFriction);
+		props.put("Dynamic Friction", dynamicFriction);
+		props.put("Restitution", restitution);
+		return props;
+	}
+	
+	public void setBodyProps(Map<String, Double> props){
+		setPosition(new Vector(props.get("x"), props.get("y")));
+		setOrientation(props.get("r"));
+		setVelocity(new Vector(props.get("Vx"), props.get("Vy")));
+		setAngularVelocity(props.get("Vr"));
+		setMass(props.get("Mass"));
+		setInertia(props.get("Inertia"));
+		staticFriction = props.get("Static Friction");
+		dynamicFriction = props.get("Dynamic Friction");
+		restitution = props.get("Restitution");
 	}
 
 	public void setTorque(double t) {
