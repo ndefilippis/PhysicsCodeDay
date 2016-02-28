@@ -28,7 +28,7 @@ public class PhysicsDay implements PhysicsEngine{
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		PhysicsDay physicsDay = new PhysicsDay();
 		PhysicsLoop loop = new VariableLoop();
-		screen = new PhysicsScreen(1600, 1200, loop, physicsDay);
+		screen = new PhysicsScreen(1600, 1000, loop, physicsDay);
 		screen.setBackground(Color.WHITE);
 		PhysicsScreen.showWindow(screen, "PhysicsDay");	
 	}
@@ -59,18 +59,19 @@ public class PhysicsDay implements PhysicsEngine{
 	public Body dragging;
 	@Override
 	public void input(PhysicsInput input) {
+		Body b = getSelectedItem(input.pressedLocation);
 		if(bodyToAdd != null){
 			//bodyToAdd.setSize();
 		}
-		else{
+		else if(b == null && dragging == null){
 			camera.moveOffset(input.draggedDistance);
 		}
 		camera.zoom(new Vector(Math.pow(2, -input.scrollWheel/15.0)));
 			if(input.keysUp[KeyEvent.VK_A]){
 				PolygonShape p = PolygonShape.createBox(10, 10);
-				Body b = new Body(p, 50*Math.random()+5, 5*Math.random()+5);
-				b.setVelocity(100*Math.random()-50, 100*Math.random()-50);
-				world.add(b);
+				Body a = new Body(p, 50*Math.random()+5, 5*Math.random()+5);
+				a.setVelocity(100*Math.random()-50, 100*Math.random()-50);
+				world.add(a);
 			}
 			if(input.keysUp[KeyEvent.VK_R]){
 				world.clear();
@@ -79,9 +80,9 @@ public class PhysicsDay implements PhysicsEngine{
 			}
 			if(input.keysDown[KeyEvent.VK_S]){
 				CircleShape c = new CircleShape(Math.random()*7+1);
-				Body b = new Body(c, 50*Math.random()+5, 5*Math.random()+5);
-				b.setVelocity(10*Math.random()-5, 10*Math.random()-5);
-				world.add(b);
+				Body a = new Body(c, 50*Math.random()+5, 5*Math.random()+5);
+				a.setVelocity(10*Math.random()-5, 10*Math.random()-5);
+				world.add(a);
 			}
 			if(input.keysDown[KeyEvent.VK_SPACE]){
 				updating = !updating;
@@ -91,31 +92,33 @@ public class PhysicsDay implements PhysicsEngine{
 				if(selectedBody != null){
 					world.removeObject(selectedBody);
 					selectedBody = null;
+					//screen.hideInfoLabel();
 				}
 			}
 		if(input.mouseDown[MouseEvent.BUTTON1]){
-			Body b;
 			if(bodyToAdd != null){
 				Vector prevLocation = camera.getWorldCoordiantes(input.lastLocation.subtract(input.draggedDistance));
 				bodyToAdd.shape.resize(prevLocation, camera.getWorldCoordiantes(input.lastLocation));
 			}
-			else if((b = getSelectedItem(input.pressedLocation)) != null){
+			else if(b != null){
 				dragging = b;
 			}
+		}
+		if(!input.mouseDown[MouseEvent.BUTTON1]){
+			dragging = null;
 		}
 		if(dragging != null){
 			dragging.setPosition(camera.getWorldCoordiantes(input.lastLocation));
 		}
 		if(input.mouseUp[MouseEvent.BUTTON1]){
-			Body b;
-			if((b = getSelectedItem(input.pressedLocation)) != null){
+			if(dragging != null){
+				dragging = null;
+			}
+			if(b != null){
 				if(b.equals(selectedBody)){
 					screen.popupBodyDialog(selectedBody);
 				}
 				selectedBody = b;
-			}
-			else if(dragging != null){
-				dragging = null;
 			}
 			else if(selectedBody != null){
 				selectedBody = null;
@@ -128,6 +131,9 @@ public class PhysicsDay implements PhysicsEngine{
 		if(bodyToAdd != null && !input.mouseDown[MouseEvent.BUTTON1] && !input.mouseUp[MouseEvent.BUTTON1]){
 			Vector pos = camera.getWorldCoordiantes(input.lastLocation);
 			bodyToAdd.setPosition(pos);
+		}
+		if(selectedBody != null){
+			screen.showInfoLabel(selectedBody);
 		}
 	}
 	

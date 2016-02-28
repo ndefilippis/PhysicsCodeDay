@@ -1,5 +1,6 @@
 package physicsday.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -28,10 +29,14 @@ public class PhysicsScreen extends JPanel{
 	private PhysicsLoop loop;
 	private PhysicsEngine engine;
 	private PhysicsInput input;
-	private World world;	
+	private World world;
+	private JLabel infoLabel = new JLabel();
+	int width, height;
 	
 	public PhysicsScreen(int width, int height, PhysicsLoop loop, PhysicsEngine engine){
 		Dimension d = new Dimension(width, height);
+		this.width = width;
+		this.height = height;
 		this.setSize(d);
 		this.setPreferredSize(d);
 		this.setFocusable(true);	
@@ -40,6 +45,13 @@ public class PhysicsScreen extends JPanel{
 		this.engine = engine;
 		this.input = new PhysicsInput();
 		this.world = new World();
+		
+		infoLabel.setBackground(Color.WHITE);
+		infoLabel.setOpaque(true);
+		infoLabel.setVisible(false);
+		this.add(infoLabel);
+		this.validate();
+		this.repaint();
 	}
 	
 	public void start(){
@@ -73,8 +85,8 @@ public class PhysicsScreen extends JPanel{
 	
 	private void renderGraphics( Graphics gr )
 	{
+		infoLabel.setBounds(0, height-40, width, 40);
 		gr.drawImage( buffer, 0, 0, this );
-		gr.dispose();
 	}
 	
 	private void resetGraphics(){
@@ -148,6 +160,16 @@ public class PhysicsScreen extends JPanel{
 			}
 		}
 		selectedBody.setBodyProps(props);
+	}
+	
+	public void hideInfoLabel(){
+		//infoLabel.setText("");
+		//infoLabel.setVisible(false);
+	}
+	
+	public void showInfoLabel(Body b){
+		infoLabel.setText(b.toString());
+		infoLabel.setVisible(true);
 	}
 	
 	

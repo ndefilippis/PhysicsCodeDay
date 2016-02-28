@@ -35,7 +35,7 @@ public class PhysicsRenderer implements Renderer{
 		if(b.getInvMass() == 0){
 			background = staticColor;
 		}
-		else if(RenderFlag.contains(RenderFlag.SELECTED, flags)){
+		if(RenderFlag.contains(RenderFlag.SELECTED, flags)){
 			background = selectedColor;
 			outline = selectedOutlineColor;
 		}
