@@ -14,7 +14,7 @@ public class ResizeBodyCommand  implements Command{
 
 	@Override
 	public void execute() {
-		body.shape.resize(end);
+		body.shape.resize(start, end);
 	}
 
 	@Override
@@ -24,7 +24,7 @@ public class ResizeBodyCommand  implements Command{
 
 	@Override
 	public void unexecute() {
-		body.shape.resize(start);
+		body.shape.resize(end, start);
 	}
 	
 }

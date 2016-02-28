@@ -8,10 +8,11 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.Observable;
 
 import physicsday.util.Vector;
 
-public class PhysicsInput implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener{
+public class PhysicsInput extends Observable implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener{
 	public int scrollWheel = 0;
 	public int keys = 0;
 	public int mouseButtons = 0;
@@ -22,6 +23,7 @@ public class PhysicsInput implements KeyListener, MouseListener, MouseMotionList
 	public boolean[] mouseDown = new boolean[MouseInfo.getNumberOfButtons()];
 	public boolean[] mouseUp = new boolean[MouseInfo.getNumberOfButtons()];
 	public boolean mouseInside;
+	public Vector lastUpLocation = new Vector();
 	public Vector lastLocation = new Vector();
 	public Vector pressedLocation = new Vector();
 	
@@ -36,6 +38,7 @@ public class PhysicsInput implements KeyListener, MouseListener, MouseMotionList
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
+		lastUpLocation.set(e.getX(), e.getY());
 		lastLocation.set(e.getX(), e.getY());
 	}
 
