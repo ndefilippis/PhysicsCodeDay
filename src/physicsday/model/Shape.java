@@ -15,7 +15,7 @@ public abstract class Shape{
 	public abstract Shape copy();
 	public abstract BoundingBox boundingBox();
 	public abstract void init();
-	public abstract void resize(Vector add);
+	public abstract void resize(Vector start, Vector end);
 	
 	public void setOrientation(double orientation) {
 		this.orientation = orientation;

@@ -27,8 +27,8 @@ public class CircleShape extends Shape{
 	}
 
 	@Override
-	public void resize(Vector vec) {
-		Vector rd = vec.subtract(body.getPosition());
+	public void resize(Vector start, Vector end) {
+		Vector rd = end.subtract(body.getPosition());
 		radius = Math.min(Math.abs(rd.x), Math.abs(rd.y))+1;
 		init();
 	}

@@ -56,6 +56,7 @@ public class PhysicsDay implements PhysicsEngine{
 	
 	public static Body bodyToAdd;
 	public Body selectedBody;
+	public Body dragging;
 	@Override
 	public void input(PhysicsInput input) {
 		if(bodyToAdd != null){
@@ -72,9 +73,9 @@ public class PhysicsDay implements PhysicsEngine{
 				world.add(b);
 			}
 			if(input.keysUp[KeyEvent.VK_R]){
-				
 				world.clear();
 				world.add(new Wall(50, 24, 100, 10));
+				elapsedTime = 0;
 			}
 			if(input.keysDown[KeyEvent.VK_S]){
 				CircleShape c = new CircleShape(Math.random()*7+1);
@@ -93,18 +94,28 @@ public class PhysicsDay implements PhysicsEngine{
 				}
 			}
 		if(input.mouseDown[MouseEvent.BUTTON1]){
+			Body b;
 			if(bodyToAdd != null){
-				bodyToAdd.shape.resize(camera.getWorldCoordiantes(input.lastLocation));
+				Vector prevLocation = camera.getWorldCoordiantes(input.lastLocation.subtract(input.draggedDistance));
+				bodyToAdd.shape.resize(prevLocation, camera.getWorldCoordiantes(input.lastLocation));
 			}
+			else if((b = getSelectedItem(input.pressedLocation)) != null){
+				dragging = b;
+			}
+		}
+		if(dragging != null){
+			dragging.setPosition(camera.getWorldCoordiantes(input.lastLocation));
 		}
 		if(input.mouseUp[MouseEvent.BUTTON1]){
 			Body b;
-
 			if((b = getSelectedItem(input.pressedLocation)) != null){
 				if(b.equals(selectedBody)){
 					screen.popupBodyDialog(selectedBody);
 				}
 				selectedBody = b;
+			}
+			else if(dragging != null){
+				dragging = null;
 			}
 			else if(selectedBody != null){
 				selectedBody = null;
@@ -114,12 +125,7 @@ public class PhysicsDay implements PhysicsEngine{
 				bodyToAdd = null;
 			}
 		}
-		if(input.mouseUp[MouseEvent.BUTTON3]){
-			Vector worldPos = camera.getWorldCoordiantes(input.pressedLocation);
-			CircleShape c = new CircleShape(1);
-			world.add(new Body(c, worldPos.x, worldPos.y));
-		}
-		if(bodyToAdd != null && !input.mouseDown[MouseEvent.BUTTON1]){
+		if(bodyToAdd != null && !input.mouseDown[MouseEvent.BUTTON1] && !input.mouseUp[MouseEvent.BUTTON1]){
 			Vector pos = camera.getWorldCoordiantes(input.lastLocation);
 			bodyToAdd.setPosition(pos);
 		}

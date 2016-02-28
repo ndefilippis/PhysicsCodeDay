@@ -117,19 +117,10 @@ public class PolygonShape extends Shape{
 	} 
 
 	public static PolygonShape createRamp(double width, double height, boolean positive){
-		PolygonShape p = new PolygonShape();
-		p.numVerticies = 3;
-		p.verticies = new Vector[3];
-		p.normals = new Vector[3];
 		double hw = width/2;
 		double hh = height/2;
-		p.verticies[0] = new Vector(-hw, hh);
-		p.verticies[1] = new Vector(hw, hh);
-		p.verticies[2] = positive ? new Vector(hw, -hh) : new Vector(-hw, -hh);
-		p.normals[0] = new Vector(0, 1);
-		p.normals[1] = positive ? new Vector(1, 0) : new Vector(-hh, -hw).normalize();
-		p.normals[2] = positive ? new Vector(hh, -hw).normalize() : new Vector(-1, 0);
-		return p;
+		Vector[] points = { new Vector(hw, hh), new Vector(-hw, hh), (positive ? new Vector(hw, -hh) : new Vector(-hw, -hh))};
+		return new PolygonShape(points, 3);
 	}
 
 	@Override
@@ -176,10 +167,17 @@ public class PolygonShape extends Shape{
 	}
 
 	@Override
-	public void resize(Vector vec) {
-		Vector rv = vec.subtract(body.getPosition());
+	public void resize(Vector start, Vector end) {
+		Vector distanceToAdd = end.subtract(start).multiply(2);
 		for(int i = 0; i < numVerticies; i++){
-			verticies[i].set(verticies[i].normalize().multiply(Math.min(Math.abs(rv.x)+1, Math.abs(rv.y)+1)));
+			Vector sign = new Vector(Math.signum(verticies[i].x), Math.signum(verticies[i].y));
+			verticies[i] = sign.multiplyc(distanceToAdd).add(verticies[i]);
+		}
+		for(int i = 0; i < numVerticies; i++){
+			int i2 = i + 1 < numVerticies ? i + 1 : 0;
+		     Vector face = this.verticies[i2].subtract(this.verticies[i]);
+		     this.normals[i] = new Vector( face.y, -face.x );
+		     this.normals[i] = this.normals[i].normalize( );
 		}
 		if(body.getInvMass() != 0)
 		init();
